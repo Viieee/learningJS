@@ -7,6 +7,6 @@ let currentResult = 10; //variabel sudah dideklarasi tapi belum di inisialisasi/
 //mendefinisikan variabel (memberi value)
 
 // string bisa menggunakan '', "", dan ``
-let contohTandaPetikBeda = `(${defaultResult} adalah hasil)`; // pake `` bisa begini, nampilin variabel pake ${}
+let contohTandaPetikBeda = `(${defaultResult} adalah hasil)`; // pake `` bisa begini, nampilin variabel pake ${} (template literal)
 outputResult(currentResult, contohTandaPetikBeda);
 console.log(contohTandaPetikBeda);
