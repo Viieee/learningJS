@@ -9,18 +9,47 @@ const defaultResult = 0;
 let currentResult = defaultResult; //variabel sudah dideklarasi tapi belum di inisialisasi/didefinisi (belum diberi value)
 //mendefinisikan variabel (memberi value)
 
-let text = '';
+function parseInputanUser() {
+  return parseInt(userInput.value);
+}
+
+function teksOperator(operator, hasilSebelumnya, inputanUser) {
+  return hasilSebelumnya + operator + inputanUser;
+}
 
 function pencetButtonAdd() {
-  const inputanUser = parseInt(userInput.value);
-  if (currentResult != 0){
-    text = text + " + " + inputanUser;
-  } else{
-    text = text + inputanUser;
-  }
-  currentResult += inputanUser ;
-  outputResult(currentResult,text);
+  const inputanUser = parseInputanUser();
+  const text =  teksOperator(' + ', currentResult, inputanUser);
+  currentResult += inputanUser;
+  outputResult(currentResult, text);
+  userInput.value = '';
+}
+
+function pencetButtonSubtract() {
+  const inputanUser = parseInputanUser();
+  const text =  teksOperator(' - ', currentResult, inputanUser);
+  currentResult -= inputanUser;
+  outputResult(currentResult, text);
+  userInput.value = '';
+}
+
+function pencetButtonMultiply() {
+  const inputanUser = parseInputanUser();
+  const text =  teksOperator(' * ', currentResult, inputanUser);
+  currentResult *= inputanUser;
+  outputResult(currentResult, text);
+  userInput.value = '';
+}
+
+function pencetButtonDivide() {
+  const inputanUser = parseInputanUser();
+  const text =  teksOperator(' / ', currentResult, inputanUser);
+  currentResult /= inputanUser;
+  outputResult(currentResult, text);
   userInput.value = '';
 }
 
 addBtn.addEventListener('click', pencetButtonAdd);
+subtractBtn.addEventListener('click', pencetButtonSubtract);
+multiplyBtn.addEventListener('click', pencetButtonMultiply);
+divideBtn.addEventListener('click', pencetButtonDivide);
