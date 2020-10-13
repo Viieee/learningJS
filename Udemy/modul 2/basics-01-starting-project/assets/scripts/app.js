@@ -20,40 +20,61 @@ function createOutput(operator, hasilSebelumnya, inputanUser) {
   outputResult(currentResult, text);
 }
 
+//alert jika input field kosong
+function emptyInput() {
+  alert('Input Field Can\'t Be Empty!');
+}
+
 //fungsi button add
 function pencetButtonAdd() {
-  const inputanUser = parseInputanUser();
-  const hasilSebelumnya = currentResult;
-  currentResult += inputanUser;
-  createOutput(' + ', hasilSebelumnya, inputanUser);
-  userInput.value = '';
+  if(userInput.value != ''){
+    const inputanUser = parseInputanUser();
+    const hasilSebelumnya = currentResult;
+    currentResult += inputanUser;
+    createOutput(' + ', hasilSebelumnya, inputanUser);
+    userInput.value = '';
+  }else{
+    emptyInput();
+  }
 }
 
 //fungsi button subtract
 function pencetButtonSubtract() {
-  const inputanUser = parseInputanUser();
-  const hasilSebelumnya = currentResult;
-  currentResult -= inputanUser;
-  createOutput(' - ', hasilSebelumnya, inputanUser);
-  userInput.value = '';
+  if(userInput.value != ''){
+    const inputanUser = parseInputanUser();
+    const hasilSebelumnya = currentResult;
+    currentResult -= inputanUser;
+    createOutput(' - ', hasilSebelumnya, inputanUser);
+    userInput.value = '';
+  }else{
+    emptyInput();
+  }
 }
 
 //fungsi button multiply
 function pencetButtonMultiply() {
-  const inputanUser = parseInputanUser();
-  const hasilSebelumnya = currentResult;
-  currentResult *= inputanUser;
-  createOutput(' * ', hasilSebelumnya, inputanUser);
-  userInput.value = '';
+  if(userInput.value != ''){
+    const inputanUser = parseInputanUser();
+    const hasilSebelumnya = currentResult;
+    currentResult *= inputanUser;
+    createOutput(' * ', hasilSebelumnya, inputanUser);
+    userInput.value = '';
+  }else{
+    emptyInput();
+  }
 }
 
 //fungsi button divide
 function pencetButtonDivide() {
-  const inputanUser = parseInputanUser();
-  const hasilSebelumnya = currentResult;
-  currentResult /= inputanUser;
-  createOutput(' / ', hasilSebelumnya, inputanUser);
-  userInput.value = '';
+  if(userInput.value != ''){
+    const inputanUser = parseInputanUser();
+    const hasilSebelumnya = currentResult;
+    currentResult /= inputanUser;
+    createOutput(' / ', hasilSebelumnya, inputanUser);
+    userInput.value = '';
+  }else{
+    emptyInput();
+  }
 }
 
 //event listener button
