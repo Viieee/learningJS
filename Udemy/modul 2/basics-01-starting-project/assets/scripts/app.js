@@ -9,46 +9,54 @@ const defaultResult = 0;
 let currentResult = defaultResult; //variabel sudah dideklarasi tapi belum di inisialisasi/didefinisi (belum diberi value)
 //mendefinisikan variabel (memberi value)
 
+//memparse inputan user menjadi integer
 function parseInputanUser() {
   return parseInt(userInput.value);
 }
 
-function teksOperator(operator, hasilSebelumnya, inputanUser) {
-  return hasilSebelumnya + operator + inputanUser;
+//menampilkan output
+function createOutput(operator, hasilSebelumnya, inputanUser) {
+  const text = hasilSebelumnya + operator + inputanUser;
+  outputResult(currentResult, text);
 }
 
+//fungsi button add
 function pencetButtonAdd() {
   const inputanUser = parseInputanUser();
-  const text =  teksOperator(' + ', currentResult, inputanUser);
+  const hasilSebelumnya = currentResult;
   currentResult += inputanUser;
-  outputResult(currentResult, text);
+  createOutput(' + ', hasilSebelumnya, inputanUser);
   userInput.value = '';
 }
 
+//fungsi button subtract
 function pencetButtonSubtract() {
   const inputanUser = parseInputanUser();
-  const text =  teksOperator(' - ', currentResult, inputanUser);
+  const hasilSebelumnya = currentResult;
   currentResult -= inputanUser;
-  outputResult(currentResult, text);
+  createOutput(' - ', hasilSebelumnya, inputanUser);
   userInput.value = '';
 }
 
+//fungsi button multiply
 function pencetButtonMultiply() {
   const inputanUser = parseInputanUser();
-  const text =  teksOperator(' * ', currentResult, inputanUser);
+  const hasilSebelumnya = currentResult;
   currentResult *= inputanUser;
-  outputResult(currentResult, text);
+  createOutput(' * ', hasilSebelumnya, inputanUser);
   userInput.value = '';
 }
 
+//fungsi button divide
 function pencetButtonDivide() {
   const inputanUser = parseInputanUser();
-  const text =  teksOperator(' / ', currentResult, inputanUser);
+  const hasilSebelumnya = currentResult;
   currentResult /= inputanUser;
-  outputResult(currentResult, text);
+  createOutput(' / ', hasilSebelumnya, inputanUser);
   userInput.value = '';
 }
 
+//event listener button
 addBtn.addEventListener('click', pencetButtonAdd);
 subtractBtn.addEventListener('click', pencetButtonSubtract);
 multiplyBtn.addEventListener('click', pencetButtonMultiply);
