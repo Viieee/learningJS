@@ -1,6 +1,7 @@
 //global variable
 const defaultResult = 0;
 let currentResult = defaultResult;
+let logEntries = [];
 
 //memparse inputan user menjadi integer
 function parseInputanUser() {
@@ -15,59 +16,68 @@ function createOutput(operator, hasilSebelumnya, inputanUser) {
 
 //alert jika input field kosong
 function emptyInput() {
-  alert('Input Field Can\'t Be Empty!');
+  alert("Input Field Can't Be Empty!");
+}
+
+//buat log operasi
+function buatLog(operasi, hasilSebelum, inputan, totalSementara) {
+  const logUser = {
+    operasi: operasi,
+    hasilSebelum: hasilSebelum,
+    inputanUser: inputan,
+    hasil: totalSementara,
+  };
+  logEntries.push(logUser);
+  console.log(logEntries);
+}
+
+function hitung(tipeHitung) {
+  if (userInput.value != '') {
+    const inputanUser = parseInputanUser();
+    const hasilSebelumnya = currentResult;
+    let operasiHitung;
+    if (tipeHitung === 'Tambah') {
+      currentResult += inputanUser;
+      operasiHitung = ' + ';
+    }
+    if (tipeHitung === 'Kurang') {
+      currentResult -= inputanUser;
+      operasiHitung = ' - ';
+    }
+    if (tipeHitung === 'Kali') {
+      currentResult *= inputanUser;
+      operasiHitung = ' * ';
+    }
+    if (tipeHitung === 'Bagi') {
+      currentResult /= inputanUser;
+      operasiHitung = ' / ';
+    }
+    createOutput(operasiHitung, hasilSebelumnya, inputanUser);
+    buatLog(tipeHitung, hasilSebelumnya, inputanUser, currentResult);
+    userInput.value = null;
+  } else {
+    emptyInput();
+  }
 }
 
 //fungsi button add
 function pencetButtonAdd() {
-  if(userInput.value != ''){
-    const inputanUser = parseInputanUser();
-    const hasilSebelumnya = currentResult;
-    currentResult += inputanUser;
-    createOutput(' + ', hasilSebelumnya, inputanUser);
-    userInput.value = '';
-  }else{
-    emptyInput();
-  }
+  hitung('Tambah');
 }
 
 //fungsi button subtract
 function pencetButtonSubtract() {
-  if(userInput.value != ''){
-    const inputanUser = parseInputanUser();
-    const hasilSebelumnya = currentResult;
-    currentResult -= inputanUser;
-    createOutput(' - ', hasilSebelumnya, inputanUser);
-    userInput.value = '';
-  }else{
-    emptyInput();
-  }
+  hitung('Kurang');
 }
 
 //fungsi button multiply
 function pencetButtonMultiply() {
-  if(userInput.value != ''){
-    const inputanUser = parseInputanUser();
-    const hasilSebelumnya = currentResult;
-    currentResult *= inputanUser;
-    createOutput(' * ', hasilSebelumnya, inputanUser);
-    userInput.value = '';
-  }else{
-    emptyInput();
-  }
+  hitung('Kali');
 }
 
 //fungsi button divide
 function pencetButtonDivide() {
-  if(userInput.value != ''){
-    const inputanUser = parseInputanUser();
-    const hasilSebelumnya = currentResult;
-    currentResult /= inputanUser;
-    createOutput(' / ', hasilSebelumnya, inputanUser);
-    userInput.value = '';
-  }else{
-    emptyInput();
-  }
+  hitung('Bagi');
 }
 
 //event listener button
