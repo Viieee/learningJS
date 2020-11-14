@@ -23,6 +23,7 @@ function dealMonsterDamage(damage) {
 function dealPlayerDamage(damage) {
   const dealtDamage = Math.random() * damage;
   playerHealthBar.value = +playerHealthBar.value - dealtDamage;
+  // + sebelum playerHealthBar.value berfungsi untuk convert into number
   return dealtDamage;
 }
 
