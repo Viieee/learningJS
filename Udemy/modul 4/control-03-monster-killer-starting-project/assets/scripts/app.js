@@ -12,10 +12,10 @@ function attackz(mode) {
   let maxDamage;
   if (mode === 'REGULAR_ATTACK') {
     maxDamage = PLAYER_ATTACK_VALUE;
-    console.log(mode);
+    console.log(mode, maxDamage);
   } else {
     maxDamage = PLAYER_STRONG_ATTACK_VALUE;
-    console.log(mode);
+    console.log(mode, maxDamage);
   }
   const damage = dealMonsterDamage(maxDamage);
   currentMonsterHealth -= damage;
