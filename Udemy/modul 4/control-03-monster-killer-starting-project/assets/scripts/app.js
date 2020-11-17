@@ -8,10 +8,18 @@ let currentPlayerHealth = chosenMaxLife;
 adjustHealthBars(chosenMaxLife);
 
 // some additional functions
-function attackz(damageFromPlayer, damageFromMonster) {
-  const damage = dealMonsterDamage(damageFromPlayer);
+function attackz(mode) {
+  let maxDamage;
+  if (mode === 'REGULAR_ATTACK') {
+    maxDamage = PLAYER_ATTACK_VALUE;
+    console.log(mode);
+  } else {
+    maxDamage = PLAYER_STRONG_ATTACK_VALUE;
+    console.log(mode);
+  }
+  const damage = dealMonsterDamage(maxDamage);
   currentMonsterHealth -= damage;
-  const monsterDamage = dealPlayerDamage(damageFromMonster);
+  const monsterDamage = dealPlayerDamage(MONSTER_ATTACK_VALUE);
   currentPlayerHealth -= monsterDamage;
   if (currentMonsterHealth <= 0 && currentPlayerHealth > 0) {
     alert('You Win!');
@@ -24,11 +32,11 @@ function attackz(damageFromPlayer, damageFromMonster) {
 
 // event listener's functions
 function attackHandler() {
-  attackz(PLAYER_ATTACK_VALUE, MONSTER_ATTACK_VALUE);
+  attackz('REGULAR_ATTACK');
 }
 
 function strongAttackHandler() {
-  attackz(PLAYER_STRONG_ATTACK_VALUE, MONSTER_ATTACK_VALUE);
+  attackz('STRONG_ATTACK');
 }
 
 // event listener
