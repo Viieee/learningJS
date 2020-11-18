@@ -144,7 +144,7 @@ function attackz(mode) {
   }
   const damage = dealMonsterDamage(maxDamage);
   currentMonsterHealth -= damage;
-  wewriteToLog(
+  writeToLog(
     logEvent,
     damage,
     currentMonsterHealth,
