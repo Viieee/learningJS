@@ -1,0 +1,24 @@
+for loop, execute code a certain amount of time
+example:
+for(let i = 0;i<=10;i++){
+    execute;
+}
+
+for-of loop, execute for every element in an array
+example:
+for(const el of array){
+    console.log(el);
+}
+
+for-in loop, execute for every key in an object
+example:
+for(const key in obj){
+    console.log(key);
+    console.log(obj[key]);
+}
+
+while loop, execute as long as condition is true
+example:
+while(isLoggedIn){
+    execute();
+}
