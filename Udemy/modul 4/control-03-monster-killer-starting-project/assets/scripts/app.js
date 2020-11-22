@@ -152,8 +152,17 @@ function healHandler() {
 }
 
 function logHandler() {
-  for(let i = 0;i < battleLog.length;i++){
-    console.log(battleLog[i]);
+  //for loop
+  // for(let i = 0;i < battleLog.length;i++){
+  //   console.log(battleLog[i]);
+  // }
+  //for of loop
+  for (const log of battleLog) {
+    console.log(log);
+    //for in loop
+    // for (const key in log) {
+    //   console.log(`${key} -> ${log[key]}`);
+    // }
   }
 }
 
