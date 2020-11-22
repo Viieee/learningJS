@@ -152,7 +152,9 @@ function healHandler() {
 }
 
 function logHandler() {
-  console.log(battleLog);
+  for(let i = 0;i < battleLog.length;i++){
+    console.log(battleLog[i]);
+  }
 }
 
 // event listener
