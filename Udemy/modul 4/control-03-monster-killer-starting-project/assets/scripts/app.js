@@ -164,6 +164,13 @@ function logHandler() {
     //   console.log(`${key} -> ${log[key]}`);
     // }
   }
+  
+  //while loop
+  // let i = 0;
+  // while (i < battleLog.length) {
+  //   console.log(battleLog[i]);
+  //   i++;
+  // }
 }
 
 // event listener
