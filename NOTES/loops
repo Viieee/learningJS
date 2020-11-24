@@ -22,3 +22,11 @@ example:
 while(isLoggedIn){
     execute();
 }
+condition wont change global variable
+
+do while loop, just like while loop but this loop
+will execute the code once before checking the condition
+example:
+do{
+    execute();
+}while(condition);
