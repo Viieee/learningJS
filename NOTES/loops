@@ -4,6 +4,18 @@ for(let i = 0;i<=10;i++){
     execute;
 }
 
+nested loop:
+for(let i=0;i<3;i++){
+    console.log('i outer '+i);
+    for(let j = 5; j>2; j--){
+        sum = sum + j + i;
+        console.log('i inner '+i);
+        console.log('j inner '+j);
+        console.log('sum inner '+sum);
+    }
+}
+console.log(sum);
+
 for-of loop, execute for every element in an array
 example:
 for(const el of array){
