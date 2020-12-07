@@ -7,6 +7,7 @@ const DEFAULT_USER_CHOICE = ROCK;
 const RESULT_DRAW = 'DRAW';
 const PLAYER_WIN = 'PLAYER WIN!';
 const COMPUTER_WIN = 'COMPUTER WIN!';
+let gameIsRunning = false;
 
 const getPlayerChoice = function () {
   const selection = prompt(
@@ -32,26 +33,38 @@ const getComputerChoice = function () {
   }
 };
 
-const getWinner = (computerChoice, playerChoice) => {
-  if (computerChoice === playerChoice) {
-    return RESULT_DRAW;
-  } else if (
-    (computerChoice === ROCK && playerChoice === PAPER) ||
-    (computerChoice === PAPER && playerChoice === SCISSORS) ||
-    (computerChoice === SCISSORS && playerChoice === ROCK)
-  ) {
-    return PLAYER_WIN;
-  } else {
-    return COMPUTER_WIN;
-  }
-};
+//ternary condition implementation with arrow function
+const getWinner = (computerChoice, playerChoice) =>
+  computerChoice === playerChoice
+    ? RESULT_DRAW
+    : (computerChoice === ROCK && playerChoice === PAPER) ||
+      (computerChoice === PAPER && playerChoice === SCISSORS) ||
+      (computerChoice === SCISSORS && playerChoice === ROCK)
+    ? PLAYER_WIN
+    : COMPUTER_WIN;
 
 startGameBtn.addEventListener('click', () => {
+  if (gameIsRunning) {
+    // sama dengan gameIsRunning === true
+    return;
+  };
+
+  gameIsRunning = true;
   console.log('Game is starting...');
   const playerSelection = getPlayerChoice();
   const computerSelection = getComputerChoice();
   const winner = getWinner(computerSelection, playerSelection);
+  let message = `You picked ${playerSelection} and the computer picked ${computerSelection}, so `;
+  if (winner === RESULT_DRAW) {
+    message = message + 'it\'s a draw!';
+  } else if (winner === PLAYER_WIN){
+    message = message + 'you win.';
+  } else {
+    message = message + 'you lose'
+  }
+  alert(message);
   console.log(`PLAYER's CHOICE : ${playerSelection}`);
   console.log(`COMPUTER's CHOICE : ${computerSelection}`);
   console.log(winner);
+  gameIsRunning = false;
 });
