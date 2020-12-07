@@ -48,7 +48,7 @@ startGameBtn.addEventListener('click', () => {
   if (gameIsRunning) {
     // sama dengan gameIsRunning === true
     return;
-  };
+  }
 
   gameIsRunning = true;
   console.log('Game is starting...');
@@ -57,13 +57,15 @@ startGameBtn.addEventListener('click', () => {
   const winner = getWinner(computerSelection, playerSelection);
   // pada message, playerSelection || DEFAULT_USER_CHOICE akan mengecek mana yang menghasilkan true
   // in this case yang memiliki value, karena yang false adalah yang undefined
-  let message = `You picked ${playerSelection || DEFAULT_USER_CHOICE} and the computer picked ${computerSelection}, so `;
+  let message = `You picked ${
+    playerSelection || DEFAULT_USER_CHOICE
+  } and the computer picked ${computerSelection}, so `;
   if (winner === RESULT_DRAW) {
-    message = message + 'it\'s a draw!';
-  } else if (winner === PLAYER_WIN){
+    message = message + "it's a draw!";
+  } else if (winner === PLAYER_WIN) {
     message = message + 'you win.';
   } else {
-    message = message + 'you lose'
+    message = message + 'you lose';
   }
   alert(message);
   console.log(`PLAYER's CHOICE : ${playerSelection || DEFAULT_USER_CHOICE}`);
@@ -71,3 +73,4 @@ startGameBtn.addEventListener('click', () => {
   console.log(winner);
   gameIsRunning = false;
 });
+

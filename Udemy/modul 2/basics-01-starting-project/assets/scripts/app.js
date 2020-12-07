@@ -60,28 +60,9 @@ function hitung(tipeHitung) {
   }
 }
 
-//fungsi button add
-function pencetButtonAdd() {
-  hitung('Tambah');
-}
-
-//fungsi button subtract
-function pencetButtonSubtract() {
-  hitung('Kurang');
-}
-
-//fungsi button multiply
-function pencetButtonMultiply() {
-  hitung('Kali');
-}
-
-//fungsi button divide
-function pencetButtonDivide() {
-  hitung('Bagi');
-}
 
 //event listener button
-addBtn.addEventListener('click', pencetButtonAdd);
-subtractBtn.addEventListener('click', pencetButtonSubtract);
-multiplyBtn.addEventListener('click', pencetButtonMultiply);
-divideBtn.addEventListener('click', pencetButtonDivide);
+addBtn.addEventListener('click', hitung.bind(this, 'Tambah'));
+subtractBtn.addEventListener('click',  hitung.bind(this, 'Kurang'));
+multiplyBtn.addEventListener('click',  hitung.bind(this, 'Kali'));
+divideBtn.addEventListener('click', hitung.bind(this, 'Bagi'));
