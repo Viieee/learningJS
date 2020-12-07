@@ -16,6 +16,7 @@ const getPlayerChoice = function () {
   ).toUpperCase();
   if (selection !== ROCK && selection !== PAPER && selection !== SCISSORS) {
     alert(`Invalid choice! We chose ${DEFAULT_USER_CHOICE} for you!`);
+    return; //returning undefined
   }
   return selection;
 };
@@ -54,7 +55,9 @@ startGameBtn.addEventListener('click', () => {
   const playerSelection = getPlayerChoice();
   const computerSelection = getComputerChoice();
   const winner = getWinner(computerSelection, playerSelection);
-  let message = `You picked ${playerSelection} and the computer picked ${computerSelection}, so `;
+  // pada message, playerSelection || DEFAULT_USER_CHOICE akan mengecek mana yang menghasilkan true
+  // in this case yang memiliki value, karena yang false adalah yang undefined
+  let message = `You picked ${playerSelection || DEFAULT_USER_CHOICE} and the computer picked ${computerSelection}, so `;
   if (winner === RESULT_DRAW) {
     message = message + 'it\'s a draw!';
   } else if (winner === PLAYER_WIN){
@@ -63,7 +66,7 @@ startGameBtn.addEventListener('click', () => {
     message = message + 'you lose'
   }
   alert(message);
-  console.log(`PLAYER's CHOICE : ${playerSelection}`);
+  console.log(`PLAYER's CHOICE : ${playerSelection || DEFAULT_USER_CHOICE}`);
   console.log(`COMPUTER's CHOICE : ${computerSelection}`);
   console.log(winner);
   gameIsRunning = false;
