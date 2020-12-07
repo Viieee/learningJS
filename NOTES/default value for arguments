@@ -1,0 +1,12 @@
+function's argument can be set with a default value
+
+example : 
+
+const defaultValue = 'this is default value for the 2nd argument';
+const contohFunction(choiceA, choiceB = defaultValue){
+
+}
+
+in the example above the defaultValue variable will be the arguments 
+in case the arguments (passed by the user for example) is undefined/invalid
+for the condition needed.
