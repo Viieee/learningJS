@@ -16,7 +16,6 @@ const getPlayerChoice = function () {
   ).toUpperCase();
   if (selection !== ROCK && selection !== PAPER && selection !== SCISSORS) {
     alert(`Invalid choice! We chose ${DEFAULT_USER_CHOICE} for you!`);
-    return DEFAULT_USER_CHOICE;
   }
   return selection;
 };
@@ -34,7 +33,8 @@ const getComputerChoice = function () {
 };
 
 //ternary condition implementation with arrow function
-const getWinner = (computerChoice, playerChoice) =>
+// implementing default value for the 2nd argument
+const getWinner = (computerChoice, playerChoice = DEFAULT_USER_CHOICE) =>
   computerChoice === playerChoice
     ? RESULT_DRAW
     : (computerChoice === ROCK && playerChoice === PAPER) ||
