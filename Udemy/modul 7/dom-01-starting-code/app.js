@@ -154,3 +154,10 @@ ulRef.firstElementChild.after(newLi);
 
 // Sama seperti html, element juga dapat ditambahkan dengan method insertAdjacent
 // menggunakan insertAdjacentElement dengan argumen (posisiAturan, objek)
+
+// cara mencopy sebuah element node
+// menggunakan cloneNode()
+// cloneNode() akan mencopy semua atribut dari node dan value yang terkandung
+const newLi2 = newLi.cloneNode();
+// cloneNode() mengambil 1 argumen berbentuk boolean, false sebagai default
+// jika diset true maka akan mencopy element DAN SEMUA CHILD YANG ADA DI ELEMENT TERSEBUT
