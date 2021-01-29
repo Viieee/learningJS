@@ -118,7 +118,39 @@ const newLi = document.createElement('li'); // akan membuat element li
 newLi.textContent = 'Item baru';
 // sekarang akan menambah element li yang baru ini ke element li yg sudah ada
 ulRef.append(newLi); //newLi adalah object
+// append akan menggabungkan objek/string dan dijadikan child terakhir
 // atau bisa juga menggunakan appendChild()
 // perbedaan dari append dan append child adalah 
 // append child hanya dapat meng-append nodes object saja
 // append dapat meng-append nodes object dan string
+// append juga dapat meng-append lebih dari 1 node secara bersamaan
+
+// bisa juga dengan prepend
+// prepend akan menggabungkan objek/string dan dijadikan child pertama
+ulRef.prepend(newLi);
+
+// bisa juga dengan before()
+// before akan meng-append/meletakan objek yang menjadi argumen sebelum reference
+ulRef.lastElementChild.before(newLi); // li yang baru akan diletakan setelah li terakhir yang ada di ul
+
+// atau dengan after()
+// after akan meng-append/meletakan objek yang menjadi argumen setelah reference
+ulRef.firstElementChild.after(newLi);
+
+// NOTE: penggunaan method prepend, append, before, dan after tidak bisa digunakan secara bersamaan ke 1 objek argumen
+// line code terakhir adalah line yang akan diemplementasikan bila argumennya sama
+// jadi misal ada code :
+// ulRef.append(newLi); 
+// ulRef.prepend(newLi);
+// ulRef.lastElementChild.before(newLi);
+// ulRef.firstElementChild.after(newLi); 
+// maka yang akan diemplementasikan adalah method after 
+
+// bisa mereplace
+// replace dengan replaceWith dan replaceChild
+// replaceWith mentarget child sebagai reference dan gantinya sebagai argumen
+// replaceChild mentarget parent dari child sebagai reference dan argumennya adalah (childBaru, childLama)
+// ulRef.firstElementChild.replaceWith(newLi);
+
+// Sama seperti html, element juga dapat ditambahkan dengan method insertAdjacent
+// menggunakan insertAdjacentElement dengan argumen (posisiAturan, objek)
