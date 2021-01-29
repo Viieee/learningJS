@@ -73,3 +73,52 @@ ulRef.nextElementSibling // akan menunjuk element node yang letaknya setelah ul 
 // cara mereference sibling dibawah akan mereference semua node, tidak hanya element node saja
 ulRef.previousSibling
 ulRef.nextSibling
+
+// cara mengganti styling css menggunakan js
+const section = document.querySelector('section');
+const button = document.querySelector('button');
+
+// section.style.backgroundColor = 'blue'; 
+// bisa mengassign sebuah css style ke dalam element node
+section.className = 'red-bg';
+
+button.addEventListener('click', () => {
+  // if (section.className === 'red-bg visible') {
+  //   section.className = 'red-bg invisible';
+  // } else {
+  //   section.className = 'red-bg visible';
+  // }
+
+  // section.classList.toggle('visible');
+  // menggunakan classlist untuk mengatur class lebih mudah
+  section.classList.toggle('invisible');
+});
+
+// cara menambahkan element node kedalam code html menggunakan js
+// menggunakan innerHTML
+// section.innerHTML = '<h2>add element melalui innerHTML</h2>';
+// code diatas berarti h2 akan mereplace semua element yang ada didalam section
+// isi lama dari section akan dihapus
+
+// menggunakan insertAdjacentHTML
+// insertHTML mengambil 2 parameter, position dan text html sendiri
+// position ada 4: beforebegin, afterbegin, beforeend, dan afterend
+// beforebegin berarti sebelum element yang direference
+section.insertAdjacentHTML('beforebegin', '<p>add element melalui js menggunakan insertAdjacentHTML beforebegin</p>');
+// afterbegin berarti dalam element sebelum first child
+section.insertAdjacentHTML('afterbegin', '<p>add element melalui js menggunakan insertAdjacentHTML afterbegin</p>');
+// beforeend berarti dalam element setelah last child
+section.insertAdjacentHTML('beforeend', '<p>add element melalui js menggunakan insertAdjacentHTML beforeend</p>');
+// afterend berarti setelah element
+section.insertAdjacentHTML('afterend', '<p>add element melalui js menggunakan insertAdjacentHTML afterend</p>');
+
+// menggunakan method createElement
+// kelebihan dari penggunaan method createElement adalah kemudahan dalam mereference element yang baru saja ditambahkan
+const newLi = document.createElement('li'); // akan membuat element li
+newLi.textContent = 'Item baru';
+// sekarang akan menambah element li yang baru ini ke element li yg sudah ada
+ulRef.append(newLi); //newLi adalah object
+// atau bisa juga menggunakan appendChild()
+// perbedaan dari append dan append child adalah 
+// append child hanya dapat meng-append nodes object saja
+// append dapat meng-append nodes object dan string
