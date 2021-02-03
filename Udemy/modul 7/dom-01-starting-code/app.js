@@ -40,25 +40,5 @@ ulRef.firstElementChild.after(newLi); // li yang baru akan diletakan setelah li 
 // NOTE: penggunaan method prepend, append, before, dan after tidak bisa digunakan secara bersamaan ke 1 objek argumen
 // line code terakhir adalah line yang akan diemplementasikan bila argumennya sama
 
-// bisa mereplace
-// replace dengan replaceWith dan replaceChild
-// replaceWith mentarget child sebagai reference dan gantinya sebagai argumen
-// replaceChild mentarget parent dari child sebagai reference dan argumennya adalah (childBaru, childLama)
-// ulRef.firstElementChild.replaceWith(newLi);
-
-
-// Sama seperti html, element juga dapat ditambahkan dengan method insertAdjacent
-// menggunakan insertAdjacentElement dengan argumen (posisiAturan, objek)
-
-// cara mencopy sebuah element node
-// menggunakan cloneNode()
-// cloneNode() akan mencopy semua atribut dari node dan value yang terkandung
 const newLi2 = newLi.cloneNode();
-// cloneNode() mengambil 1 argumen berbentuk boolean, false sebagai default
-// jika diset true maka akan mencopy element DAN SEMUA CHILD YANG ADA DI ELEMENT TERSEBUT
 
-// cara meremove element node
-// menggunakan remove() dan  removeChild()
-// remove() akan menghapus langsung element node yang jadi reference method
-
-// removeChild() mengambil argumen target element node yang akan dihapus dengan reference parent dari node tsb
