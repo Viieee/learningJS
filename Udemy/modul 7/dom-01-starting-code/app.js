@@ -17,7 +17,6 @@ button.addEventListener('click', () => {
   // }
 
   // section.classList.toggle('visible');
-  
   section.classList.toggle('invisible');
 });
 
@@ -40,5 +39,4 @@ ulRef.firstElementChild.after(newLi); // li yang baru akan diletakan setelah li 
 // NOTE: penggunaan method prepend, append, before, dan after tidak bisa digunakan secara bersamaan ke 1 objek argumen
 // line code terakhir adalah line yang akan diemplementasikan bila argumennya sama
 
-const newLi2 = newLi.cloneNode();
 
