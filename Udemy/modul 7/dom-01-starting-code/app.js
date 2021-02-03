@@ -17,7 +17,7 @@ button.addEventListener('click', () => {
   // }
 
   // section.classList.toggle('visible');
-  // menggunakan classlist untuk mengatur class lebih mudah
+  
   section.classList.toggle('invisible');
 });
 
