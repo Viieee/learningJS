@@ -1,6 +1,6 @@
 const person = {
     aProperty: 'value',
-    name: 'Vieri'
+    name: 'Vieri',
     age: 20,
     hobbies: ['gaming', 'coding'],
     greet: function(){
