@@ -33,3 +33,7 @@ misal diisi -2 berarti operasi splice akan dimulai dari elemen berurutan KEDUA D
 
 var arrays = [1,2,3,4,5]
 arrays.splice(-1,1) -> [1,2,3,4]
+
+
+MORE NOTES: 
+splice() mereturn variable yang dihapus dan dapat distore ke dalam variabel
