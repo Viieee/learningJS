@@ -31,4 +31,4 @@ const sortedValues = testArray.sort(function(a,b){
 }) -> [99,11,10,6,3,2,1]
 
 reverse() digunakan untuk membalik urutan saja
-sortedValues.reverse();
+testArray.reverse() -> [10, 11, 6, 99, 3, 1, 2]
