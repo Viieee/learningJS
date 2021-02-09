@@ -1,0 +1,10 @@
+method indexOf() digunakan untuk mengetahui urutan index dari argumen dalam sebuah array
+
+bila ada lebih dari 1 element yang valuenya sama dengan argumen maka akan mereturn index dari yang pertama ditemukan
+
+method lastIndexOf() sama seperti indexOf() tetapi mencari index dari belakang
+
+akan mereturn -1 bila tidak menemukan
+
+NOTE 
+method ini tidak bisa digunakan untuk array yang mengandung object
