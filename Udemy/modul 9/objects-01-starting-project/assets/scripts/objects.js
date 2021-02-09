@@ -1,4 +1,4 @@
-const person = {
+let person = {
     aProperty: 'value',
     name: 'Vieri',
     age: 20,
