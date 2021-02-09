@@ -34,3 +34,14 @@ testArray.forEach(function(elemen, indexElemen, fullArray){
          {index: 3, element: 5},
          {index: 4, element: 6}]
 
+method map() digunakan apabila ingin membuat sebuah array hasil transformasi dari array yang sudah ada 
+yang nantinya akan disimpan di sebuah variabel
+
+misal ingin melakukan operasi yang sama dengan forEach() diatas
+
+
+let arrayBaruLagi = testArray.map(function(elemen, indexElemen, fullArray){
+    // misal akan membuat objek yang berisi index dan value yang ditambah 1
+    const objekArrayElement = {index: indexElemen, element: elemen+1}
+    return objekArrayElement;
+});
