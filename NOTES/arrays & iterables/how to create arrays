@@ -11,12 +11,13 @@ const moreNumbers = Array('satu','dua');
 using Array.of
 const yetMoreNumbers = Array.of(1,2) -> (2)[1,2]
 
+special way
 using Array.from
 const numbersLagi = Array.from('Hi!') -> (3)['H','i','!']
     NOTE :
     Array.from akan mengconvert array-like/iterable menjadi Array
     alasan kenapa mengconvert ke array karena ada beberapa method yang spesifik hanya bisa digunakan ke array
-    
+
 
 
 
