@@ -1,0 +1,26 @@
+method splice() digunakan untuk menghapus lebih dari 1 element pada array
+menyisipkan array di index yang diinginkan,
+atau mereplace array di index yg diinginkan
+
+splice mengambil 2/3 argumen
+splice(index mulai, jumlah elemen yang akan dihapus)
+splice(index mulai, jumlah elemen yang akan dihapus, element baru(bisa lebih dari 1))
+
+var arrays = [1,2,3,4,5]
+
+menghapus lebih dari 1, misal ingin menghapus 2 element mulai dari index 1
+arrays.splice(1,2) -> [1,4,5]
+
+menyisipkan 1 elemen di index tertentu
+argumen 1 digunakan untuk meletakan index yang diinginkan
+argumen 2 diisi 0, karena tidak akan menghapus apapun
+argumen 3 dan seterusnya diisi value element yang akan disisipkan
+
+arrays = [1,4,5]
+arrays.splice(1,0,2,3) -> [1,2,3,4,5]
+
+mereplace 1 atau lebih elemen
+sama seperti menyisipkan hanya argumen 2 diisi 1 atau lebih (tergantung jumlah elemen yang ingin diganti)
+
+arrays = [1,2,3,4,5]
+arrays.splice(1,2,99,103) -> [1,99,103,4,5]
