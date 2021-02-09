@@ -2,9 +2,19 @@ Spread atau (...) digunakan untuk mengeluarkan seluruh elemen pada sebuah array 
 
 penggunaan yang paling umum adalah saat ingin mengcopy sebuah array
 let array1 = [1,2,3]
-let array2 = [...array1]
-metode ini tidak mereference tapi hanya mengcopy,
-jadi bila array original berubah maka array copyan tidak terpengaruh
+let array2 = [...array1] -> [1,2,3]
+metode ini mereference dan mencopy elemen yang sudah ada saat spread digunakan
+jadi bila elemen yang sudah ada dalam array copyan dirubah di array utama maka 
+value yang ada pada array copyan juga berubah,
+misal :
+array1[1] = 77
+array2 -> [1,77,3]
+
+tetapi bila ada elemen array baru yang ditambahkan setelah spread dijakankan maka
+elemen baru tsb tidak akan muncul di array copyan. 
+misal 
+array1.push(9) -> [1,77,3,9]
+array2 -> [1,77,3]
 
 contoh lain adalah penggunaan method Math.min(...array1) -> akan mereturn nilai terkecil dari array
 
