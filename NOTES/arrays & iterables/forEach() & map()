@@ -39,9 +39,11 @@ yang nantinya akan disimpan di sebuah variabel
 
 misal ingin melakukan operasi yang sama dengan forEach() diatas
 
-
 let arrayBaruLagi = testArray.map(function(elemen, indexElemen, fullArray){
     // misal akan membuat objek yang berisi index dan value yang ditambah 1
     const objekArrayElement = {index: indexElemen, element: elemen+1}
     return objekArrayElement;
 });
+
+NOTE:
+map() menghasilkan array baru

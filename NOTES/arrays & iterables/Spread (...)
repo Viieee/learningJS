@@ -16,6 +16,8 @@ misal
 array1.push(9) -> [1,77,3,9]
 array2 -> [1,77,3]
 
+bila tidak ingin terjadi seperti diatas maka gunakan map() untuk mengcopy array
+
 contoh lain adalah penggunaan method Math.min(...array1) -> akan mereturn nilai terkecil dari array
 
 jadi spread bisa digunakan dalam method yang membutuhkan list of value
