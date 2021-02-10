@@ -1,0 +1,14 @@
+this is referencing into object that containing it
+
+misal: 
+const newMovie ={
+        info : {
+            title, // if the key name and value name is the same, you can just write it once
+            [extraName]: extraValue
+        }, 
+        id: Math.random(),
+        getFormattedTitle: function(){
+            return this.info.title.toUpperCase(); this pada line ini merefer ke object info
+        }
+    }
+    
