@@ -1,14 +1,28 @@
-let person = {
-    aProperty: 'value',
-    name: 'Vieri',
-    age: 20,
-    hobbies: ['gaming', 'coding'],
-    greet: function(){
-        alert('hi! this alert is called from a method');
-    },
-    1.5:'Halo',
-    'contoh lagi': 'hai'
+// buttons
+const addMovieButton = document.getElementById('add-movie-btn');
+const filterMovieButton = document.getElementById('search-btn');
+
+let movies = [];
+
+function addMovieHandler(){
+// user inputs
+const title = document.getElementById('title').value;
+const extraName = document.getElementById('extra-name').value;
+const extraValue = document.getElementById('extra-value').value;
+    if(title.trim() === ''||
+    extraName.trim() === '' ||
+    extraValue.trim() === ''){
+        return;
+    }
+    const newMovie ={
+        info : {
+            title, // if the key name and value name is the same, you can just write it once
+            [extraName]: extraValue
+        }, 
+        id: Math.random()
+    }
+    movies.push(newMovie)
+    console.log(newMovie, movies)
 }
 
-let keyNya = 'contoh lagi';
-let keyContoh = 'ini nama key baru'
+addMovieButton.addEventListener('click',addMovieHandler);
