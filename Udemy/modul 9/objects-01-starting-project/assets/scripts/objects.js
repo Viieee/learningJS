@@ -5,6 +5,7 @@ let person = {
     hobbies: ['gaming', 'coding'],
     greet: function(){
         alert('hi! this alert is called from a method');
-    }
+    },
+    1.5:'Halo'
 }
 
