@@ -1,11 +1,9 @@
 filter() digunakan untuk memfilter value element pada array
 argumen yang diambil oleh filter adalah function sama seperti method find()
 
-sama
-
 fungsi tersebut mereturn boolean
 bila true akan men-keep value yang didapat
-bila false akan men-dop value yang didapat
+bila false akan men-drop value yang tidak masuk kriteria
 
 misal : 
 let testArray = [1,2,3,4,5,6,7,8]
