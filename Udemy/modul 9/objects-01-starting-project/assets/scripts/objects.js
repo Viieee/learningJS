@@ -30,7 +30,7 @@ function renderMovies(filter = ''){ // default value
     // untuk tiap elemen movie
     filteredMovies.forEach(function(movie){ //bertanggung jawab untuk membuat element li dan mengisi kedalam movielist
         const movieElement = document.createElement('li');
-        let text = movie.info.title + ' - '
+        let text = movie.info.title + ' - ' // movie.info.title disebut chaining
         // for in loop for objects, going through all key-value pair in an object
         for (const key in movie.info){  //untuk set text content
             if(key !== 'title'){ // mengexclude property title dalam object info
