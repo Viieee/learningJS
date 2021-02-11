@@ -103,3 +103,9 @@ const anotherPerson = { name: 'Manuel' }; // does NOT have a built-in greet meth
 anotherPerson.sayHi = person.greet; // greet is NOT called here, it's just assigned to a new property/ method on the "anotherPerson" object
  
 anotherPerson.sayHi(); // logs 'Manuel' because method is called on "anotherPerson" object
+
+
+NOTE :
+the purpose of this inside of an object method (in non-arrow functions) is to provide you access to whatever called the method
+
+
