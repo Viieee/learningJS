@@ -32,8 +32,12 @@ function renderMovies(filter = ''){ // default value
         const movieElement = document.createElement('li');
         const {info, ...otherProperties} = movie; // info akan menggantikan movie.info
         let {getFormattedTitle} = movie; // akan menggantikan movie.getFormattedTitle()
-        getFormattedTitle = getFormattedTitle.bind(movie); // akan memaksa 'this' pada getFormattedTitle untuk merefer ke movie
-        let text = getFormattedTitle() + ' - ' // movie.info.title disebut chaining
+        getFormattedTitle = getFormattedTitle.bind(movie); // akan memaksa 'this' pada getFormattedTitle untuk merefer ke movie 
+                                                             // bisa juga menggunakan getFormattedTitle.call(movie)
+                                                             // argumen pada call() digunakan untuk mengoverride this pada function  
+                                                             // argumen setelah argumen pertama adalah list item yang dipisahkan ,
+                                                             // apply()  sama seperti call tapi argumen kedua adalah array
+        let text = getFormattedTitle() + ' - ' // getFormatedTitle menggantikan movie.info.title, movie.info.title disebut chaining
         // for in loop for objects, going through all key-value pair in an object
         for (const key in info){  //untuk set text content
             if(key !== 'title'){ // mengexclude property title dalam object info
