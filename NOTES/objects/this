@@ -8,7 +8,10 @@ const newMovie ={
         }, 
         id: Math.random(),
         getFormattedTitle: function(){
-            return this.info.title.toUpperCase(); this pada line ini merefer ke object info
+            return this.info.title.toUpperCase(); this pada line ini merefer ke object newMovie
         }
     }
+newMovie.getFormattedTitle()
+or 
+let {getFormattedTitle} = newMovie
     

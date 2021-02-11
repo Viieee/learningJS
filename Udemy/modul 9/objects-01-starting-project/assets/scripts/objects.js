@@ -30,11 +30,14 @@ function renderMovies(filter = ''){ // default value
     // untuk tiap elemen movie
     filteredMovies.forEach(function(movie){ //bertanggung jawab untuk membuat element li dan mengisi kedalam movielist
         const movieElement = document.createElement('li');
-        let text = movie.info.title + ' - ' // movie.info.title disebut chaining
+        const {info, ...otherProperties} = movie; // info akan menggantikan movie.info
+        let {getFormattedTitle} = movie; // akan menggantikan movie.getFormattedTitle()
+        getFormattedTitle = getFormattedTitle.bind(movie); // akan memaksa 'this' pada getFormattedTitle untuk merefer ke movie
+        let text = getFormattedTitle() + ' - ' // movie.info.title disebut chaining
         // for in loop for objects, going through all key-value pair in an object
-        for (const key in movie.info){  //untuk set text content
+        for (const key in info){  //untuk set text content
             if(key !== 'title'){ // mengexclude property title dalam object info
-                text += `${key}: ${movie.info[key]}`; // ${key} will be the key inside info object in newMovie object
+                text += `${key}: ${info[key]}`; // ${key} will be the key inside info object in newMovie object
             }                                         // ${movie.info[key]} is the value of the property key
         }
         movieElement.textContent = text;
@@ -59,7 +62,10 @@ const extraValue = document.getElementById('extra-value').value;
             title, // if the key name and value name is the same, you can just write it once
             [extraName]: extraValue
         }, 
-        id: Math.random()
+        id: Math.random(),
+        getFormattedTitle: function(){
+            return this.info.title.toUpperCase(); // this pada line ini merefer ke object newMovie
+        }
     }
     movies.push(newMovie);
     console.log(newMovie, movies);
