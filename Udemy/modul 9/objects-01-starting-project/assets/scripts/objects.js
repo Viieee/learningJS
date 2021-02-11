@@ -63,7 +63,7 @@ const extraValue = document.getElementById('extra-value').value;
     }
     const newMovie ={
         info : {
-            title, // if the key name and value name is the same, you can just write it once
+            title: title, // if the key name and value name is the same, you can just write it once
             [extraName]: extraValue
         }, 
         id: Math.random(),
