@@ -15,3 +15,24 @@ newMovie.getFormattedTitle()
 or 
 let {getFormattedTitle} = newMovie
     
+
+call() and apply() akan membantu mengarahkan this pada fungsi
+dan memungkinkan sebuah fungsi di objek a untuk diimplementasikan di objek b
+
+misal 
+var person = {
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+}
+var person1 = {
+  firstName:"John",
+  lastName: "Doe"
+}
+var person2 = {
+  firstName:"Mary",
+  lastName: "Doe"
+}
+
+person.fullName.call(person1); -> John Doe
+person.fullName.apply(person2); -> Mary Doe
