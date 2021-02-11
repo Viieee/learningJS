@@ -36,3 +36,6 @@ var person2 = {
 
 person.fullName.call(person1); -> John Doe
 person.fullName.apply(person2); -> Mary Doe
+
+
+this pada function di button maka this akan merefer ke event listener
