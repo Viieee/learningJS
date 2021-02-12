@@ -1,10 +1,11 @@
 class Product { //class harus kapital, class adalah blueprint dari object
     // fields adalah property dalam class
     // nama field harus sama kayak object yang lain
-    name = 'Default value';
-    imageUrl;
-    price;
-    description;
+    // bila class memiliki constructor, tidak perlu mendefine fields
+    // name = 'Default value';
+    // imageUrl;
+    // price;
+    // description;
 
     // berarti object yang based on this class akan memiliki propertie seperti field diatas
 

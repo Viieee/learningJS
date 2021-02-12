@@ -1,6 +1,7 @@
 class Product { 
     // fields adalah property dalam class
     // nama field harus sama kayak object yang lain
+    // bila class memiliki constructor, tidak perlu mendefine fields
     name = 'Default value';
     imageUrl;
     price;
