@@ -1,0 +1,4 @@
+button pada oop biasanya menggunakan bind(this) jika 
+button dibuat terpisah dalam sebuah class
+
+contoh ada di modul 10

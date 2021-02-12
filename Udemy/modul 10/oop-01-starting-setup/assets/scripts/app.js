@@ -49,6 +49,9 @@ class ProductItem {
     constructor(product){
         this.product = product;
     }
+    addToCartHandler(){
+        console.log(`Adding ${this.product.name} to cart!`); // this disini merefer ke class , karena sudah di bind pada event listener
+    }
     render(){
          // create li
          const liElementProduct = document.createElement('li');
@@ -64,6 +67,9 @@ class ProductItem {
              </div>
          </div>
          `; // 'this' refering to the class, product is the property
+         const addCartButton = liElementProduct.querySelector('button');
+         addCartButton.addEventListener('click',this.addToCartHandler.bind(this)); //this.addToCartHandler, this digunakan untuk merefer ke method
+                                                                                   // this pada bind merefer ke class ProductItem, mengarahkan.
          return liElementProduct;
     }
 }
