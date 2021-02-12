@@ -18,6 +18,7 @@ class Product { //class harus kapital, class adalah blueprint dari object
     // mengambil argumen dari luar ketika class dipanggil
     constructor(name,image,price,desc){
         //this akan mengarah ke class ini
+        //name, imageUrl, price, description pada constructor adalah property
         this.name = name;
         this.imageUrl = image;
         this.price = price;
