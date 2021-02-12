@@ -4,7 +4,7 @@ class Product { //class harus kapital, class adalah blueprint dari object
     name = 'Default value';
     imageUrl;
     price;
-    desc;
+    description;
 
     // berarti object yang based on this class akan memiliki propertie seperti field diatas
 
