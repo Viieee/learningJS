@@ -50,6 +50,7 @@ class ProductItem {
     }
     addToCartHandler(){
         console.log(`Adding ${this.product.name} to cart!`); // this disini merefer ke class , karena sudah di bind pada event listener
+        App.addProductToCart(this.product);
     }
     render(){
          // create li
@@ -75,6 +76,12 @@ class ProductItem {
 
 class ShoppingCart{
     item = [];
+
+    addProduct(product){
+        this.item.push(product);
+        this.totalOutput.innerHTML = `<h2>Total \$${1}</h2>`;
+    }
+    
     render(){
         const cartElement = document.createElement('section');
         cartElement.innerHTML = `
@@ -83,15 +90,18 @@ class ShoppingCart{
         `;
         cartElement.className = 'cart';
         const cartButton = cartElement.querySelector('button');
+        this.totalOutput = cartElement.querySelector('h2');
         return cartElement;
     }
 }
 
 class Shop{
+    cart;
+
     render(){
         const renderDiv = document.getElementById('app');
-        const cart = new ShoppingCart();
-        const cartEl = cart.render();
+        this.cart = new ShoppingCart();
+        const cartEl = this.cart.render();
         const productList = new ProductList();
         const prodListEl = productList.render();
         renderDiv.append(cartEl);
@@ -99,5 +109,23 @@ class Shop{
     }
 }
 
-const shop = new Shop();
-shop.render();
+class App{
+    //static property 
+    static cart;
+    // static method
+    static init(){
+        const shop = new Shop();
+        shop.render(); // karena di class shop cart harus dirender dulu sebelum bisa diakses
+        this.cart = shop.cart; // this.cart membuat property baru pada class ini / merefer ke static property di class ini, 
+                            // lalu direference ke property cart di class Shop
+                            // property cart pada class shop adalah object berdasar class ShoppingCart
+                            // jadi memungkinkan untuk menggunakan method yang ada di class ShoppingCart 
+    }
+    static addProductToCart(product){
+        this.cart.addProduct(product);
+    }
+}
+
+//eksekusi method static
+App.init();
+
