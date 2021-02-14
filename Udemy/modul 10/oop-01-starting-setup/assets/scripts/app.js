@@ -109,12 +109,13 @@ class Shop{
     }
 }
 
+// this static method in class is used to glue together a bunch of other classes
 class App{
     //static property 
     static cart;
     // static method
     static init(){
-        const shop = new Shop();
+        const shop = new Shop(); // returning an object
         shop.render(); // karena di class shop cart harus dirender dulu sebelum bisa diakses
         this.cart = shop.cart; // this.cart membuat property baru pada class ini / merefer ke static property di class ini, 
                             // lalu direference ke property cart di class Shop

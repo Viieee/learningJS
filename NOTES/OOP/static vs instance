@@ -6,5 +6,8 @@ you dont need to use the 'new' method to create an object based on that class\
 helper class, global config 
 work on the same data
 
+
+static method in class is used to glue together a bunch of other classes
+
 instance 
 you can store different data with the same structure in it
