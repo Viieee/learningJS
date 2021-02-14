@@ -34,8 +34,10 @@ class ProductList{
         // create an unordered list
         const ulProdList = document.createElement('ul');
         ulProdList.className = 'product-list';
-        for(const prod of this.products){ // for each element in products array property
-            const productItem = new ProductItem(prod);
+        // for of akan dieksekusi sebanyak item yang ada di array
+        for(const prod of this.products){ // for each element in products array property 
+            const productItem = new ProductItem(prod); // rendering the items, mempass prod ke class tsb
+            console.log('ini class ProductList' + prod);
             const liEl = productItem.render();
             ulProdList.append(liEl);
         }
@@ -45,12 +47,14 @@ class ProductList{
 
 // logic to render per item
 class ProductItem {
+    // product adalah value yang dipass dari class ProductList
     constructor(product){
-        this.product = product;
+        this.product = product; // akan membuat property bernama product berdasar value yang didapat dari instansiasi class
     }
     addToCartHandler(){
         console.log(`Adding ${this.product.name} to cart!`); // this disini merefer ke class , karena sudah di bind pada event listener
         App.addProductToCart(this.product);
+        console.log('ini class ProductItem' + this.product);
     }
     render(){
          // create li
@@ -74,12 +78,28 @@ class ProductItem {
     }
 }
 
+// akan dieksekusi tiap item ditambahkan ke cart, per item.
 class ShoppingCart{
     item = [];
+    
+    set cartItems(value){
+        this.item = value;
+        this.totalOutput.innerHTML = `<h2>Total \$${this.totalAmount}</h2>`; // this merefer ke item yang dipass dari addProduct
+    }
+
+    // get akan membuat property baru
+    get totalAmount(){
+        const sum = this.item.reduce(function(prevValue, curItem){
+            return prevValue + curItem.price;
+        },0); // 0 is the initial value
+        return sum;
+    }
 
     addProduct(product){
-        this.item.push(product);
-        this.totalOutput.innerHTML = `<h2>Total \$${1}</h2>`;
+        const updatedItems = [...this.item];
+        updatedItems.push(product);
+        this.cartItems = updatedItems;
+        console.log(updatedItems); // cartItems item berbentuk array yang dicopy yang akan dipass ke cartItems
     }
     
     render(){
