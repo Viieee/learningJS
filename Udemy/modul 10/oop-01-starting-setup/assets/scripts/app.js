@@ -9,7 +9,37 @@ class Product {
     }
 }
 
-class ProductList{
+class ElementAttribute { // untuk attribute argument di function createRootElement
+    constructor(attrName, attrValue){
+        this.name = attrName;
+        this.value = attrValue;
+    }
+}
+// parent class
+// inheriting this class/extending this class means that the child class has access to all methods inside this class
+class Component {
+    // renderDivId akan menjadi id dari element yang akan didapat dari instansiasi child class
+    constructor(renderDivId){
+        this.divId = renderDivId;
+    }
+    createRootElement(tags, cssClasses, attributes){
+        const rootEl = document.createElement(tags);
+        if(cssClasses){
+            rootEl.className = cssClasses;
+        }
+        if(attributes && attributes.length > 0){
+           for(const attr of attributes){
+               rootEl.setAttribute(attr.name,attr.value);
+           }
+        }
+        document.getElementById(this.divId).append(rootEl);
+        // mereturn karena nantinya element baru akan diedit innerHtml nya
+        return rootEl;
+    }
+}
+
+
+class ProductList extends Component{
     products = [
         new Product(
         'GOLF Le Fleur Lacoste Teddy Jacket Green',
@@ -28,27 +58,33 @@ class ProductList{
         'Converse collab with golf le fleur')
     ];
 
-    constructor (){}
+    constructor (renderDivId){
+        super(renderDivId);
+    }
 
     render(){
         // create an unordered list
-        const ulProdList = document.createElement('ul');
-        ulProdList.className = 'product-list';
+        // const ulProdList = document.createElement('ul');
+        // ulProdList.className = 'product-list';
+        // ulProdList.id = 'prod-list';
+        const ulProdList = this.createRootElement('ul','product-list',[new ElementAttribute('id','prod-list')]);
         // for of akan dieksekusi sebanyak item yang ada di array
         for(const prod of this.products){ // for each element in products array property 
-            const productItem = new ProductItem(prod); // rendering the items, mempass prod ke class tsb
+            const productItem = new ProductItem(prod, 'prod-list'); // rendering the items, mempass prod ke class tsb
             console.log('ini class ProductList' + prod);
-            const liEl = productItem.render();
-            ulProdList.append(liEl);
+            // const liEl = productItem.render();
+            // ulProdList.append(liEl);
+            productItem.render();
         }
-        return ulProdList;
+        // return ulProdList;
     }
 }
 
 // logic to render per item
-class ProductItem {
+class ProductItem extends Component{
     // product adalah value yang dipass dari class ProductList
-    constructor(product){
+    constructor(product, renderDivId){
+        super(renderDivId); // passing value to parent class
         this.product = product; // akan membuat property bernama product berdasar value yang didapat dari instansiasi class
     }
     addToCartHandler(){
@@ -58,8 +94,10 @@ class ProductItem {
     }
     render(){
          // create li
-         const liElementProduct = document.createElement('li');
-         liElementProduct.className = 'product-item';
+        //  const liElementProduct = document.createElement('li');
+        // liElementProduct.className = 'product-item';
+         const liElementProduct = this.createRootElement('li','product-item');
+         
          liElementProduct.innerHTML = `
          <div>
              <img src="${this.product.imageUrl}" alt="${this.product.name}">
@@ -74,12 +112,12 @@ class ProductItem {
          const addCartButton = liElementProduct.querySelector('button');
          addCartButton.addEventListener('click',this.addToCartHandler.bind(this)); //this.addToCartHandler, this digunakan untuk merefer ke method
                                                                                    // this pada bind merefer ke class ProductItem, mengarahkan.
-         return liElementProduct;
+        //  return liElementProduct;
     }
 }
 
-// akan dieksekusi tiap item ditambahkan ke cart, per item.
-class ShoppingCart{
+// akan dieksekusi tiap item ditambahkan ke cart, per item dalam bentuk array.
+class ShoppingCart extends Component{ // inheritance
     item = [];
     
     set cartItems(value){
@@ -95,6 +133,11 @@ class ShoppingCart{
         return sum;
     }
 
+    constructor(divId){ //menerima data dari instansiasi
+        super(divId); // because the class we inherited from has a constructor and basically need data to be passed on it to work
+                      // argumen dalam super akan mengirim data ke parent class (data yang dibutuhkan dalam constructor)
+    }
+
     addProduct(product){
         const updatedItems = [...this.item];
         updatedItems.push(product);
@@ -103,15 +146,17 @@ class ShoppingCart{
     }
     
     render(){
-        const cartElement = document.createElement('section');
+        // const cartElement = document.createElement('section');
+        // cartElement.className = 'cart';
+        const cartElement = this.createRootElement('section','cart');
         cartElement.innerHTML = `
         <h2>Total: \$${0}</h2>
         <button>Order Now!</button>
         `;
-        cartElement.className = 'cart';
+        
         const cartButton = cartElement.querySelector('button');
         this.totalOutput = cartElement.querySelector('h2');
-        return cartElement;
+        // return cartElement;
     }
 }
 
@@ -119,13 +164,15 @@ class Shop{
     cart;
 
     render(){
-        const renderDiv = document.getElementById('app');
-        this.cart = new ShoppingCart();
-        const cartEl = this.cart.render();
-        const productList = new ProductList();
-        const prodListEl = productList.render();
-        renderDiv.append(cartEl);
-        renderDiv.append(prodListEl);
+        // const renderDiv = document.getElementById('app');
+        this.cart = new ShoppingCart('app'); //app is the id needed in parent class
+        // const cartEl = this.cart.render();
+        this.cart.render();
+        const productList = new ProductList('app');
+        // const prodListEl = productList.render();
+        productList.render()
+        // renderDiv.append(cartEl);
+        // renderDiv.append(prodListEl);
     }
 }
 
