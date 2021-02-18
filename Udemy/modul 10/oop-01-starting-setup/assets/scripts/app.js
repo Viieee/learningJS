@@ -1,45 +1,111 @@
-// containing product data
-class Product {
-    constructor(name,image,price,desc){
-        //this akan mengarah ke class ini
-        this.name = name;
+const DIV_ID_BODY = 'app';
+
+// contain product data 
+class Product{
+    constructor(name, image, price, desc){
+        this.prodName = name;
         this.imageUrl = image;
-        this.price = price;
-        this.description = desc;
+        this.prodPrice = price;
+        this.prodDesc = desc;
+        // prodName, imageUrl, prodPrice, dan prodDesc adalah property baru
+        // yang dibuat di constructor.
+        // name, image, price, dan desc adalah parameter yang diambil saat instansiasi class ini
     }
 }
 
-class ElementAttribute { // untuk attribute argument di function createRootElement
+// for the attribute parameter in buatElementBaru method
+class ElementAttribute{
     constructor(attrName, attrValue){
-        this.name = attrName;
+        this.attribute = attrName;
         this.value = attrValue;
+        // creating new properties called attribute and value
+        // and getting the value through instantiation of the class
     }
 }
-// parent class
-// inheriting this class/extending this class means that the child class has access to all methods inside this class
-class Component {
-    // renderDivId akan menjadi id dari element yang akan didapat dari instansiasi child class
-    constructor(renderDivId){
-        this.divId = renderDivId;
+
+// parent class, implementing inheritance.
+class ParentClass{
+    constructor(elementId){
+        this.elId = elementId;
+        // creating new property called elId, recieving new data in the form of id
+        // the id will be passed on through super() on child classes.
     }
-    createRootElement(tags, cssClasses, attributes){
-        const rootEl = document.createElement(tags);
-        if(cssClasses){
-            rootEl.className = cssClasses;
+
+    // method to make new element dynamically with parameters
+    buatElementBaru(htmlTag, cssClass, attributes){
+        // htmlTag is the html tag in function argument 
+        // cssClass is the class name of the new element created in this class
+        // attributes is an array, with attributes and value. We will set this with ElementAttribute class
+       
+        const newElement = document.createElement(htmlTag);
+        if(cssClass){
+            newElement.className = cssClass;
+            // if cssClass argument exist, set the class name to cssClass parameter
         }
         if(attributes && attributes.length > 0){
-           for(const attr of attributes){
-               rootEl.setAttribute(attr.name,attr.value);
-           }
+            for(const attr of attributes){
+                newElement.setAttribute(attr.attribute,attr.value);
+                // setting attribute on new element that just being created
+            }
         }
-        document.getElementById(this.divId).append(rootEl);
-        // mereturn karena nantinya element baru akan diedit innerHtml nya
-        return rootEl;
+        document.getElementById(this.elId).append(newElement);
+        // appending the new element into the element that already exist
+
+        return newElement;
+        // returning the new element created so that it can be stored in a variable 
+        // and manipulated later in other class
     }
 }
 
 
-class ProductList extends Component{
+// rendering per-products
+class ProductItem extends ParentClass{
+    constructor(product, elId){
+        super(elId);
+        this.product = product;
+        // passing the elId that we get from instantiation of this class into parent class
+        // and we will create new property called product, the data passed on from instantiation of this class
+    }
+
+
+    // button handler function
+    addToCartHandler(){
+        console.log(`Adding ${this.product.prodName} to cart!`); 
+        App.addProductToCart(this.product);
+        // addProductToCart will execute addProduct method in ShoppingCart class
+        // and passing this.product as the argument
+        // this.product is an object
+    }
+
+    render(){
+        const liNew = this.buatElementBaru('li','product-item');
+        // create new li element using buatElementBaru method in parent class
+        // with product-item as the class name (for styling)
+        
+        liNew.innerHTML = `
+            <div>
+                <img src="${this.product.imageUrl}" alt="${this.product.prodName}">
+                <div class='product-item__content'>
+                    <h2>${this.product.prodName}</h2>
+                    <h3>\$${this.product.prodPrice}</h3>
+                    <p>${this.product.prodDesc}</p>
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+        `;
+        // this.product referring to the property created in constructor
+
+        const addCartButton = liNew.querySelector('button');
+        addCartButton.addEventListener('click', this.addToCartHandler.bind(this));
+        // this inside bind argument will directing the focus of the addToCartHandler into this class
+        // so that the this referenced in the addToCartHandler function is ProductItem class
+    }
+
+}
+
+
+// storing all product data
+class ProductList extends ParentClass{
     products = [
         new Product(
         'GOLF Le Fleur Lacoste Teddy Jacket Green',
@@ -58,105 +124,81 @@ class ProductList extends Component{
         'Converse collab with golf le fleur')
     ];
 
-    constructor (renderDivId){
-        super(renderDivId);
+    constructor(elId){
+        super(elId);
+        // elId is the data inserted as argument when instantiating this class
+        // and this will be passed onto the parent class
     }
 
     render(){
-        // create an unordered list
-        // const ulProdList = document.createElement('ul');
-        // ulProdList.className = 'product-list';
-        // ulProdList.id = 'prod-list';
-        const ulProdList = this.createRootElement('ul','product-list',[new ElementAttribute('id','prod-list')]);
-        // for of akan dieksekusi sebanyak item yang ada di array
-        for(const prod of this.products){ // for each element in products array property 
-            const productItem = new ProductItem(prod, 'prod-list'); // rendering the items, mempass prod ke class tsb
-            console.log('ini class ProductList' + prod);
-            // const liEl = productItem.render();
-            // ulProdList.append(liEl);
+        const ulNew = this.buatElementBaru('ul',
+                                           'product-list',
+                                           [new ElementAttribute('id','prod-list')]);
+        // creating new ul element with buatElementBaru method in ParentClass class
+        // with classname of productlist (for styling) and id of prod-list
+
+        for(const prod of this.products){
+            const productItem = new ProductItem(prod,'prod-list');
             productItem.render();
+            // instantiating ProductItem class, passing prod as the item processed inside ProductItem class 
+            // and passing prod-list as the value into the parent class later
+            // prod-list is the id of the new ul element created in this class
         }
-        // return ulProdList;
     }
 }
 
-// logic to render per item
-class ProductItem extends Component{
-    // product adalah value yang dipass dari class ProductList
-    constructor(product, renderDivId){
-        super(renderDivId); // passing value to parent class
-        this.product = product; // akan membuat property bernama product berdasar value yang didapat dari instansiasi class
-    }
-    addToCartHandler(){
-        console.log(`Adding ${this.product.name} to cart!`); // this disini merefer ke class , karena sudah di bind pada event listener
-        App.addProductToCart(this.product);
-        console.log('ini class ProductItem' + this.product);
-    }
-    render(){
-         // create li
-        //  const liElementProduct = document.createElement('li');
-        // liElementProduct.className = 'product-item';
-         const liElementProduct = this.createRootElement('li','product-item');
-         
-         liElementProduct.innerHTML = `
-         <div>
-             <img src="${this.product.imageUrl}" alt="${this.product.name}">
-             <div class='product-item__content'>
-                 <h2>${this.product.name}</h2>
-                 <h3>\$${this.product.price}</h3>
-                 <p>${this.product.description}</p>
-                 <button>Add to Cart</button>
-             </div>
-         </div>
-         `; // 'this' refering to the class, product is the property
-         const addCartButton = liElementProduct.querySelector('button');
-         addCartButton.addEventListener('click',this.addToCartHandler.bind(this)); //this.addToCartHandler, this digunakan untuk merefer ke method
-                                                                                   // this pada bind merefer ke class ProductItem, mengarahkan.
-        //  return liElementProduct;
-    }
-}
+class ShoppingCart extends ParentClass{
+    // this class will be executed everytime an item added into the cart
+    // each item is an array
 
-// akan dieksekusi tiap item ditambahkan ke cart, per item dalam bentuk array.
-class ShoppingCart extends Component{ // inheritance
-    item = [];
-    
+    // group all items added into cart into one
+    items = [];
+
+    // making a property that the value can be changed
     set cartItems(value){
-        this.item = value;
-        this.totalOutput.innerHTML = `<h2>Total \$${this.totalAmount}</h2>`; // this merefer ke item yang dipass dari addProduct
+        this.items = value;
+        this.totalOutput.innerHTML=`
+            <h2>Total \$${this.totalAmount}</h2>
+        `;
+        // setting new editable property called cartItems
+        // every value set into this property will be passed into items property
     }
 
-    // get akan membuat property baru
+    // making a property that can only be access and not edited the value of
     get totalAmount(){
-        const sum = this.item.reduce(function(prevValue, curItem){
-            return prevValue + curItem.price;
-        },0); // 0 is the initial value
+        const sum = this.items.reduce(function(previousValue, currentItem){
+            return previousValue + currentItem.prodPrice;
+        },0);
         return sum;
+        // making the total sum of price from all previously selected items and the current selected item
     }
 
-    constructor(divId){ //menerima data dari instansiasi
-        super(divId); // because the class we inherited from has a constructor and basically need data to be passed on it to work
-                      // argumen dalam super akan mengirim data ke parent class (data yang dibutuhkan dalam constructor)
+    constructor(elId){
+        super(elId);
     }
 
-    addProduct(product){
-        const updatedItems = [...this.item];
+    addProducts(product){
+        const updatedItems = [...this.items];
         updatedItems.push(product);
         this.cartItems = updatedItems;
-        console.log(updatedItems); // cartItems item berbentuk array yang dicopy yang akan dipass ke cartItems
+        // copying array in items and inserting new value to the new array
+        // the new value from parameter will be an object
+        // after that setting the value of the old array and copying the value into it through set cartItems
+
     }
-    
+
     render(){
-        // const cartElement = document.createElement('section');
-        // cartElement.className = 'cart';
-        const cartElement = this.createRootElement('section','cart');
-        cartElement.innerHTML = `
-        <h2>Total: \$${0}</h2>
-        <button>Order Now!</button>
-        `;
+        const cartElement = this.buatElementBaru('section','cart');
+        // creating new section element with cart as the class name
         
+        cartElement.innerHTML = `
+            <h2>Total: \$${0}</h2>
+            <button>Order Now!</button>
+        `;
+
         const cartButton = cartElement.querySelector('button');
         this.totalOutput = cartElement.querySelector('h2');
-        // return cartElement;
+        // storing the newElement into a property called totalOutput
     }
 }
 
@@ -164,36 +206,42 @@ class Shop{
     cart;
 
     render(){
-        // const renderDiv = document.getElementById('app');
-        this.cart = new ShoppingCart('app'); //app is the id needed in parent class
-        // const cartEl = this.cart.render();
+        this.cart = new ShoppingCart (DIV_ID_BODY);
+        // instantiating ShoppingCart class and giving the value of 'app' to the parent class
+
+        const productList = new ProductList(DIV_ID_BODY);
+        // instantiating ProductList class and giving the value of 'app' to the parent class
+
         this.cart.render();
-        const productList = new ProductList('app');
-        // const prodListEl = productList.render();
-        productList.render()
-        // renderDiv.append(cartEl);
-        // renderDiv.append(prodListEl);
+
+        productList.render();
     }
 }
 
-// this static method in class is used to glue together a bunch of other classes
+
+// static class
 class App{
-    //static property 
-    static cart;
-    // static method
-    static init(){
-        const shop = new Shop(); // returning an object
-        shop.render(); // karena di class shop cart harus dirender dulu sebelum bisa diakses
-        this.cart = shop.cart; // this.cart membuat property baru pada class ini / merefer ke static property di class ini, 
-                            // lalu direference ke property cart di class Shop
-                            // property cart pada class shop adalah object berdasar class ShoppingCart
-                            // jadi memungkinkan untuk menggunakan method yang ada di class ShoppingCart 
+    // the main function of this class is to glue all the classes together
+
+    static cart; // static property
+
+    static init(){ // static method 
+        const shop = new Shop();
+        shop.render();
+
+        this.cart = shop.cart
+        // this.cart is referring to the static property in this class
+        // shop.cart is reffering to the cart in shop class
+        // the cart in Shop class is an instantiation of shopping cart class
+        // making it possible to use method in shopping cart class
     }
+
     static addProductToCart(product){
-        this.cart.addProduct(product);
+        this.cart.addProducts(product);
+        // this function will be called when the add to cart button is clicked and 
+        // an item is added into cart
     }
 }
 
-//eksekusi method static
+// executing method static
 App.init();
-
