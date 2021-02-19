@@ -27,13 +27,9 @@ class ElementAttribute{
 class ParentClass{
     constructor(elementId){
         this.elId = elementId;
-        this.render();
         // creating new property called elId, recieving new data in the form of id
         // the id will be passed on through super() on child classes.
     }
-
-    // method in parent class that will be overriden later in the child classes
-    render(){}
 
     // method to make new element dynamically with parameters
     buatElementBaru(htmlTag, cssClass, attributes){
@@ -143,7 +139,8 @@ class ProductList extends ParentClass{
         // with classname of productlist (for styling) and id of prod-list
 
         for(const prod of this.products){
-            new ProductItem(prod,'prod-list');
+            const productItem = new ProductItem(prod,'prod-list');
+            productItem.render();
             // instantiating ProductItem class, passing prod as the item processed inside ProductItem class 
             // and passing prod-list as the value into the parent class later
             // prod-list is the id of the new ul element created in this class
@@ -213,9 +210,12 @@ class Shop{
         this.cart = new ShoppingCart (DIV_ID_BODY);
         // instantiating ShoppingCart class and giving the value of 'app' to the parent class
 
-        new ProductList(DIV_ID_BODY);
+        const productList = new ProductList(DIV_ID_BODY);
         // instantiating ProductList class and giving the value of 'app' to the parent class
 
+        this.cart.render();
+
+        productList.render();
     }
 }
 
