@@ -25,11 +25,19 @@ class ElementAttribute{
 
 // parent class, implementing inheritance.
 class ParentClass{
-    constructor(elementId){
-        this.elId = elementId;
-        this.render();
+    constructor(elementId, shouldRender = true){
+        this.elId = elementId;     
         // creating new property called elId, recieving new data in the form of id
         // the id will be passed on through super() on child classes.
+        // second constructor argument default value is true
+        // that means if the super method in child class isn't providing second argument
+        // true will be passed onto parent class
+
+        if(shouldRender){
+            this.render();
+        }
+        // if should render value is true then the child class will be inheriting method class
+        // from parent class
     }
 
     // method in parent class that will be overriden later in the child classes
@@ -66,10 +74,15 @@ class ParentClass{
 // rendering per-products
 class ProductItem extends ParentClass{
     constructor(product, elId){
-        super(elId);
+        super(elId, false);
         this.product = product;
         // passing the elId that we get from instantiation of this class into parent class
         // and we will create new property called product, the data passed on from instantiation of this class
+        // setting second argument in super, that means this child class won't inherit render method
+        // in parent class
+
+        this.render();
+        // executing render method immediately when this class is instantiated
     }
 
 
@@ -111,28 +124,50 @@ class ProductItem extends ParentClass{
 
 // storing all product data
 class ProductList extends ParentClass{
-    products = [
-        new Product(
-        'GOLF Le Fleur Lacoste Teddy Jacket Green',
-        'https://images.stockx.com/products/streetwear/GOLF-Le-Fleur-Lacoste-Teddy-Jacket-Green.png?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1603481985&w=1000',
-        800,
-        'Golf le fleur collab with lacoste'), //memanggil class
-        new Product(
-        'Golf le fleur x Converse Gianno Ox Vintage White',
-        'https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/auto_image/cache=expiry:max/rotate=deg:exif/resize=height:700/output=quality:70/compress/https://cdn.fs.grailed.com/api/file/e8J1lYUAQRq9S3x2vgwB',
-        220,
-        'Converse collab with golf le fleur'), //memanggil class
-        new Product(
-        'Golf le fleur x Converse Chuck taylor 70s High White',
-        'https://stockx-360.imgix.net/Converse-Chuck-Taylor-All-Star-70s-Hi-Golf-Le-Fleur-Parchment/Images/Converse-Chuck-Taylor-All-Star-70s-Hi-Golf-Le-Fleur-Parchment/Lv2/img01.jpg?auto=format,compress&q=90&updated_at=1607672662&w=1000',
-        200,
-        'Converse collab with golf le fleur')
-    ];
+    
 
     constructor(elId){
         super(elId);
         // elId is the data inserted as argument when instantiating this class
         // and this will be passed onto the parent class
+
+        this.ambilDataArray();
+        // executing ambilDataArray method immediately when this class is instantiated
+        // so that the products data is exist 
+    }
+
+    ambilDataArray(){
+        this.products = [
+            new Product(
+            'GOLF Le Fleur Lacoste Teddy Jacket Green',
+            'https://images.stockx.com/products/streetwear/GOLF-Le-Fleur-Lacoste-Teddy-Jacket-Green.png?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1603481985&w=1000',
+            800,
+            'Golf le fleur collab with lacoste'),
+            new Product(
+            'Golf le fleur x Converse Gianno Ox Vintage White',
+            'https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/auto_image/cache=expiry:max/rotate=deg:exif/resize=height:700/output=quality:70/compress/https://cdn.fs.grailed.com/api/file/e8J1lYUAQRq9S3x2vgwB',
+            220,
+            'Converse collab with golf le fleur'),
+            new Product(
+            'Golf le fleur x Converse Chuck taylor 70s High White',
+            'https://stockx-360.imgix.net/Converse-Chuck-Taylor-All-Star-70s-Hi-Golf-Le-Fleur-Parchment/Images/Converse-Chuck-Taylor-All-Star-70s-Hi-Golf-Le-Fleur-Parchment/Lv2/img01.jpg?auto=format,compress&q=90&updated_at=1607672662&w=1000',
+            200,
+            'Converse collab with golf le fleur')
+        ];
+        // storing the data into this function
+        // and executing it imediately when this class is instantiated
+
+        this.renderProducts();
+        // rendering per item
+    }
+
+    renderProducts(){
+        for(const prod of this.products){
+            new ProductItem(prod,'prod-list');
+            // instantiating ProductItem class, passing prod as the item processed inside ProductItem class 
+            // and passing prod-list as the value into the parent class later
+            // prod-list is the id of the new ul element created in this class
+        }
     }
 
     render(){
@@ -141,13 +176,17 @@ class ProductList extends ParentClass{
                                            [new ElementAttribute('id','prod-list')]);
         // creating new ul element with buatElementBaru method in ParentClass class
         // with classname of productlist (for styling) and id of prod-list
+        // the creation of new ul above will be executed immediately first before any other method 
+        // in this class, because:
+        // this class is  inheritted from parent class hence calling the super on the constructor
+        // means that this line of code will be executed first before any method
 
-        for(const prod of this.products){
-            new ProductItem(prod,'prod-list');
-            // instantiating ProductItem class, passing prod as the item processed inside ProductItem class 
-            // and passing prod-list as the value into the parent class later
-            // prod-list is the id of the new ul element created in this class
+
+        if(this.products && this.products.length > 0){
+            this.renderProducts();
+            // if the products array is not empty execute the loop operation in renderProducts()
         }
+
     }
 }
 
@@ -178,7 +217,12 @@ class ShoppingCart extends ParentClass{
     }
 
     constructor(elId){
-        super(elId);
+        super(elId, false);
+        // setting second argument in super, that means this child class won't inherit render method
+        // in parent class
+
+        this.render();
+        // executing render method immediately when this class is instantiated
     }
 
     addProducts(product){
@@ -209,6 +253,11 @@ class ShoppingCart extends ParentClass{
 class Shop{
     cart;
 
+    constructor(){
+        this.render();
+        // executing render method immediately when this class is instantiated
+    }
+
     render(){
         this.cart = new ShoppingCart (DIV_ID_BODY);
         // instantiating ShoppingCart class and giving the value of 'app' to the parent class
@@ -228,7 +277,6 @@ class App{
 
     static init(){ // static method 
         const shop = new Shop();
-        shop.render();
 
         this.cart = shop.cart
         // this.cart is referring to the static property in this class
