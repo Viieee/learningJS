@@ -36,7 +36,7 @@ class ParentClass{
         if(shouldRender){
             this.render();
         }
-        // if should render value is true then the child class will be inheriting method class
+        // if shouldRender value is true then the child class will be inheriting method class
         // from parent class
     }
 
@@ -130,6 +130,8 @@ class ProductList extends ParentClass{
         super(elId);
         // elId is the data inserted as argument when instantiating this class
         // and this will be passed onto the parent class
+        // this class will inherit the render method in parenclass because it's not passing second argument as false
+        // and it will be treated as true in parent class.
 
         this.ambilDataArray();
         // executing ambilDataArray method immediately when this class is instantiated
@@ -166,7 +168,7 @@ class ProductList extends ParentClass{
             new ProductItem(prod,'prod-list');
             // instantiating ProductItem class, passing prod as the item processed inside ProductItem class 
             // and passing prod-list as the value into the parent class later
-            // prod-list is the id of the new ul element created in this class
+            // prod-list is the id of the new ul element created in the render method in this class
         }
     }
 
@@ -188,6 +190,18 @@ class ProductList extends ParentClass{
         }
 
     }
+
+    // the flow of this class :
+    // when the class is instantiated, the first thing that will be executed is the super method
+    // this class will be inheriting the render method in parentClass because it's not passing false as second argument in super method
+    // that means the render method that's being inherited from parentClass is immediately executed
+    // the render method in this class will create new unordered list (ul) element with method inherited from parentClass
+    // then the render method will check if there's any value inside products property
+    // obviously because we still haven't instantiate any value into the products property, we don't have any value in it and therefore the renderProducts method won't be executed
+    // another method that will be executed immediately is ambilDataArray() method
+    // the main use of this method is to instantiate the products property and giving it value.
+    // then at the end of this method, we will execute the renderProducts method
+    // and in that method, we will render each item with the help of buatElementBaru() method in parentClass
 }
 
 class ShoppingCart extends ParentClass{
