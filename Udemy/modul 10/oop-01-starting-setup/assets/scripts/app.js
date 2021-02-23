@@ -249,6 +249,11 @@ class ShoppingCart extends ParentClass{
 
     }
 
+    orderHandler(){
+        console.log('Ordering ...');
+        console.log(this.items);
+    }
+
     render(){
         const cartElement = this.buatElementBaru('section','cart');
         // creating new section element with cart as the class name
@@ -258,7 +263,11 @@ class ShoppingCart extends ParentClass{
             <button>Order Now!</button>
         `;
 
-        const cartButton = cartElement.querySelector('button');
+        const orderButton = cartElement.querySelector('button');
+        orderButton.addEventListener('click', this.orderHandler.bind(this));
+        // this inside bind argument will directing the focus of the orderHandler into this class
+        // so that the this referenced in the orderHandler function is ShoppinCart class
+        
         this.totalOutput = cartElement.querySelector('h2');
         // storing the newElement into a property called totalOutput
     }
