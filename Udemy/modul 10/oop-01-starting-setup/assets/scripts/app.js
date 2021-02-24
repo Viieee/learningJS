@@ -253,6 +253,11 @@ class ShoppingCart extends ParentClass{
         console.log('Ordering ...');
         console.log(this.items);
     }
+    // #exampleEventListener :
+    // orderHandler = () =>{
+    //     console.log('Ordering ...');
+    //     console.log(this.items);
+    // }
 
     render(){
         const cartElement = this.buatElementBaru('section','cart');
@@ -267,7 +272,17 @@ class ShoppingCart extends ParentClass{
         orderButton.addEventListener('click', this.orderHandler.bind(this));
         // this inside bind argument will directing the focus of the orderHandler into this class
         // so that the this referenced in the orderHandler function is ShoppinCart class
-        
+        // we can also use this line of code for the button event listener :
+        // orderButton.addEventListener('click', ()=>this.orderHandler());
+        // the code above basically will create new arrow function as the event listener handler
+        // inside the arrow function is the orderHandler button that will be executed whenever the anonymous arrow function is being executed
+        // the anonymous arrow function is basically a shell for the actual eventListener button in orderHandler function
+        // the other approach is to use an arrow function that store inside a property and use it as the function to handle eventListener
+        // see #exampleEventListener
+        // if you want to use this approach however, you need this property to be created first before the render method is being executed
+        // so in this example, it cannot be done because we want to inherit render method from parentClass and using it immediately when we instantiate this class
+
+
         this.totalOutput = cartElement.querySelector('h2');
         // storing the newElement into a property called totalOutput
     }
