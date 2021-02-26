@@ -21,4 +21,28 @@ person.method2();
 // this prototype also have a prototype
 // and js will look at the prototype of the prototype
 // it will keep going until it reaches the end, if it doesn't find any then undefined returned
-// it also responsible to provide global default object to classes and objects (e.g toString())
+
+// it also responsible to provide global default methods to  objects (e.g toString())
+// you can set the prototype of an object
+// example :
+
+class Person{
+
+}
+
+// the prototype exist in every object is '__proto__'
+// the main use of it is to provide global default methods to  objects 
+
+equivalent to
+
+function Person(){ // this function is called constructor function
+    // theres a special prototype exist in function constructor called 'prototype'
+    // this 'prototype' will be assigned to every object based on this function
+}
+
+build a new object based on the blueprint 
+
+const person = new Person();
+
+
+
