@@ -21,3 +21,4 @@ person.method2();
 // this prototype also have a prototype
 // and js will look at the prototype of the prototype
 // it will keep going until it reaches the end, if it doesn't find any then undefined returned
+// it also responsible to provide global default object to classes and objects (e.g toString())
