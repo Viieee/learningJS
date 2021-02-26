@@ -31,3 +31,25 @@ const prsn = new Person();
 // }
 
 prsn.greet();
+
+
+it is possible to inherit from another constructor function
+with prototype
+
+class Person{
+
+}
+
+equivalent to
+
+function Person(){ // this function is called constructor function
+
+}
+
+build a new object based on the blueprint 
+
+const person = new Person();
+
+the object 'person' above has every property and method inside of the class/constructor function
+
+constructor prototype is assigned to instance upon creation

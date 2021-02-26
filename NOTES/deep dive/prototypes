@@ -1,0 +1,23 @@
+every object have a prototype
+prototype is an object or a fallback objects
+meaning that prototype is an object that js will be look at if it searches a certain property or 
+    method it can't find on the object it's currently looking at
+example :
+
+// theres an object called 'contoh' with 'property1' and 'method1' as the property and method inside it
+person = {
+   property1: '',
+   method1: function(){
+
+   }
+}
+
+// you try to call method that doesn't exist in the object, in this example 'method2'
+person.method2();
+// obviously the method we try to call doesn't exist
+// this is where prototype role comes in
+// it serve as a fallback object
+// so js will look at the prototype for the 'method2' method
+// this prototype also have a prototype
+// and js will look at the prototype of the prototype
+// it will keep going until it reaches the end, if it doesn't find any then undefined returned
