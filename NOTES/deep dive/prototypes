@@ -22,7 +22,19 @@ person.method2();
 // and js will look at the prototype of the prototype
 // it will keep going until it reaches the end, if it doesn't find any then undefined returned
 
-// it also responsible to provide global default methods to  objects (e.g toString())
+// theres 2 type of prototypes:
+// the prototype exist in every object is '__proto__'
+// the main use of it is to provide global default methods to  objects 
+
+// another type of prototype exist in function constructor called 'prototype'
+// this 'prototype' will be assigned to every object based on this function
+// and can be assigned as fallback value
+
+const userA = new User();
+userA.__proto__ === User.prototype; // true
+userA.__proto__ === User.__proto__ // false
+
+
 // you can set the prototype of an object
 // example :
 
@@ -30,19 +42,26 @@ class Person{
 
 }
 
-// the prototype exist in every object is '__proto__'
-// the main use of it is to provide global default methods to  objects 
-
 equivalent to
 
 function Person(){ // this function is called constructor function
-    // theres a special prototype exist in function constructor called 'prototype'
-    // this 'prototype' will be assigned to every object based on this function
+
 }
 
 build a new object based on the blueprint 
 
 const person = new Person();
+
+we want to set fallback method for this Person object
+
+Person.prototype = { 
+    method1:function(){
+
+    }
+}
+
+if any object based on the Person class/constructor function calling method1 which doesn't exist in the class/constructor function
+the method1 we set in prototype will be executed
 
 
 
