@@ -20,6 +20,7 @@ class Person{
 //     }
 // }
 const prsn = new Person(); 
+console.log(new prsn.__proto__.constructor()); // you can make new object like this based on existing object and not a class / constructor function
 // instantiating the function with the 'new' keyword will make an object called 'this'
 // then every properties and method inside the function will be moved into the 'this' object
 // after that  the function will return the 'this' object
