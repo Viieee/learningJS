@@ -22,6 +22,8 @@
              console.log('Hi, my name is '+ this.name + ', i\'m '+this.age);
          }
 }
+
+// only applies to constructor function
 Person.prototype = { 
     method2(){
 
