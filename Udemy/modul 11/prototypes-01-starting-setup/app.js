@@ -37,3 +37,19 @@ prsn.greet();
 console.log(prsn);
 console.log(new prsn.__proto__.constructor()); // you can make new object like this based on existing object and not a class / constructor function
 // console.dir(ParentClass);
+
+const course = { // new object
+  title: 'Halo',
+  rating: 5
+}
+
+console.log(Object.getPrototypeOf(course)); // is the same as accessing __proto__ of an object
+Object.setPrototypeOf(course, {
+  // ...Object.getPrototypeOf(course),
+  printRating: function(){
+    console.log(this.rating);
+  }
+});
+
+course.printRating();
+
