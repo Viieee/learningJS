@@ -54,3 +54,7 @@ var obj = {
   // Calling the arrow function's this from inside the bar method()
   // will now return window, because it follows the this from fn2.
   console.log(fn2()() == window); // true
+
+  arrow function will always point to local scope,
+  so if its in a class, it will refer to the class itself
+  the alternative to use arrow function is to use bind(this) method
