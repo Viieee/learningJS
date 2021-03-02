@@ -1,4 +1,7 @@
 class ParentClass{
+  constructor(){
+    this.parent = 'parent';
+  }
     method1(){
 
     }

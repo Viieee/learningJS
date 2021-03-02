@@ -1,0 +1,2 @@
+methods will typically be present in __proto__ 
+and regular properties/field won't even if that properties is in parent class
