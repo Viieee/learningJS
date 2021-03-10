@@ -5,8 +5,9 @@ class Tooltip{
 
 // per-project item
 class ProjectItem{
-    constructor(id){
+    constructor(id, updateProjectListsFunction){
         this.id = id;
+        this.updateProjectListsHandler = updateProjectListsFunction;
         this.connectMoreInfoButton();
         this.connectSwitchButton();
     }
@@ -18,7 +19,8 @@ class ProjectItem{
     connectSwitchButton(){
         const projectItemElement = document.getElementById(this.id);
         const switchButton = projectItemElement.querySelector('button:last-of-type');
-        switchButton.addEventListener('click', );
+        switchButton.addEventListener('click', this.updateProjectListsHandler);
+        // we execute a method from another class in the event listener
     }
 }
 
@@ -38,8 +40,10 @@ class ProjectList{
         // and it will select all list items inside that active-projects/finsihed-projects sections
 
         for(const item of prjItems){
-            this.projects.push(new ProjectItem(item.id));
+            this.projects.push(new ProjectItem(item.id, this.switchProject.bind(this)));
             // item.id is the id of each li item in prjItems/in sections of the html code
+            // binding the switchProject because we want the method to point at this class and not to the other class and the eventListener
+            // because we want to use it as button's eventHandler in other class
         }
 
         console.log(this.projects);
@@ -52,6 +56,7 @@ class ProjectList{
 
     addProject(){
         // adding the object from active to finished
+        console.log(this);
     }
 
     switchProject(projectId){
@@ -74,6 +79,7 @@ class App{
         const activeProjectList = new ProjectList('active');
         const finishedProjectList = new ProjectList('finished');
         activeProjectList.setSwitchHandler(finishedProjectList.addProject.bind(finishedProjectList));
+        finishedProjectList.setSwitchHandler(activeProjectList.addProject.bind(activeProjectList));
         // we use bind because we want to execute the addProject method from finishedProjectList instance and not from activeProjectList
         // if we dont use bind, the addProject will pointed at the one at the activeProject instance
         // because we call it from the setSwitchHandler method that from activeProjectList instantiation
