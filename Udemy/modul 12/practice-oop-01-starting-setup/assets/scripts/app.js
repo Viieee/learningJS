@@ -1,26 +1,123 @@
-// more info button
-class Tooltip{
-
+class DOMHelper{
+    static clearEventListener(element){
+        const clonedElement = element.cloneNode(true); // deep clone, removing any event listener from the original element
+        element.replaceWith(clonedElement); // replacing the old element with new element with no eventListener
+        return clonedElement;
+    }
+    static moveElement(elId, newDestinationSelector){
+        const element = document.getElementById(elId);
+        const destinationElement = document.querySelector(newDestinationSelector);
+        destinationElement.append(element);
+        // because the element already existed in the DOM, using append won't copy the element
+        // and instead move it.
+    }
 }
 
-// per-project item
+// parent class
+class Component{
+    constructor(hostElementId, insertBefore = false){
+        if(hostElementId){
+            this.hostElement = document.getElementById(hostElementId);
+        }else{
+            this.hostElement = document.body;
+        }
+
+        this.insertBefore = insertBefore;
+    }
+
+    detach(){
+        if(this.element){
+            this.element.remove();
+            // or the alternative to the code above
+            // this.element.parentElement.removeChild(this.element)
+        }
+    }
+
+    show(){
+        // document.body.append(this.element);
+        this.hostElement.insertAdjacentElement(
+            this.insertBefore ? 'afterbegin' : 'beforeend', // if true use afterbegin, otherwise use beforeend
+            this.element
+        );
+    }
+}
+
+
+// more info button
+class Tooltip extends Component{
+
+    constructor(closeNotifier){
+        super();
+        this.closeNotifierHandler = closeNotifier;
+        this.create();
+    }
+
+    closeTooltip = () => {
+        // using arrow method/function basically the same as using bind(this) on eventListener's methods!
+        // so arrow methods on a class always refer to class containing the method
+        // but it will be recreated every time Tooltip class instantiation.
+        this.detach();
+        this.closeNotifierHandler();
+    }
+
+    create(){
+        console.log('tooltipping...')
+        const newTooltipElement = document.createElement('div');
+        newTooltipElement.className = 'card';
+        newTooltipElement.textContent = 'YURRR';
+        newTooltipElement.addEventListener('click', this.closeTooltip);
+        this.element = newTooltipElement;
+
+    }
+}
+
+// each item
 class ProjectItem{
-    constructor(id, updateProjectListsFunction){
+    hasActiveTooltip = false; 
+    // use to check if the more info button already clicked, 
+    // and preventing 1 project's more info button to be clicked and activated 
+    // multiple times
+
+    constructor(id, updateProjectListsFunction, type){
         this.id = id;
         this.updateProjectListsHandler = updateProjectListsFunction;
         this.connectMoreInfoButton();
         this.connectSwitchButton();
     }
 
-    connectMoreInfoButton(){
-
+    showMoreInfoHandler(){
+        if(this.hasActiveTooltip){
+            return;
+        }
+        const tooltip = new Tooltip(()=>{
+            this.hasActiveTooltip = false; // executed every time more info button clicked
+        });
+        tooltip.show();
+        this.hasActiveTooltip = true;
     }
 
-    connectSwitchButton(){
+    connectMoreInfoButton(){
         const projectItemElement = document.getElementById(this.id);
-        const switchButton = projectItemElement.querySelector('button:last-of-type');
-        switchButton.addEventListener('click', this.updateProjectListsHandler);
+        const moreInfoButton = projectItemElement.querySelector('button:first-of-type');
+        moreInfoButton.addEventListener('click', this.showMoreInfoHandler);
+    }
+
+    connectSwitchButton(type){
+        const projectItemElement = document.getElementById(this.id);
+        let switchButton = projectItemElement.querySelector('button:last-of-type');
+        switchButton = DOMHelper.clearEventListener(switchButton); // clearing old eventListener
+        switchButton.textContent = type === 'active' ? 'Finish' : 'Activate'; 
+        switchButton.addEventListener('click', this.updateProjectListsHandler.bind(null, this.id));
         // we execute a method from another class in the event listener
+        // when we click the button we will passing the id of the item as preset value
+        // because we use bind with null as the first argument and the preset value we want as the second argument
+        // we will pass on the project id of the item to the switchProject method in ProjectList class
+        // and we need the projectId as the parameter of the method
+    }
+
+    update(updateProjectListsFunc, type){
+        this.updateProjectListsHandler = updateProjectListsFunc;
+        this.connectSwitchButton(type);
     }
 }
 
@@ -29,9 +126,8 @@ class ProjectList{
     projects = [];
 
     constructor(type){
-        // the type is either active project/ finished project
-
         this.type = type;
+        // the type is either active project/ finished project
 
         const prjItems = document.querySelectorAll(`#${type}-projects li`);
         // prjItems is the sections in the html code
@@ -40,7 +136,7 @@ class ProjectList{
         // and it will select all list items inside that active-projects/finsihed-projects sections
 
         for(const item of prjItems){
-            this.projects.push(new ProjectItem(item.id, this.switchProject.bind(this)));
+            this.projects.push(new ProjectItem(item.id, this.switchProject.bind(this), this.type));
             // item.id is the id of each li item in prjItems/in sections of the html code
             // binding the switchProject because we want the method to point at this class and not to the other class and the eventListener
             // because we want to use it as button's eventHandler in other class
@@ -54,8 +150,14 @@ class ProjectList{
         this.switchHandler = switchHandlerFunction;
     }
 
-    addProject(){
+    addProject(project){
         // adding the object from active to finished
+        this.projects.push(project);
+        DOMHelper.moveElement(project.id, `#${this.type}-projects ul`);
+
+        //updating the project's status
+        project.update(this.switchProject.bind(this), this.type);
+
         console.log(this);
     }
 
