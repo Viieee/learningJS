@@ -46,8 +46,9 @@ class Component{
 // more info button
 class Tooltip extends Component{
 
-    constructor(closeNotifier){
+    constructor(closeNotifier, text){
         super();
+        this.text = text;
         this.closeNotifierHandler = closeNotifier;
         this.create();
     }
@@ -56,6 +57,7 @@ class Tooltip extends Component{
         // using arrow method/function basically the same as using bind(this) on eventListener's methods!
         // so arrow methods on a class always refer to class containing the method
         // but it will be recreated every time Tooltip class instantiation.
+        console.log(this + 'tooltip\'s class closeToolTip method')
         this.detach();
         this.closeNotifierHandler();
     }
@@ -64,7 +66,7 @@ class Tooltip extends Component{
         console.log('tooltipping...')
         const newTooltipElement = document.createElement('div');
         newTooltipElement.className = 'card';
-        newTooltipElement.textContent = 'YURRR';
+        newTooltipElement.textContent = this.text;
         newTooltipElement.addEventListener('click', this.closeTooltip);
         this.element = newTooltipElement;
 
@@ -82,16 +84,20 @@ class ProjectItem{
         this.id = id;
         this.updateProjectListsHandler = updateProjectListsFunction;
         this.connectMoreInfoButton();
-        this.connectSwitchButton();
+        this.connectSwitchButton(type);
     }
 
     showMoreInfoHandler(){
         if(this.hasActiveTooltip){
             return;
         }
+        const projectEl = document.getElementById(this.id);
+        console.log(projectEl.dataset);
+        projectEl.dataset.someInfo = 'test' // setting new data- attribute
+        const toolTipText = projectEl.dataset.extraInfo;
         const tooltip = new Tooltip(()=>{
             this.hasActiveTooltip = false; // executed every time more info button clicked
-        });
+        }, toolTipText);
         tooltip.show();
         this.hasActiveTooltip = true;
     }
@@ -99,7 +105,7 @@ class ProjectItem{
     connectMoreInfoButton(){
         const projectItemElement = document.getElementById(this.id);
         const moreInfoButton = projectItemElement.querySelector('button:first-of-type');
-        moreInfoButton.addEventListener('click', this.showMoreInfoHandler);
+        moreInfoButton.addEventListener('click', this.showMoreInfoHandler.bind(this));
     }
 
     connectSwitchButton(type){
