@@ -10,6 +10,9 @@ class DOMHelper{
         destinationElement.append(element);
         // because the element already existed in the DOM, using append won't copy the element
         // and instead move it.
+
+        element.scrollIntoView({behavior: 'smooth'}); // behaviour is animation
+        // when an element moved, will automatically scrolled to it
     }
 }
 
@@ -46,8 +49,8 @@ class Component{
 // more info button
 class Tooltip extends Component{
 
-    constructor(closeNotifier, text){
-        super();
+    constructor(closeNotifier, text, hostElementId){
+        super(hostElementId);
         this.text = text;
         this.closeNotifierHandler = closeNotifier;
         this.create();
@@ -67,6 +70,22 @@ class Tooltip extends Component{
         const newTooltipElement = document.createElement('div');
         newTooltipElement.className = 'card';
         newTooltipElement.textContent = this.text;
+
+        console.log(this.hostElement.getBoundingClientRect());
+        const hostElPosLeft = this.hostElement.offsetLeft;
+        const hostElPosTop = this.hostElement.offsetTop;
+        const hostElHeight = this.hostElement.clientHeight;
+        const scrolling = this.hostElement.parentElement.scrollTop;
+
+        const x = hostElPosLeft + 20;
+        const y = hostElPosTop + hostElHeight - scrolling - 10;
+        
+        // positioning the tooltip
+        newTooltipElement.style.position = 'absolute'; // placing element on absolute coordinate
+                                                        // otherwise, it'll be relative in the doc
+        newTooltipElement.style.left = x + 'px';
+        newTooltipElement.style.top = y + 'px';
+
         newTooltipElement.addEventListener('click', this.closeTooltip);
         this.element = newTooltipElement;
 
@@ -97,7 +116,7 @@ class ProjectItem{
         const toolTipText = projectEl.dataset.extraInfo;
         const tooltip = new Tooltip(()=>{
             this.hasActiveTooltip = false; // executed every time more info button clicked
-        }, toolTipText);
+        }, toolTipText, this.id);
         tooltip.show();
         this.hasActiveTooltip = true;
     }
