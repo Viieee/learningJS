@@ -69,7 +69,12 @@ class Tooltip extends Component{
         console.log('tooltipping...')
         const newTooltipElement = document.createElement('div');
         newTooltipElement.className = 'card';
-        newTooltipElement.textContent = this.text;
+        // newTooltipElement.textContent = this.text;
+        // implementing template, the alternative way is the code commented above.
+        const tooltipTemplate = document.getElementById('tooltip');
+        const tooltipBody = document.importNode(tooltipTemplate.content, true); // setting true, meaning all child nodes will be imported
+        tooltipBody.querySelector('p').textContent = this.text;
+        newTooltipElement.append(tooltipBody);
 
         console.log(this.hostElement.getBoundingClientRect());
         const hostElPosLeft = this.hostElement.offsetLeft;
@@ -210,6 +215,21 @@ class App{
         // we use bind because we want to execute the addProject method from finishedProjectList instance and not from activeProjectList
         // if we dont use bind, the addProject will pointed at the one at the activeProject instance
         // because we call it from the setSwitchHandler method that from activeProjectList instantiation
+
+        // creating new script and executing it with js
+        // const someScript = document.createElement('script');
+        // someScript.textContent = 'alert("hi there!")';
+        // document.head.append(someScript);
+
+        this.startScript();
+    }
+
+    // executing js file from another js file
+    static startScript(){
+        const scriptNew = document.createElement('script');
+        scriptNew.src = 'assets/scripts/new.js'
+        scriptNew.defer = true;
+        document.head.append(scriptNew);
     }
 }
 
