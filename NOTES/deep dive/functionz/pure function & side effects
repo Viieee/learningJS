@@ -22,7 +22,7 @@ console.log(addRandom(11));
 the addRandom function is impure because the result isn't always the same everytime
 
 
-side effects means changing anything outside of the function, like a value on a variable outside of a function;
+side effects means changing anything outside of the function, like a value on a variable/array outside of a function or data inside a database
 example :
 let hasilnya = 0;
 
