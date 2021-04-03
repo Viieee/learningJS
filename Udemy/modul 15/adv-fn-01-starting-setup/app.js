@@ -1,22 +1,10 @@
-function add(num1, num2){
- return num1 + num2;
+let username = 'Vieri';
+function greetUser(){
+    console.log('Hi '+username+'!')
 }
 
-console.log(add(22,11)); // output 33
-
-function addRandom(num1){
-    return num1 + Math.random();
-}
-
-console.log(addRandom(11));
-
-let hasilnya = 0;
-
-function addMore(num1, num2){
-    const hasil = num1 + num2;
-    hasilnya = hasil;
-    return hasil;
-}
-
-console.log(addMore(1,2)); // 3
-console.log(hasilnya); // 3
+username = 'Adhit';
+// the username inside greetUser function will changed into Adhit aswell, because it's pointing into the variable, 
+// not just the value of the variable.
+greetUser();
+// so when we execute the function, the username inside of it will reflect the most recent value we give it.
