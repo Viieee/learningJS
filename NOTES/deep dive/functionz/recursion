@@ -1,3 +1,5 @@
+recursion is process of a function calling itself
+
 // function powerOf(x,n){
 //     let result = 1;
 //     for(let i = 0; i<n;i++){
@@ -18,3 +20,8 @@ function powerOf(x,n){
 }
 
 console.log(powerOf(2,3)) // 2*2*2 = 8
+
+or even shorter version of it 
+function powerOf(x,n){
+    return n===1? x: x*powerOf(x, n-1);
+}
