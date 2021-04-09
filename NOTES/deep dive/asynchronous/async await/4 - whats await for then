@@ -1,0 +1,46 @@
+you use await before instantiating a Promise object
+
+example :
+
+function getPos(opts){
+  const posPromise = new Promise((resolve,reject)=>{
+    navigator.geolocation.getCurrentPosition(success=>{
+      resolve(success); 
+    },
+    error=>{
+      reject(error);
+    }, opts);
+  });
+  return posPromise;
+}
+
+
+function setTimer(duration){
+  const promise = new Promise((resolve, reject)=>{ // resolve and reject is a function
+    setTimeout(()=>{
+      resolve('Done!'); // executed by browser
+    },duration);
+  });
+  return promise;
+}
+
+you can simplify this 
+
+function trackUserHandler() {
+  let positionData;
+  getPos()
+  .then(posData => {
+    positionData = posData;
+    return setTimer(2000);
+  }).then(data=>{
+    console.log(data, positionData);
+  });
+}
+
+to this 
+
+async function trackUserHandler() {
+    const posData = await getPos();
+    const timerData = await setTimer(2000);
+    console.log(timerData, posData);
+}
