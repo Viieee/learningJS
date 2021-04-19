@@ -1,4 +1,5 @@
 you use await before instantiating a Promise object
+and it indicates the promise object settles (whether resolved/rejected)
 
 example :
 
@@ -40,7 +41,7 @@ function trackUserHandler() {
 to this 
 
 async function trackUserHandler() {
-    const posData = await getPos();
+    const posData = await getPos(); // this line will be paused until the getPos() promise function is finsihed
     const timerData = await setTimer(2000);
     console.log(timerData, posData);
 }
