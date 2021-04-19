@@ -6,45 +6,55 @@ const postList = document.querySelector('ul');
 
 
 function sendHttpRequest(method, url, data = null){
-    // data parameter is optional (in this case for the post method)
+    // // data parameter is optional (in this case for the post method)
 
-    const promise = new Promise((resolve, reject)=>{
-        // http request require XMLHttpRequest object
-        const xhr = new XMLHttpRequest();
+    // const promise = new Promise((resolve, reject)=>{
+    //     // http request require XMLHttpRequest object
+    //     const xhr = new XMLHttpRequest();
         
-        // configuring the http object
-        xhr.open(method, url); // first step
+    //     // configuring the http object
+    //     xhr.open(method, url); // first step
         
-        // pre-configuring the response (parsing the response) into js objects/arrays
-        xhr.responseType = 'json'
+    //     // pre-configuring the response (parsing the response) into js objects/arrays
+    //     xhr.responseType = 'json'
         
-        // event listener using on load (alternative to addEventListener because using it in XMLHttpRequest object is not supported in some browser)
-        xhr.onload = function(){
-            // this function will handle upcoming responses
+    //     // event listener using on load (alternative to addEventListener because using it in XMLHttpRequest object is not supported in some browser)
+    //     xhr.onload = function(){
+    //         // this function will handle upcoming responses
 
-            if(xhr.status >= 200 && xhr.status < 300){
-                resolve(xhr.response);
-            }else{
-                reject(new Error('Something went wrong!'));
-            }
+    //         if(xhr.status >= 200 && xhr.status < 300){
+    //             resolve(xhr.response);
+    //         }else{
+    //             reject(new Error('Something went wrong!'));
+    //         }
 
-            // extracting the response
-            // console.log(xhr.response) // this is the response fetched from the server (in form of JSON data as the default)
+    //         // extracting the response
+    //         // console.log(xhr.response) // this is the response fetched from the server (in form of JSON data as the default)
             
-            // converting the JSON data into js objects and arrays with JSON helper method parse()
-            // const listOfPosts = JSON.parse(xhr.response);
-            // console.log(listOfPosts)
-        }
+    //         // converting the JSON data into js objects and arrays with JSON helper method parse()
+    //         // const listOfPosts = JSON.parse(xhr.response);
+    //         // console.log(listOfPosts)
+    //     }
 
-        xhr.onerror = function(){
-            // if we fail to send the request
-            // e.g network failure
-            reject(new Error('Something went wrong!'));
-        }
+    //     xhr.onerror = function(){
+    //         // if we fail to send the request
+    //         // e.g network failure
+    //         reject(new Error('Something went wrong!'));
+    //     }
 
-        xhr.send(JSON.stringify(data)); // sending the request
-    });
-    return promise;
+    //     xhr.send(JSON.stringify(data)); // sending the request
+
+    //     });
+    // return promise;
+
+    return fetch(url).then(response=>{
+        return response.json(); // the json method will parse and convert the body of the response
+                                // and transform it from json into js objects and arrays
+                                // it's not just a replacement for JSON.parse() method, because
+                                // it also turns the streamed response body (which you have in the response object)
+                                // into a snapshot
+    })
+ 
 }
 
 // fetching data using promise only
