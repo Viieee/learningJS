@@ -73,3 +73,5 @@ and because it's a promise, you can use the then() method with it
 
 the default response is a streamed data so you need to convert that into js objects/arrays if you want to use 
 it in some way
+
+the main downside of this fetch API is that it doesn't support older browsers
