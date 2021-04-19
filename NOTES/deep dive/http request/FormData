@@ -15,3 +15,10 @@ YES you can insert a file to a server with FormData
 
 example:
 fd.append('title', 'value');
+
+another advantage of this object is you can automatically parse a form
+how?
+you can pass the form element query on the object argument instantiation
+AND you need to have the 'name' attribute on your input field element on the form (for the identifier/1st argument)
+when all of the conditions checks out,
+the formData will try to collect all the data from the form element
