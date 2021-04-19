@@ -5,12 +5,12 @@ const fetchButton = document.querySelector('#available-posts button');
 const postList = document.querySelector('ul');
 
 
-function sendHttpRequest(method, url, data = null){
+function sendHttpRequest(method, url, data){
     // // data parameter is optional (in this case for the post method)
 
     // const promise = new Promise((resolve, reject)=>{
     //     // http request require XMLHttpRequest object
-    //     const xhr = new XMLHttpRequest();
+        // const xhr = new XMLHttpRequest();
         
     //     // configuring the http object
     //     xhr.open(method, url); // first step
@@ -47,7 +47,13 @@ function sendHttpRequest(method, url, data = null){
     //     });
     // return promise;
 
-    return fetch(url).then(response=>{
+    return fetch(url, {
+        method: method, // default is GET
+        body: JSON.stringify(data), // converting the data into json
+        headers: {
+            'Content-Type': 'application/json' // a way to tell the server that the data sent with the request is a json data
+        }
+    }).then(response=>{
         return response.json(); // the json method will parse and convert the body of the response
                                 // and transform it from json into js objects and arrays
                                 // it's not just a replacement for JSON.parse() method, because
@@ -77,7 +83,7 @@ function sendHttpRequest(method, url, data = null){
 
 // fetching data using promise + async await 
 async function fetchPosts(){
-    try{
+    // try{
         const responseData = await sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts');
 
         const listOfPosts = responseData;
@@ -95,9 +101,10 @@ async function fetchPosts(){
             // appending the element inside of the template into the ul element
             listElement.append(postEl);
         }
-    }catch(e){
-        alert(e.message);
-    }
+    // }
+    // catch(e){
+    //     alert(e.message);
+    // }
 }
 
 async function createPost(title, content){
