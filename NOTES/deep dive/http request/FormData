@@ -1,0 +1,17 @@
+object in js that can be used to send multiple type of data and store it with ease
+
+how to make it:
+const fd = new FormData();
+
+
+the cool thing about FormData and what makes it easier to work with 
+is the ability to append new data into it
+and the append method asks for 2 or 3 arguments
+1st argument is the identifier
+2nd argument is the value
+3rd is the name of the file (if the 2nd argument is some type of file)
+
+YES you can insert a file to a server with FormData
+
+example:
+fd.append('title', 'value');
