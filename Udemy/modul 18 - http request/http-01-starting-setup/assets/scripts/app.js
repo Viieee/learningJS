@@ -54,11 +54,26 @@ function sendHttpRequest(method, url, data){
             'Content-Type': 'application/json' // a way to tell the server that the data sent with the request is a json data
         }
     }).then(response=>{
-        return response.json(); // the json method will parse and convert the body of the response
-                                // and transform it from json into js objects and arrays
-                                // it's not just a replacement for JSON.parse() method, because
-                                // it also turns the streamed response body (which you have in the response object)
-                                // into a snapshot
+        if(response.status>=200&&response.status<300){
+            return response.json(); // the json method will parse and convert the body of the response
+                                    // and transform it from json into js objects and arrays
+                                    // it's not just a replacement for JSON.parse() method, because
+                                    // it also turns the streamed response body (which you have in the response object)
+                                    // into a snapshot
+        }else{
+            return response.json().then(errorData => {
+                // response.json() will turn the response from streamed response into a snapshot
+                // and then turn the response (in json) into js objects/arrays
+
+                // accessing the body of error response
+                console.log(errorData);
+                throw new Error('Something went wrong - Server side.');
+            })
+        }
+    }).catch(error=>{
+        // error handler 
+        console.log(error);
+        throw new Error('Something went wrong!');
     })
  
 }
@@ -83,7 +98,7 @@ function sendHttpRequest(method, url, data){
 
 // fetching data using promise + async await 
 async function fetchPosts(){
-    // try{
+    try{
         const responseData = await sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts');
 
         const listOfPosts = responseData;
@@ -101,10 +116,10 @@ async function fetchPosts(){
             // appending the element inside of the template into the ul element
             listElement.append(postEl);
         }
-    // }
-    // catch(e){
-    //     alert(e.message);
-    // }
+    }
+    catch(e){
+        alert(e.message);
+    }
 }
 
 async function createPost(title, content){
