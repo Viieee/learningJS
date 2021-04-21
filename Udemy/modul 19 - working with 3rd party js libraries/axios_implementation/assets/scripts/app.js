@@ -54,13 +54,16 @@ async function fetchPosts(){
         // so you dont have to convert it into js objects and arrays 
         // to work with the data returned 
         // the data fetched by axios is in form of an object
+        // with config, data, headers, request, status, statusText as the property
 
-        console.log(response);
+        // console.log(response); => object
 
 
 
 
-        const listOfPosts = responseData;
+        // const listOfPosts = responseData;
+        const listOfPosts = response.data; // accesing the data property in the response object
+        // the data property contains array
 
         // inserting the response into list item on the template element
         for(const post of listOfPosts){
@@ -91,8 +94,14 @@ async function createPost(title, content){
                       // to learn about this topic, it's called jsonplaceholder.typicode.com
     }
 
-    sendHttpRequest('POST','https://jsonplaceholder.typicode.com/posts', post);
+    // sendHttpRequest('POST','https://jsonplaceholder.typicode.com/posts', post);
+    const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post);
+    console.log(response);
+    // we dont have to add headers specifying the content-type
+    // axios will transform the data into a json then adding the header for you
 
+    // but axios won't always convert it to an object, it only be like that when the data you send is an object/ an array
+    // it will adapt to what type of data you're sending
 }
 
 // event listener
@@ -115,6 +124,6 @@ postList.addEventListener('click', event =>{
         // console.log('clicked on a button');
         const postId = event.target.closest('li').id; // storing the id of the li element
         // console.log(postId);
-        sendHttpRequest('DELETE',`https://jsonplaceholder.typicode.com/posts/${postId}`);
+        axios.delete(`https://jsonplaceholder.typicode.com/posts/${postId}`);
     }
 })
