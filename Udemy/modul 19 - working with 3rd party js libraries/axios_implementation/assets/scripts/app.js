@@ -45,7 +45,20 @@ function sendHttpRequest(method, url, data){
 // fetching data using promise + async await 
 async function fetchPosts(){
     try{
-        const responseData = await sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts');
+        // const responseData = await sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts');
+
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+        // axios always returning promises
+        // the difference between axios and the fetch api is 
+        // that axios is not returning streamed data
+        // so you dont have to convert it into js objects and arrays 
+        // to work with the data returned 
+        // the data fetched by axios is in form of an object
+
+        console.log(response);
+
+
+
 
         const listOfPosts = responseData;
 

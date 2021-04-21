@@ -55,7 +55,9 @@ function sendHttpRequest(method, url, data){
         }
     }).then(response=>{
         if(response.status>=200&&response.status<300){
-            return response.json(); // the json method will parse and convert the body of the response
+
+            return response.json().then(data=>console.log(data)); // the data is a json object
+                                    // the json method will parse and convert the body of the response
                                     // and transform it from json into js objects and arrays
                                     // it's not just a replacement for JSON.parse() method, because
                                     // it also turns the streamed response body (which you have in the response object)
