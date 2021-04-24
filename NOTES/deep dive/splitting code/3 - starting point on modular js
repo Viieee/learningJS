@@ -8,3 +8,5 @@ that you need to add 'type=modular' attribute after the defer keyword
 
 this will informs the browser that this starting point script and every js script referenced by it 
 will use modules
+
+YOU NEED THIS METHOD ON EVERY SINGLE SCRIPT THAT REQUIRES POINTING INTO ANOTHER FILES
