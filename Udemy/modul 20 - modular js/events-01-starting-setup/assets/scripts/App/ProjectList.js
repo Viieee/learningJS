@@ -1,4 +1,11 @@
-class ProjectList {
+// dependencies on app.js
+
+// importing dependencies required
+import {ProjectItem} from './ProjectItem.js';
+import {DOMHelper} from '../Utility/DOMHelper.js';
+
+
+export class ProjectList {
     projects = [];
   
     constructor(type) {

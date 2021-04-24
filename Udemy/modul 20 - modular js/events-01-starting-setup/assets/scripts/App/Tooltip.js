@@ -1,4 +1,10 @@
-class Tooltip extends Component {
+// dependency on ProjectItem
+
+// importing required dependencies
+import {Component} from './Component.js';
+
+
+export class Tooltip extends Component {
     constructor(closeNotifierFunction, text, hostElementId) {
       super(hostElementId);
       this.closeNotifier = closeNotifierFunction;

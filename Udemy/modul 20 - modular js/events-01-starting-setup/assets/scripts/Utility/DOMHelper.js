@@ -1,4 +1,6 @@
-class DOMHelper {
+// dependencies on ProjectItem and ProjectList
+
+export class DOMHelper {
     static clearEventListeners(element) {
       const clonedElement = element.cloneNode(true);
       element.replaceWith(clonedElement);

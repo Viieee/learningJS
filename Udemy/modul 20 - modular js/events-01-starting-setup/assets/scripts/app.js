@@ -1,6 +1,9 @@
 // hey, this is the exact same project i did on module 14
 // in this module i will be focusing on implementing code splitting
 
+// importing dependencies required in this file
+import {ProjectList} from './App/ProjectList.js';
+
 class App {
   static init() {
     const activeProjectsList = new ProjectList('active');
