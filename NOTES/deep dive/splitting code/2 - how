@@ -9,7 +9,7 @@ export class someClass{
 
 }
 
-you can also export functions, variables, constant and so on.
+you can also export functions, variables, constant and so on by exposing it first with export keyword.
 
 because when we use the traditional script importing method (in the html file)
 the entire code in the file will be globally available
