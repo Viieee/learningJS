@@ -21,5 +21,11 @@ module.exports = {
     }, 
     devServer: {
         contentBase: './events-01-starting-setup/' // where your root html file can be found
-    }
+    },
+    devtool: 'cheap-module-eval-source-map' // how webpack links your file to the original code 
+                                            // theres a lot of other options for the devtool 
+                                            // read the documentation
+                                            // after you add this, you can find your original code
+                                            // on the source tab on the browser and you can also
+                                            // place breakpoints in it.
 };
