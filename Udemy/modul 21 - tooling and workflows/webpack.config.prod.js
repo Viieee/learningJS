@@ -1,7 +1,7 @@
 // this file will be executed by node js under the hood
 const { assert } = require('console');
 const path = require('path');
-
+const cleanPlugin = require('clean-webpack-plugin');
 
 // exporting something in node js
 // exposing the object in node js outside of the file and webpack
@@ -22,10 +22,14 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, 'events-01-starting-setup') // where your root html file can be found
     },
-    devtool: 'cheap-source-map' // how webpack links your file to the original code 
+    devtool: 'cheap-source-map', // how webpack links your file to the original code 
                                             // theres a lot of other options for the devtool 
                                             // read the documentation
                                             // after you add this, you can find your original code
                                             // on the source tab on the browser and you can also
                                             // place breakpoints in it.
+    plugins: [
+    new cleanPlugin.CleanWebpackPlugin()
+    ] // concept in webpack that allows you to apply various optimization or 
+    // transformation on the generated output folder
 };

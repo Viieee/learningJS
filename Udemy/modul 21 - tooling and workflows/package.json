@@ -5,6 +5,7 @@
     "build:prod": "webpack --config webpack.config.prod.js"
   },
   "devDependencies": {
+    "clean-webpack-plugin": "*",
     "eslint": "^7.25.0",
     "webpack": "^4.46.0",
     "webpack-cli": "^4.6.0",
