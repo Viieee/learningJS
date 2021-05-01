@@ -7,9 +7,11 @@ const path = require('path');
 // exposing the object in node js outside of the file and webpack
 module.exports = {
     // entry file
+    mode: 'development',
     entry: './events-01-starting-setup/src/app.js',
-    output: {
+    output: { // this is the place were the bundled file will be stored
         filename: 'app.js',
-        path: path.resolve(__dirname, 'events-01-starting-setup', 'assets', 'scripts') // same as ./assets/scripts/
+        path: path.resolve(__dirname, 'events-01-starting-setup', 'assets', 'scripts'), // same as ./assets/scripts/
+        publicPath: 'events-01-starting-setup/assets/scripts/'
     }
 };
