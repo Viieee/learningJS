@@ -18,5 +18,8 @@ module.exports = {
         
         // publicPath is being used as a map to tell the webpack
         // where the extra files needed to be load
+    }, 
+    devServer: {
+        contentBase: './events-01-starting-setup/' // where your root html file can be found
     }
 };
