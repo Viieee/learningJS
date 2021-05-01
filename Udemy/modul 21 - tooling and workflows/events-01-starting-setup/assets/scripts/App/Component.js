@@ -1,3 +1,5 @@
+/* eslint-disable multiline-ternary */
+/* eslint-disable no-ternary */
 // dependencies on Tooltip.js
 
 export class Component {
@@ -9,14 +11,14 @@ export class Component {
       }
       this.insertBefore = insertBefore;
     }
-  
+
     detach() {
       if (this.element) {
         this.element.remove();
         // this.element.parentElement.removeChild(this.element);
       }
     }
-  
+
     attach() {
       this.hostElement.insertAdjacentElement(
         this.insertBefore ? 'afterbegin' : 'beforeend',
@@ -24,4 +26,3 @@ export class Component {
       );
     }
   }
-  
