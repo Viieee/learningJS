@@ -1,7 +1,8 @@
 {
   "scripts": {
     "build": "webpack",
-    "build:dev": "webpack-dev-server"
+    "build:dev": "webpack serve",
+    "build:prod": "webpack --config webpack.config.prod.js"
   },
   "devDependencies": {
     "eslint": "^7.25.0",
