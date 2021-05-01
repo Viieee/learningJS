@@ -6,3 +6,6 @@ you need to direct the output of this bundling with the output property (it's an
 
 one of the most important property in the output object is the publicPath property,
 it's used to map the path into the extra/supporting file that generated if you use dynamic importing
+why would we need to use this?
+because as default the nodeJs will look for these extra files in the root folder and not in the same folder
+as the entry point file
