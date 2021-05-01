@@ -1,0 +1,8 @@
+webpack will take some files and bundled it into less files 
+with 1 main entry file and the other as the support file if you have some dynamic importing 
+in your code
+
+you need to direct the output of this bundling with the output property (it's an object)
+
+one of the most important property in the output object is the publicPath property,
+it's used to map the path into the extra/supporting file that generated if you use dynamic importing

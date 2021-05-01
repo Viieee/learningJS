@@ -10,7 +10,6 @@ the entry point of your project is (in our previous project it will be the app.j
 then it will analyse the file and analyse the import/dependencies of this file (app.js file)
 and resolving all the dependencies of that file and the files related to that file
 
-example:
 webpack will look into the app.js file because it's the 'entry point' of the project
 then it will look into what files do the app.js needs in order to fully function (the imports/dependencies)
 and it will see that the app.js file is importing the ProjectList.js file
