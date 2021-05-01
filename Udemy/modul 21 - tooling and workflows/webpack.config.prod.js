@@ -12,7 +12,8 @@ module.exports = {
                          // implement some optimization for the bundle 
     entry: './events-01-starting-setup/src/app.js',
     output: { // this is the place were the bundled file will be stored
-        filename: 'app.js',
+        filename: '[contenthash].js', // will generate different name each time the project got rebuild
+                                      // this method will force the browser to take the latest version of the project
         path: path.resolve(__dirname, 'events-01-starting-setup', 'assets', 'scripts'), // same as ./assets/scripts/
         publicPath: 'events-01-starting-setup/assets/scripts/'
         
