@@ -1,8 +1,53 @@
-// cookies
+// indexedDB
 
-// accessing the cookie
-// document.cookie // accessed to all cookie data stored
+// open a connection/create a db
+const dbReq = indexedDB.open('dbTest', 1); // 1st argument can be anything, this will be the name of the db
+                                            // 2nd argument is the version of the db
+                                            // the open() method return a db request
+let db; 
 
+dbReq.onsuccess = function(event){
+    // fired when the result of a request is successfully returned.
+    // in other words, when the script reruns or whenever the database connection
+    // is already opened
+    
+    db = event.target.result; // holding access to the database
+}
+
+// dbReq.onsuccess = function(event){
+dbReq.onupgradeneeded = function(event){
+    // onupgradeneeded will run whenever the database is created for the first time or
+    // when the version number changes
+
+    // access to database we connected/ we just created through event object (the parameter)
+    db = event.target.result; // holding access to the database
+
+    // you working with object store in indexedDB
+    // you can have multiple object stores and each object store can store multiple objects
+
+    // configuring it, create object store
+    const objStore = db.createObjectStore('products', {keyPath: 'id'});  // keyPath is a must!, the value can be whatever you want
+    // 1st argument is the name of the object store
+    // 2nd argument contains key, one property that exists on every stored object/item
+        // by which this object/item can be identified
+    
+    objStore.transaction.oncomplete = function(event){
+        // oncomplete will trigger once the object store creation finished
+
+        // object store access
+        const productsStore = db.transaction('products', 'readwrite').objectStore('products');
+        
+        productsStore.add({
+            id: 'p1', // the key of this is the value in keyPath above
+            title: 'first product',
+            price: 10
+        }) // taking object as the argument, needs to have the key we store in the keyPath
+    }
+}
+
+dbReq.onerror = function(event){
+    console.log('error!');
+}
 
 // buttons
 const storeBtn = document.getElementById('store-btn');
@@ -10,48 +55,21 @@ const retrBtn = document.getElementById('retrieve-btn');
 
 // event listeners
 storeBtn.addEventListener('click', ()=>{
-    const userId = 'u123';
-    const user = {
-        name: 'Vieri',
-        age: 21
-    }
-    // adding new entry to the cookie
-    document.cookie = `userId=${userId}; max-age=10`;// uid is the key, userId is the value
-                                    // no white space before the equal sign 
-                                    // this won't clear or override the existing cookie
-                                    // it will only replace a cookie that has the same key as the existing cookie
-    document.cookie = `user=${JSON.stringify(user)}`;
-    document.cookie = `extra=extradata`;
+    const productsStore = db.transaction('products', 'readwrite').objectStore('products');
+        
+    productsStore.add({
+        id: 'p2', // the key of this is the value in keyPath above
+        title: 'second product',
+        price: 20
+    }) 
 })
 
 retrBtn.addEventListener('click', ()=>{
-    // reading the cookie
-    console.log(document.cookie); // this way of reading cookie will only return a long string 
-                                 // and won't separate the data on it's own value per key
-                                 // output : uid=u123; user={"name":"Vieri","age":21}
-    
-    // way to make it nicer and workable
-    const cookieData = document.cookie.split(';'); // returning array based on the long string
-                                                   // but this split method will leave excess whitespace infront of the 
-                                                   // 2nd and further data
-    console.log(cookieData); // output : array(2)
-                             // [0] : "uid=u123"
-                             // [1] : " user{"name": "Vieri", "age": 21}"
-    
-    // how to remove the excess whitespace
-    const data = cookieData.map(i=>{
-        // map method is used to recreate an array an calling a function on every element inside of the array
-        return i.trim(); // trim will remove excess whitespace infront and in the back of value
-    });
-    console.log(data); 
+    const productsStore = db.transaction('products', 'readwrite').objectStore('products');
 
-    // how to access key and value separately
-    console.log(data[1].split('=')[1]); // we access the value indexed 1(2nd value in the array)
-                                        // then we separate the key and value into their separate values with '=' and we omit the '='
-                                        // turning it into an array and assigning each value into the array
-                                        // then we accessed the index 1 data in the array
+    const request = productsStore.get('p2');
 
-    // #NOTE:
-    // advantage of a cookie is that you can set them to expire and 
-    // send the to a server with request
+    request.onsuccess = function (){
+        console.log(request.result);
+    }
 })
