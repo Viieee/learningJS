@@ -19,7 +19,7 @@ because we might face some potential limitations with basic js project, example:
     not all of these features is gonna be present and supported on all browsers. So we might want
     to automatically translate our code into older code so it can reach more browsers.
    solution:
-    babel, acts as code compilation/transpilation tool
+    babel, acts as 'code compilation/transpilation tool'
 
 4. we constantly need to reload our development page whenever we make some changes to our code
     and wanted to see it, wouldn't it be amazing if the server is reloading automatically everytime 
