@@ -20,7 +20,8 @@ module.exports = {
         // where the extra files needed to be load
     }, 
     devServer: {
-        contentBase: './events-01-starting-setup/' // where your root html file can be found
+        contentBase: './events-01-starting-setup/', // where your root html file can be found
+        writeToDisk: true
     },
     devtool: 'cheap-module-eval-source-map', // how webpack links your file to the original code 
                                             // theres a lot of other options for the devtool 
