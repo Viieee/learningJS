@@ -35,6 +35,7 @@
   }
     // the config above could change so please visit the babel loader repo in github to 
     // check the latest version of it
+    https://github.com/babel/babel-loader
 
 3. we need to tune the babel, to tell them which features we want to transpile and what 
     browser is the target. To do that we need to edit the package.json file:
@@ -43,4 +44,6 @@
     inside of the browserlist is accepting certain values
     example:
     "browserslist": "> 2%"
-    that means that we will build code that works in browsers with greater than 2% market share
+    that means that we will build code that works in browsers with greater than 2% market share,
+    theres more settings you can do in this property, check the repo of it to see everything!
+    https://github.com/browserslist/browserslist
