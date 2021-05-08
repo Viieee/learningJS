@@ -1,0 +1,46 @@
+1. install babel locally with command, we will use babel iwth babel loader because we want to
+    integrate it with webpack
+    npm install --save-dev babel-loader @babel/core @babel/preset-env webpack
+
+    babel loader is the integration between webpack and babel
+    babel core is the actual babel which will act as the transpilator
+    babel preset is the set of rules that controls which features are translated to which 
+        older code
+
+
+    --save-dev is the same as -D in command
+
+    if you already have webpack in your project then you can omit the webpack in the command
+
+2. add babel into webpack config object, in the list of modules
+    module: { // intructions to webpack how to treat different modules
+    rules: [ 
+      {
+        test: /\.m?js$/,
+        // the rule above is basically saying that only all files with js/mjs extension 
+        // should be handled/treated with this rule
+        exclude: /node_modules/,
+        // excluding all mjs/js files in node_modules folder
+        use: {
+            loader: 'babel-loader',
+            options: {
+            presets: [
+                ['@babel/preset-env', { targets: "defaults" }]
+            ]
+            }
+        }
+        
+      }
+    ]
+  }
+    // the config above could change so please visit the babel loader repo in github to 
+    // check the latest version of it
+
+3. we need to tune the babel, to tell them which features we want to transpile and what 
+    browser is the target. To do that we need to edit the package.json file:
+    we add new property there 
+    "browserslist": ""
+    inside of the browserlist is accepting certain values
+    example:
+    "browserslist": "> 2%"
+    that means that we will build code that works in browsers with greater than 2% market share
