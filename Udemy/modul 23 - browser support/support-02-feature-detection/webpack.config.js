@@ -25,10 +25,12 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               presets: [
-                  ['@babel/preset-env', 
-                  { useBuiltIns:'usage', 
-                  corejs: {version: 3.12},
-                  targets: "defaults" }]
+                  [
+                      '@babel/preset-env', 
+                    { useBuiltIns:'usage', 
+                    corejs: {version: 3.12},
+                    targets: "defaults" }
+                  ]
               ]
             }
         }
