@@ -17,15 +17,15 @@ export class Modal{
             // and it will yield false
 
             const modalElements = document.importNode(this.modalTemplateEl.content,true)
-            const modalElement = modalElements.querySelector('.modal');
-            const backdropElement = modalElements.querySelector('.backdrop');
+            this.modalElement = modalElements.querySelector('.modal');
+            this.backdropElement = modalElements.querySelector('.backdrop');
             const contentElement = document.importNode(this.contentTemplateEl.content,true);
 
-            modalElement.appendChild(contentElement);
+            this.modalElement.appendChild(contentElement);
 
             // adding modal element and backdrop element at inside the body and at the beginning of the body
-            document.body.insertAdjacentElement('afterbegin', modalElement);
-            document.body.insertAdjacentElement('afterbegin', backdropElement);
+            document.body.insertAdjacentElement('afterbegin', this.modalElement);
+            document.body.insertAdjacentElement('afterbegin', this.backdropElement);
 
         }else{
             // fallback code
@@ -33,6 +33,14 @@ export class Modal{
         }
     }
     hide(){
+        if (this.modalElement){
+            // removing the elements
+            document.body.removeChild(this.modalElement);
+            document.body.removeChild(this.backdropElement);
 
+            // clearing the elements and references
+            this.modalElement = null;
+            this.backdropElement = null;
+        }
     }
 }
