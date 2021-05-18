@@ -15,4 +15,4 @@ function rqListener(req, res){
 const server = http.createServer(rqListener) // the argument of this method is a function that will be executed
                                             // for every incoming request
 
-server.listen();
+server.listen(3000); // 1st argument is the port 
