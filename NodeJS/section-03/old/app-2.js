@@ -20,18 +20,9 @@ const server = http.createServer((req, res) => {
   }
   if (url === '/message' && method === 'POST') {
     // if the url is /message and the method is POST this will execute
-    const body = [];
-    req.on('data', (chunk) => {
-      console.log(chunk);
-      body.push(chunk);
-    });
-    req.on('end', () => {
-      const parsedBody = Buffer.concat(body).toString();
-      const message = parsedBody.split('=')[1];
-      fs.writeFileSync('message.txt', message);
-    });
+    fs.writeFileSync('message.txt', 'DUMMY'); // creating a new file called message.txt
     res.statusCode = 302;
-    res.setHeader('Location', '/'); // redirecting the url when we go to the /message url to the default page
+    res.setHeader('Location', '/'); // redirecting the url when we go to the /message url
     return res.end(); // ending the writing and returning the response
   }
   res.setHeader('Content-Type', 'text/html');

@@ -1,0 +1,2 @@
+a buffer is construct which allows you to hold multiple chunks and work with them 
+before they are released
