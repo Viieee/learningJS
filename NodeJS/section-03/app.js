@@ -15,20 +15,37 @@ const server = http.createServer((req, res) => {
     res.write('<body><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Send</button></form></body>');
     // if we clicked the button, it will send us to /message url and the method is no longer GET
     // and changed into POST 
+    // the name on the input tag will be the key of the input value
     res.write('</html>');
     return res.end(); // ending the writing and returning the response
   }
   if (url === '/message' && method === 'POST') {
     // if the url is /message and the method is POST this will execute
-    const body = [];
+    const body = []; // will be used to store the data chunks 
+    
+    // event listener
     req.on('data', (chunk) => {
+      // the data event will be fired whenever a new chunk is ready to be read
+      // buffer will help with this
+      // and the second argument is the function which will be executed 
+      // every time the event fired
+      // and the data event will returned some chunk of the data itself
       console.log(chunk);
-      body.push(chunk);
+      body.push(chunk); // pushing the data into the body array
     });
     req.on('end', () => {
-      const parsedBody = Buffer.concat(body).toString();
-      const message = parsedBody.split('=')[1];
-      fs.writeFileSync('message.txt', message);
+      // will be fired once the parsing process of the incoming request is done
+      // we will interact with the chunks in this function
+      const parsedBody = Buffer.concat(body).toString(); // concatenate all the items in the body array
+                                                        // then convert it into string
+      const message = parsedBody.split('=')[1]; // storing the parsed body value only
+                                                // because in default the parsed body 
+                                                // returned key and the value 
+                                                // now it will only return the value 
+                                                // because we turn it into an array 
+                                                // with split method and separate the 
+                                                // full value on '=' sign
+      fs.writeFileSync('message.txt', message); // storing the value into the message.txt file
     });
     res.statusCode = 302;
     res.setHeader('Location', '/'); // redirecting the url when we go to the /message url to the default page
