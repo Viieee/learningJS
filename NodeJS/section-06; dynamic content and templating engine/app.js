@@ -5,6 +5,13 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+// setting global config value
+app.set('view engine', 'pug'); // telling express to use the second argument as 
+                               // the handler for any dynamic templates we're trying to render
+// setting the view folder (the folder containing the html files)
+app.set('views', 'views') // the second argument is the folder
+
+
 const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
