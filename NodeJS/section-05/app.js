@@ -8,7 +8,12 @@ const app = express();
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
+
+// directory used in the html file
+// the static method will grant the read access
+// with this, the user should be able to access the user path
+// and will forward the request to the public folder for css files
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminRoutes);
