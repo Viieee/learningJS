@@ -10,9 +10,10 @@ const app = express();
 app.engine(
   'hbs', // name, used for the later html file extension
   expressHbs({ // the handlebars
-    layoutsDir: 'views/layouts/',
-    defaultLayout: 'main-layout',
-    extname: 'hbs'
+    // config
+    layoutsDir: 'views/layouts/', // the layout's directory
+    defaultLayout: 'main-layout', // the name of the layout file
+    extname: 'hbs' // the extension of the layout file
   })
 );
 app.set('view engine', 'hbs');
