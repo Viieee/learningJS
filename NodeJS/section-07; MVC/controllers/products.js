@@ -1,4 +1,4 @@
-const products = [];
+const ProductClass = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('add-product', {
@@ -11,11 +11,13 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  products.push({ title: req.body.title });
+  const product = new ProductClass(req.body.title);
+  product.save();
   res.redirect('/');
 };
 
 exports.getProducts = (req, res, next) => {
+  const products = ProductClass.fetchAll(); // returning array from Product class on product.js model
   res.render('shop', {
     prods: products,
     pageTitle: 'Shop',
