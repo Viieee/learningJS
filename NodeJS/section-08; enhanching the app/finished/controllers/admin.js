@@ -27,7 +27,9 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll(products => {
+  Product.fetchAll(products => { // the products parameter is passed on from the getProductsFromFile
+                                // it's either an empty array if the file doesn't exist yet
+                                // or it will passed in all the parsed data in form of an array
     res.render('admin/products', {
       prods: products,
       pageTitle: 'Admin Products',
