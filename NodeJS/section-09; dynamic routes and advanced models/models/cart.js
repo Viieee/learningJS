@@ -74,7 +74,8 @@ module.exports = class Cart {
                 // cart.products.push(updatedProduct)
             }
             // editing the totalPrice key in cart object
-            cart.totalPrice = cart.totalPrice + productPrice;
+            // + infront of productPrice means that we converting it into number
+            cart.totalPrice = cart.totalPrice + +productPrice;
             // writing the file based on the cart object
             fs.writeFile(p, JSON.stringify(cart), err=>{
                 console.log(err)
