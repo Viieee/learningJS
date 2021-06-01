@@ -43,13 +43,18 @@ module.exports = class Product {
   }
 
   static findById(id, cb){
-    getProductsFromFile(products =>{
+    // the main goal of this static method is to filter the product based on the id passed into it
+    // and later this function will execute the callback function and passing the filtered product to that callback function
+   
+    getProductsFromFile(products =>{  // products retrieve from the returned value of the getProductsFromFile function
+                                      // parsed from JSON into array
       // filtering the product based on id
       const product = products.find(prod=>{
         if (prod.id === id){
-          return prod;
+          return prod; // filtered product
         }
       });
+      // executing callback function and passing the filtered product into it
       cb(product);
     })
   }
