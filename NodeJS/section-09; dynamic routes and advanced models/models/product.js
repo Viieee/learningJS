@@ -40,4 +40,16 @@ module.exports = class Product {
   static fetchAll(cb) {
     getProductsFromFile(cb);
   }
+
+  static findById(id, cb){
+    getProductsFromFile(products =>{
+      // filtering the product based on id
+      const product = products.find(prod=>{
+        if (prod.id === id){
+          return prod;
+        }
+      });
+      cb(product);
+    })
+  }
 };

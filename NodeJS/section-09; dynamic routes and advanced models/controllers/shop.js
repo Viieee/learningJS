@@ -12,7 +12,9 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId; // productId is the url path name in router
-  console.log(prodId);
+  Product.findById(prodId, product=>{
+    console.log(product);
+  })
   res.redirect('/');
 };
 
