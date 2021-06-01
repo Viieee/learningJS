@@ -26,6 +26,8 @@ module.exports = class Product {
   }
 
   save() {
+    // adding id to the object before being pushed into the array
+    // this id will be passed into each individual product in ejs so we can edit it later
     this.id = Math.random().toString();
     getProductsFromFile(products => {
       products.push(this);

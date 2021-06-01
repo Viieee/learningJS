@@ -10,7 +10,9 @@ router.get('/', shopController.getIndex);
 
 router.get('/products', shopController.getProducts);
 
-router.get('/products/:productId', shopController.getProduct);
+router.get('/products/:productId', shopController.getProduct); // dynamic route with ':',
+                                                               // dynamic route should be last 
+                                                               // in the code order
 
 router.get('/cart', shopController.getCart);
 
