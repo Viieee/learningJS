@@ -114,4 +114,16 @@ module.exports = class Cart {
         })
     }
 
+    // getting all products in the cart
+    static getProductsInCart(cb){
+        fs.readFile(p, (err, fileContent)=>{
+            const cart = JSON.parse(fileContent)
+            // check if we have a cart yet or not
+            if(err){
+                cb(null);
+            }else{
+                cb(cart);
+            }
+        });
+    }
 }
