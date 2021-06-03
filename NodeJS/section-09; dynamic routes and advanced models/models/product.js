@@ -19,7 +19,8 @@ const getProductsFromFile = cb => {
 };
 
 module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
+  constructor(id, title, imageUrl, description, price) {
+    this.id = id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -27,14 +28,33 @@ module.exports = class Product {
   }
 
   save() {
-    // adding id to the object before being pushed into the array
-    // this id will be passed into each individual product in ejs so we can edit it later
-    this.id = Math.random().toString();
     getProductsFromFile(products => {
-      products.push(this);
-      fs.writeFile(p, JSON.stringify(products), err => {
-        console.log(err);
-      });
+      if (this.id){ // if the id is present, that means we want to edit existing item
+        // looking for the index of the product being edited
+        const existingProductIndex = products.findIndex(prod=>{
+          if(prod.id === this.id){
+            return prod;
+          }
+        });
+        // recreating the product array
+        const updatedProducts = [...products];
+        // replacing the product's in the index we searched in existingProductIndex
+        // with the new one
+        updatedProducts[existingProductIndex] = this;
+        // replacing the old file
+        fs.writeFile(p, JSON.stringify(updatedProducts), err => {
+          console.log(err);
+        });
+      }else{ // adding new product
+        // adding id to the object before being pushed into the array
+        // this id will be passed into each individual product in ejs so we can edit it later
+        this.id = Math.random().toString();
+        products.push(this);
+        // replacing the old file
+        fs.writeFile(p, JSON.stringify(products), err => {
+          console.log(err);
+        });
+      }
     });
   }
 

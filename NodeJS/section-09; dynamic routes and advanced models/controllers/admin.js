@@ -17,12 +17,12 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(title, imageUrl, description, price);
+  const product = new Product(null, title, imageUrl, description, price); // the first argument is null, because we want to add new product and therefore don't have an id yet for that product
   product.save();
   res.redirect('/');
 };
 
-// edting product
+// getting product to edit
 exports.getEditProduct = (req, res, next) => {
     // checking query params (extra data on the url)
   const editMode = req.query.edit;
@@ -48,7 +48,18 @@ exports.getEditProduct = (req, res, next) => {
 
 // posting the edited data
 exports.postEditProduct = (req, res, next) =>{
-  
+  // fetch information for the product
+    // the id retrieved from hidden input tag
+  const prodId = req.body.productId; // productId is the name attribute in the input tag
+  const updatedTitle = req.body.title;
+  const updatedImageUrl = req.body.imageUrl;
+  const updatedPrice = req.body.price;
+  const updatedDescription = req.body.description;
+  // create new product instance
+  const updatedProd = new Product (prodId, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice);
+  // save
+  updatedProd.save();
+  res.redirect('/admin/products')
 }
 
 
