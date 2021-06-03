@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
+// importing cart
+const Cart = require('./cart');
+
 const p = path.join(
   path.dirname(require.main.filename),
   'data',
@@ -57,6 +60,37 @@ module.exports = class Product {
       }
     });
   }
+
+  // deleting the product from the list
+  static deleteById(id){
+    // getting all the products
+    getProductsFromFile(products=>{
+      const product = products.find(prod=>{
+        if(prod.id===id){
+          return prod
+        }
+      })
+      // the other way to do it is to filter the array
+      // we want to keep all the product that don't have the same id as the
+      // product we passed into this method
+      const updatedProducts = products.filter(prod=>{
+        if(prod.id !== id){
+          // returning all the product that dont have the same id
+          return prod;
+        }
+      });
+      // rewriting the file, but filling it with the filtered products
+      fs.writeFile(p, JSON.stringify(updatedProducts), err=>{
+        if(!err){
+          // if the item is deleted from the list,
+          // it should be deleted from cart too!
+          Cart.deleteProduct(id, product.price);
+        }
+        console.log(err);
+      })
+    })
+  }
+
 
   static fetchAll(cb) {
     getProductsFromFile(cb);

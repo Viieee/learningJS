@@ -82,4 +82,36 @@ module.exports = class Cart {
             })
         })
     }
+
+    // deleting the product from the cart
+    static deleteProduct(id, productPrice){
+        // read the cart file
+        fs.readFile(p, (err, fileContent)=>{
+            if(err){
+                // if theres nothing on the cart, don't do anything.
+                return;
+            }
+            // updating the cart
+            const updatedCart = {...JSON.parse(fileContent)};
+            // finding out how much of the product we have in the cart
+            const product = updatedCart.products.find(prod=>{
+                if(prod.id===id){
+                    return prod;
+                }
+            });
+            const productQty = product.qty;
+            updatedCart.products = updatedCart.products.filter(prod=>{
+                if(prod.id !== id){
+                    return prod;
+                }
+            })
+            // decreasing cart total price
+            updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQty;
+
+            fs.writeFile(p, JSON.stringify(updatedCart), err=>{
+                console.log(err)
+            })
+        })
+    }
+
 }
