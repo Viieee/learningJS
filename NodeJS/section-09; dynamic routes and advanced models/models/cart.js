@@ -99,6 +99,13 @@ module.exports = class Cart {
                     return prod;
                 }
             });
+
+            // if product that wanted to be deleted doesn't exist in cart
+            // because in product admin, we will execute this deleteProduct function too!
+            if(!product){
+                return;
+            }
+
             const productQty = product.qty;
             updatedCart.products = updatedCart.products.filter(prod=>{
                 if(prod.id !== id){
