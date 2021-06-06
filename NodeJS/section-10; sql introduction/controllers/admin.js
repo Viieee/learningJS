@@ -41,8 +41,13 @@ exports.postAddProduct = (req, res, next) => {
   // making an object from input fields
   const product = new Product(null, title, imageUrl, description, price); // the first argument is null, because we want to add new product and therefore don't have an id yet for that product
   // saving the data into a file
-  product.save();
-  res.redirect('/');
+  product.save()
+  .then(()=>{
+    res.redirect('/');
+  })
+  .catch(err=>{
+    console.log(err)
+  });
 };
 
 // getting product to edit

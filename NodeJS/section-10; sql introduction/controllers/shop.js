@@ -15,17 +15,20 @@ exports.getProducts = (req, res, next) => {
   });
 };
 
+// getting the details of one product
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId; // productId is the url path name in router
-  Product.findById(prodId, product=>{
-    // console.log(product);
+  Product.findById(prodId)
+  .then(([product]) => {
     res.render('shop/product-detail', {
-      pageTitle: product.title,
-      path: '/products',
-      product: product
+      product: product[0],
+      pageTitle: product[0].title,
+      path: '/products'
     })
   })
-  // res.redirect('/');
+  .catch(err=>{
+    console.log(err)
+  })
 };
 
 exports.getIndex = (req, res, next) => {
