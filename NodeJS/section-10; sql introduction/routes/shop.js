@@ -10,16 +10,19 @@ router.get('/', shopController.getIndex);
 
 router.get('/products', shopController.getProducts);
 
-router.get('/products/:productId', shopController.getProduct);
+router.get('/products/:productId', shopController.getProduct); // dynamic route with ':',
+                                                               // dynamic route should be last 
+                                                               // in the code order
 
 router.get('/cart', shopController.getCart);
 
 router.post('/cart', shopController.postCart);
 
-router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+router.post('/cart-delete-item', shopController.postCartDelete)
 
 router.get('/orders', shopController.getOrders);
 
 router.get('/checkout', shopController.getCheckout);
+
 
 module.exports = router;
