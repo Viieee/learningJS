@@ -49,14 +49,25 @@ exports.postAddProduct = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
     // checking query params (extra data on the url)
   const editMode = req.query.edit;
+  // if the edit params dont contain true 
+  // we will be redirected 
   if(!editMode){
     res.redirect('/')
   }
+  // productId is the name attribute from hidden value we stored in url
   const prodId = req.params.productId;
+  // finding the product by id
+  // product parameter in the callback function (second argument)
+  // is the value of filtered product that has the same if as the id we just recieve from 
+    // hidden input tag in ejs file
   Product.findById(prodId, product=>{
+    // if the product doesn't exist, we will be redirected
     if(!product){
       return res.redirect('/')
     }
+    // rendering the ejs file
+    // first parameter is the path to the ejs file
+    // second data is the additional data to be dynamically used in the ejs files
     res.render('admin/edit-product', {
       pageTitle: 'Edit Product',
       path: '/admin/edit-product',
@@ -82,12 +93,11 @@ exports.postEditProduct = (req, res, next) =>{
   res.redirect('/admin/products')
 }
 
-
-
-
 // deleting product
 exports.postDeleteProduct = (req, res, next) =>{
-  const prodId = req.body.productId;
+  // the id retrieved from hidden input tag
+  const prodId = req.body.productId; // productId is the name attribute in the input tag
+  // deleting the product based on the id
   Product.deleteById(prodId);
   res.redirect('/admin/products')
 }
