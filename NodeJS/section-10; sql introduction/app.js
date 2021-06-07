@@ -11,7 +11,8 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item')
-
+const Order = require('./models/order')
+const OrderItem = require('./models/order-item');
 
 const app = express();
 
@@ -23,7 +24,6 @@ const shopRoutes = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 // adding new middleware
 app.use((req,res,next)=>{
     // this will be executed if we done with server initialization
@@ -47,34 +47,29 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-// relating models
-    // a user created the product
-    // one(user) to many(product)
+
 Product.belongsTo(User, {
     constraints: true,
     onDelete: 'CASCADE'
 }); 
-    // or and
 User.hasMany(Product);
 
-    // a user and cart
-    // one(user) to one (cart)
 User.hasOne(Cart);
 Cart.belongsTo(User);
 
-    // many(products) to many(cart)
-    // need intermediate table that stores both the id of the products and the carts
-    // CartItem will be the intermediate table
-Product.belongsToMany(Cart, {through: CartItem});
+Product.belongsToMany(Cart, { through: CartItem });
 Cart.belongsToMany(Product, { through: CartItem });
 
+// one to many
+Order.belongsTo(User)
+User.hasMany(Order)
+
+// many to many
+Order.belongsToMany(Product, {through: OrderItem});
 
 
-// lookin at all the models defined and creates tables for them
-// sequelize.sync({force: true})
 sequelize.sync()
 .then(result=>{
-    // listening to the result / what we get as a response
     return User.findByPk(1);
 })
 .then(user=>{
@@ -87,7 +82,6 @@ sequelize.sync()
     return Promise.resolve(user);
 })
 .then(user => {
-    // creating cart for the user
     return user.createCart();
 })
 .then(result=>{
