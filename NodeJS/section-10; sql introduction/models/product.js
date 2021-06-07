@@ -1,36 +1,36 @@
-// importing the pool
-const db = require('../util/database');
+// importing sequelize 
+const Sequelize = require('sequelize');
 
-// importing cart
-const Cart = require('./cart');
+const sequelize = require('../util/database');
 
-module.exports = class Product {
-  constructor(id, title, imageUrl, description, price) {
-    this.id = id;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
+// defining model
+const Product = sequelize.define('product', {
+  // attribute/fields of the model
+  id:{
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  // you can also just define the type
+  // title: Sequelize.STRING
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
+});
 
-  save() {
-    // saving the data into the database
-    // using ? in values to avoid sql injection
-    return db.execute('INSERT INTO products (title, price, imageUrl, description) VALUES (?,?,?,?)',
-    [this.title, this.price, this.imageUrl, this.description]);
-  }
-
-  static deleteById(id){
-    
-  }
-
-  // fetcing all items
-  static fetchAll() {
-    return db.execute('SELECT * FROM products');
-  }
-
-  static findById(id){
-    return db.execute('SELECT * FROM products WHERE products.id = ?',
-    [id])
-  }
-};
+// exporting the Product model
+module.exports = Product;
