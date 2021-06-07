@@ -50,6 +50,7 @@ exports.postAddProduct = (req, res, next) => {
   })
   .then(result =>{
     console.log('Created Product');
+    res.redirect('/admin/products')
   })
   .catch(err=>{
     console.log(err)
@@ -68,10 +69,8 @@ exports.getEditProduct = (req, res, next) => {
   // productId is the name attribute from hidden value we stored in url
   const prodId = req.params.productId;
   // finding the product by id
-  // product parameter in the callback function (second argument)
-  // is the value of filtered product that has the same if as the id we just recieve from 
-    // hidden input tag in ejs file
-  Product.findById(prodId, product=>{
+  Product.findByPk(prodId)
+  .then(product => {
     // if the product doesn't exist, we will be redirected
     if(!product){
       return res.redirect('/')
@@ -86,6 +85,9 @@ exports.getEditProduct = (req, res, next) => {
       product: product
     });
   })
+  .catch(err=>{
+    console.log(err);
+  })
 };
 
 // posting the edited data
@@ -97,11 +99,25 @@ exports.postEditProduct = (req, res, next) =>{
   const updatedImageUrl = req.body.imageUrl;
   const updatedPrice = req.body.price;
   const updatedDescription = req.body.description;
-  // create new product instance
-  const updatedProd = new Product (prodId, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice);
-  // save
-  updatedProd.save();
-  res.redirect('/admin/products')
+
+  Product.findByPk(prodId)
+  .then(product=>{
+    product.title = updatedTitle;
+    product.price = updatedPrice;
+    product.imageUrl = updatedImageUrl;
+    product.description = updatedDescription;
+    // saving the data back to the database
+    return product.save();
+  })
+  .then(result => {
+    // handling all the returned value from previous then method
+    console.log('Product Updated!!');
+    res.redirect('/admin/products')
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+
 }
 
 // deleting product
@@ -109,6 +125,16 @@ exports.postDeleteProduct = (req, res, next) =>{
   // the id retrieved from hidden input tag
   const prodId = req.body.productId; // productId is the name attribute in the input tag
   // deleting the product based on the id
-  Product.deleteById(prodId);
-  res.redirect('/admin/products')
+  Product.findByPk(prodId)
+  .then(product=>{
+    // deleting the product
+    return product.destroy();
+  })
+  .then(result => {
+    console.log('product deleted!!')
+    res.redirect('/admin/products')
+  })
+  .catch(err=>{
+    console.log(err)
+  })
 }
