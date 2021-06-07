@@ -15,9 +15,9 @@ exports.getAddProduct = (req, res, next) => {
 
 // getting all the products
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll(products => { // the products parameter is passed on from the getProductsFromFile
-                                // it's either an empty array if the file doesn't exist yet
-                                // or it will passed in all the parsed data in form of an array
+  // getting all the records using sequelize 
+  Product.findAll()
+  .then(products=>{
     // rendering the ejs file
     // first parameter is the path to the ejs file
     // second data is the additional data to be dynamically used in the ejs files
@@ -27,7 +27,10 @@ exports.getProducts = (req, res, next) => {
       pageTitle: 'Admin Products',
       path: '/admin/products'
     });
-  });
+  })
+  .catch(err=>{
+    console.log(err);
+  })
 };
 
 // adding product

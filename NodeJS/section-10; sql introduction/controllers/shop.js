@@ -2,48 +2,53 @@ const Product = require('../models/product');
 const Cart = require('../models/cart')
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-  .then(([rows, fieldData])=>{
+  // getting all the records using sequelize 
+  Product.findAll()
+  .then(products=>{
     res.render('shop/product-list', {
-      prods: rows, // products
+      prods: products, // products
       pageTitle: 'All Products',
       path: '/products'
     });
   })
   .catch(err=>{
     console.log(err);
-  });
+  })
 };
 
 // getting the details of one product
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId; // productId is the url path name in router
-  Product.findById(prodId)
-  .then(([product]) => {
+  Product.findByPk(prodId) // findByPk is replacing findById in sequelize
+  .then((product) => {
     res.render('shop/product-detail', {
-      product: product[0],
-      pageTitle: product[0].title,
+      product: product,
+      pageTitle: product.title,
       path: '/products'
     })
   })
   .catch(err=>{
     console.log(err)
   })
+
+  // we can also use findAll() method and setting some restriction in it (using where syntax)
 };
 
+// getting all the data in index html page
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-  .then(([rows, fieldData])=>{
-    // rows contain all the product
+  // getting all the records using sequelize 
+  Product.findAll()
+  .then(products=>{
     res.render('shop/index', {
-      prods: rows, // products
+      // additional data to be dynamically used in the ejs files
+      prods: products,
       pageTitle: 'Shop',
       path: '/'
     });
   })
   .catch(err=>{
     console.log(err);
-  });
+  })
 };
 
 exports.getCart = (req, res, next) => {
