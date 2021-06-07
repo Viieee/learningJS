@@ -1,9 +1,10 @@
 // importing sequelize 
 const Sequelize = require('sequelize');
 
+// importing the database connection pool
 const sequelize = require('../util/database');
 
-// defining model
+// defining product model
 const Product = sequelize.define('product', {
   // attribute/fields of the model
   id:{
@@ -12,8 +13,8 @@ const Product = sequelize.define('product', {
     allowNull: false,
     primaryKey: true
   },
-  // you can also just define the type
-  // title: Sequelize.STRING
+    // you can also just define the type
+    // title: Sequelize.STRING
   title: {
     type: Sequelize.STRING,
     allowNull: false
