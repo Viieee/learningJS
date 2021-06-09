@@ -139,7 +139,6 @@ sequelize
     return user.createCart();
   })
   .then(cart => {
-    console.log(cart)
     // after all previous then methods finsihed, we start the server.
     app.listen(3000);
   })
