@@ -8,7 +8,7 @@ let _db;
 
 // using the client to connect the app to the mongoDb database
 const mongoConnect = (callback) =>{
-  MongoClient.connect('mongodb+srv://vie:pass123.@cluster0.kbsee.mongodb.net/shop?retryWrites=true&w=majority')
+  MongoClient.connect('mongodb+srv://vie:pass123@cluster0.kbsee.mongodb.net/shop?retryWrites=true&w=majority')
   .then(result=>{
     console.log('connected!')
     // storing the connection to the database
@@ -17,6 +17,7 @@ const mongoConnect = (callback) =>{
   })
   .catch(err=>{
     console.log(err)
+    throw err;
   })
 }
 

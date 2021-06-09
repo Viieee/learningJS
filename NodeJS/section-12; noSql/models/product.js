@@ -22,7 +22,7 @@ class Product {
     // insertMany() will take an array of objects
 
     // in this case we want to insert the object we created through this class
-    db.collection('products').insertOne(this)
+    return db.collection('products').insertOne(this)
     .then(result=>{
       console.log(result)
     })

@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // making middleware to store the current user logged in
 // this middleware will execute once we're done with the server initialization
 app.use((req, res, next) => {
-
+  next()
 });
 
 // using imported middleware to manage access into urls in the app
