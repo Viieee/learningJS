@@ -3,6 +3,7 @@ const getDb = require('../util/database').getDb;
 
 class Product {
   constructor(title, price, imageUrl, description){
+    // data we want to recieve when we initialize this class to make an object
     this.title = title
     this.price = price
     this.imageUrl = imageUrl
@@ -54,6 +55,12 @@ class Product {
     .catch(err=>{
       console.log(err)
     })
+  }
+
+  static findById(id){
+    const db = getDb();
+    return db.collection('products')
+    .find({_id: id})
   }
   
 }
