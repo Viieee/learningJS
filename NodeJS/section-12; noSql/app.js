@@ -22,7 +22,7 @@ app.set('views', 'views');
 
 // importing the router files
 const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const shopRoutes = require('./routes/shop');
 
 // parsing the body of the request sent through a form using body parser package
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 
 // using imported middleware to manage access into urls in the app
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 
 // middleware that will execute when user trying to access invalid urls
 app.use(errorController.get404);

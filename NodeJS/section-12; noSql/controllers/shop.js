@@ -1,25 +1,34 @@
 // importing the product model
 const Product = require('../models/product');
 
+
+// exporting the getIndex method 
+// this method will execute when we accessing the default url /
+// we want to fetch all the data in product database and passing it into the ejs file
+exports.getIndex = (req, res, next) => {
+  Product.fetchAll()
+    .then(products => {
+      res.render('shop/index', {
+        prods: products, // its an array
+        pageTitle: 'Shop',
+        path: '/'
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+
 // exporting getProducts method
 // this method will execute when we accessing /products url
 // the main purpose of this method is to fetch all data in product table
   // and passing all the data into the ejs file
 exports.getProducts = (req, res, next) => {
-  // findAll is a default method provided by sequelize
-  // it will fetched all data in the Product table
-  // the data fetched will be passed into then method
-  Product.findAll()
+  Product.fetchAll()
     .then(products => {
-      // product in the parameter is the value passed from findAll method
-      // it contains all the products in the product table
-        // in form of an array
-      // after we fetched all the data
-      // we render the ejs file views/shop/product-list
       res.render('shop/product-list', {
-        // this is all the data we will passed onto the ejs file
-          // so the ejs file can use dynamic data
-        prods: products, // products are an array of product objects 
+        prods: products,
         pageTitle: 'All Products',
         path: '/products'
       });
@@ -50,23 +59,6 @@ exports.getProduct = (req, res, next) => {
       });
     })
     .catch(err => console.log(err));
-};
-
-// exporting the getIndex method 
-// this method will execute when we accessing the default url /
-// we want to fetch all the data in product database and passing it into the ejs file
-exports.getIndex = (req, res, next) => {
-  Product.findAll()
-    .then(products => {
-      res.render('shop/index', {
-        prods: products, // its an array
-        pageTitle: 'Shop',
-        path: '/'
-      });
-    })
-    .catch(err => {
-      console.log(err);
-    });
 };
 
 // exporting the getCart method

@@ -13,21 +13,18 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  req.user
-    .createProduct({
-      title: title,
-      price: price,
-      imageUrl: imageUrl,
-      description: description
-    })
-    .then(result => {
-      // console.log(result);
-      console.log('Created Product');
-      res.redirect('/admin/products');
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  // making an object from fetched data
+  const product = new Product(title, price, imageUrl, description)
+  // calling save method in product model
+  product.save()
+  .then(result=>{
+    // result is the value returned from save method
+    console.log('product created!')
+    res.redirect('/admin/products')
+  })
+  .catch(err=>{
+    console.log(err)
+  })
 };
 
 // exports.getEditProduct = (req, res, next) => {
