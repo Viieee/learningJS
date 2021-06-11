@@ -128,7 +128,26 @@ class User {
     
   }
 
+  deleteItemFromCart(id){
+    // const updatedCartItems = [...this.cart.items]
+    const updatedCartItems = this.cart.items.filter(item=>{
+      // keeping all the product that dont match the id passed onto this method
+      return item.productId.toString() !== id.toString();
+    })
 
+    const db = getDb();
+
+    return db
+    .collection('users')
+    .updateOne(
+      {_id: new mongodb.ObjectId(this._id)},
+      {$set: {
+        // only updating the value in cart field
+        cart: {items: updatedCartItems}
+      }}
+    )
+
+  }
   
 
   static findById(id){

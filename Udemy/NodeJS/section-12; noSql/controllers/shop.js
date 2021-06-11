@@ -95,78 +95,11 @@ exports.postCart = (req, res, next) => {
   })
   .then(result=>{
     console.log(result)
+    res.redirect('/cart')
   })
   .catch(err=>{
     console.log(err)
   })
-
-  // // later will store user's cart, so we can use it anywhere else in this method
-  // let fetchedCart;
-  // // the default quantity, for freshly added product
-  // let newQuantity = 1;
-  // // getting user's cart
-  // req.user
-  //   .getCart()
-  //   .then(cart => {
-  //     // then storing the cart into fetchedCart
-  //     fetchedCart = cart;
-  //     // getting the product with the same id as prodId
-  //     // this process is to see whether the item that we just added
-  //       // already exist on the cart or not
-  //       // if yes then it will returned an array with only the product being the value in it
-  //       // if no then it will return undefined
-  //     // then returning it so we can deal with it 
-  //     // on the next then method
-  //     return cart.getProducts({ where: { id: prodId } });
-  //   })
-  //   .then(products => { 
-  //     // products is the product fetched in previous then method
-
-  //     // product will store the product later
-  //     // because even though we will only fetching 1 data from the previous then method
-  //       // it still returning an array
-  //     // so this variable will store the value indexed 0
-  //     let product;
-  //     if (products.length > 0) {
-  //       product = products[0];
-  //     }
-
-  //     // if product already exist in the cart,  the product varible will contain the product object (truthy)
-  //     // if product isn't in the cart yet, the product variable will contain undefined (falsy)
-
-  //     if (product) {
-  //       // if product contain truthy value
-  //       // this will execute
-
-  //       // extracting the old quantity of the product
-  //       const oldQuantity = product.cartItem.quantity;
-  //       // adding the old quantity and storing it to newQuantity
-  //       newQuantity = oldQuantity + 1;
-  //       // returning the product so we can deal with it later in the next then method
-  //       return product;
-  //     }
-
-  //     // if the product variable contain falsy value
-  //     // then we returning a product from products table with the same id as prodId
-  //     // so we can deal with it later in the next then method
-  //     return Product.findByPk(prodId);
-  //   })
-  //   .then(product => {
-  //     // we adding a new product into our cart 
-  //     // but later it won't be stored in the cart table but in the intermediary table
-  //       // which is cartItem table
-  //     // because cartItem table has more attribute than cart (in this case quantity attribute)
-  //     return fetchedCart.addProduct(product, {
-  //       through: { quantity: newQuantity } // passing data into the extra attribute of the intermediary table
-  //                                         // using through key
-  //     });
-  //   })
-  //   .then(() => {
-  //     // after all previous then methods is done
-  //     // we redirect to cart page
-  //     res.redirect('/cart');
-  //   })
-  //   .catch(err => console.log(err));
 };
 
 // exporting the postCartDeleteProduct
@@ -176,31 +109,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   // getting user's cart
   req.user
-    .getCart()
-    .then(cart => {
-      // then getting the product in cart
-      // because the relation between product and cart are many to many,
-        // we're using getProducts which will get all the products in cart
-        // but we will later filter it by adding argument to it 
-        // in form of an object where the id is the same as the prodId
-      // this operation will return a product with the same id as the prodId
-        // in the form of an array still
-      // then we will return the value so we can deal with it later in the next then method
-      return cart.getProducts({ where: { id: prodId } });
-    })
-    .then(products => {
-      //  products is an array that contain only the product we're looking for
-      // because we have filtered it in the previous then method
-      // but its still an array so we need to redistribute the first and only value
-        // of the array 
-      const product = products[0];
-      // then we use destroy to delete the item from cart
-      // product.cartItem is used here because our intention in this then method is to delete the product inside of the cart
-        // and because product and cart have many to many relationship, we're using an intermediary table (in this case it's called cartItem)
-        // thats why in order to delete the table from cart we need to access the product we want to delete in the intermediary table
-      // this line of code means => we want to return the product we've filtered on the cartItem table
-      return product.cartItem.destroy();
-    })
+    .deleteItemFromCart(prodId)
     .then(result => {
       // after all the operations in the previous then methods is done
       // we redirecting to cart page
