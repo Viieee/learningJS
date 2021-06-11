@@ -150,9 +150,15 @@ class User {
   }
   
   // getting all the orders into the page
+  // we want to get all the orders based on the user
   getOrders(){
     // accessing database
-    // const 
+    const db = getDb();
+    return db.collection('orders')
+    // this will look for _id in user property of orders
+      // which holds an embedded document
+    .find({'user._id': new mongodb.ObjectId(this._id)})
+    .toArray()
   }
 
 

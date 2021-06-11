@@ -137,8 +137,7 @@ exports.postOrder = (req, res, next) => {
 exports.getOrders = (req, res, next) => {
   // getting user's order
   req.user
-    .getOrders({include: ['products']}) // we including a data with a field product, became products because it has many to many relations with order
-                                        // this tells sequelize 'hey if you fetching all the orders data, please also fetch all the related product data too'
+    .getOrders()
     .then(orders => {
       // because we including the product table in the getOrders method
       // we're getting all the data in orderItems table and product table as extra data with it
