@@ -25,6 +25,46 @@ class User {
     })
   }
 
+
+  // fetching the data in cart and displaying it
+  getCart(){
+    // we want to return the cart items
+    // so later in the shop.js controller we can send the data to the ejs file
+    // and in this case we can just do it like this
+    // return this.cart;
+    // but we dont want to do that, we also want to send the product detail with the cart 
+    // because right now, we only have the id of each product in the cart collection
+    
+    // getting access to the database
+    const db = getDb();
+    // the ids
+    // cart.items is an array of objects containing product id and the quantity in the cart
+    // we want to map all the ids of the items in the cart
+    const productIds = this.cart.items.map(item =>{
+      return item.productId
+    });
+    return db.collection('products')
+    // we want to find all the product that exist in cart
+    .find({_id: {
+      $in: productIds // array of ids, we will get back a cursor which hold references to 
+                      // all products with the id mentioned in the array
+    }})
+    .toArray() // converting the cursor to an array
+    .then(products=>{
+      // getting all the product
+      return products.map(p =>{
+        // mapping every item in the array
+        // and executing this function on every single item in it
+        // and giving extra data to it in quantity field
+        return {...p, quantity: this.cart.items.find(i=>{
+            // this will return the product object
+            return i.productId.toString()===p._id.toString();
+          }).quantity // this will make sure that we get the quantity of the product object
+        }
+      })
+    })
+  }
+
   // adding product to cart
   addToCart(product){
     // finding whether the product is already in the cart or not

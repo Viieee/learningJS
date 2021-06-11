@@ -71,21 +71,14 @@ exports.getCart = (req, res, next) => {
   // getting the cart of user
   req.user
     .getCart()
-    .then(cart => {
-      // then we getting all the products in the cart
-      console.log(cart)
-      return cart
-        .getProducts()
-        .then(
-          // then we render all the products in the cart and passing the products data into the ejs file
-          products => {
-          res.render('shop/cart', {
-            path: '/cart',
-            pageTitle: 'Your Cart',
-            products: products // its an array of product objects
-          });
-        })
-        .catch(err => console.log(err));
+    .then(
+      // then we render all the products in the cart and passing the products data into the ejs file
+      products => {
+      res.render('shop/cart', {
+        path: '/cart',
+        pageTitle: 'Your Cart',
+        products: products // its an array of product objects
+      });
     })
     .catch(err => console.log(err));
 };
