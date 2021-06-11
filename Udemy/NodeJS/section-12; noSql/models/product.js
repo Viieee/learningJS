@@ -4,35 +4,67 @@ const mongodb = require('mongodb')
 const getDb = require('../util/database').getDb;
 
 class Product {
-  constructor(title, price, imageUrl, description){
+  constructor(title, price, imageUrl, description, id){
     // data we want to recieve when we initialize this class to make an object
     this.title = title
     this.price = price
     this.imageUrl = imageUrl
     this.description = description
+    // optional
+    this._id = id
   }
 
   // saving the object created with this class to database
   save(){
     // get access to the database
     const db = getDb();
-    // telling mongoDb which collection you want to work with
-    // if its not exist then it will be created
+    // containing operation we're doing in this method
+    let dbOp;
 
-    // you can insert data with insertOne() or insertMany()
-    // insertOne() will take an object 
-    // db.collection('products').insertOne({name: 'A Book', price: 99})
-    // insertMany() will take an array of objects
+    // checking if the _id is being passed on when we initialize this class
+    // that means we want to edit an existing product not adding new one
+    if(this._id){
+      // editing product
+      // we want to update one document in products collection that has the same id as the id we recieved on this class initialization
+        // 
+      dbOp = db.collection('products')
+      .updateOne(
+        {_id: new mongodb.ObjectId(this._id)},
+        {$set: this}
+        // or 
+        // {$set: {
+        //   title: this.title,
+        //   price: this.price,
+        //   imageUrl: this.imageUrl,
+        //   description: this.description
+        // }}
+      )
+    }else{
+      // adding new product
 
-    // in this case we want to insert the object we created through this class
+      // telling mongoDb which collection you want to work with
+      // if its not exist then it will be created
+      // you can insert data with insertOne() or insertMany()
+      // insertOne() will take an object 
+      // db.collection('products').insertOne({name: 'A Book', price: 99})
+      // insertMany() will take an array of objects
+
+      // in this case we want to insert the object we created through this class
+      // then we want to store the operation in the dbOp
+      dbOp = db.collection('products').insertOne(this)
+    }
+
     // then returning it to give the caller some value
-    return db.collection('products').insertOne(this)
+    return dbOp
     .then(result=>{
       console.log(result)
     })
     .catch(err=>{
       console.log(err)
     })
+
+    
+    
   }
 
   // interact with the mongoDB to fetch all products
