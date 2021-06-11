@@ -125,39 +125,7 @@ exports.postOrder = (req, res, next) => {
   let fetchedCart;
   // fetching the user's cart 
   req.user
-    .getCart()
-    .then(cart => {
-      // storing the cart we get from getCart to fetchedCart so we can reuse it later
-      fetchedCart = cart;
-      // getting all the products in the cart
-      return cart.getProducts();
-    })
-    .then(products => {
-      // after we getting all the products in the cart
-      // were making an order in the name of the user
-      // it will return an order
-      return req.user
-        .createOrder()
-        .then(order => {
-          // we're gonna add all the products we get from the cart to order
-          return order.addProducts(
-            // mapping  all the value in the products array
-              // and executing a callback funtion to each value inside of the array
-            products.map(product => {
-              // to each product
-              product.orderItem = { quantity: product.cartItem.quantity }; // adding extra data into intermediary table between order and product
-                                                                           // we adding product's quantity on cart and that quantity is stored in other intermeidary table in cartItem table 
-              return product; // retuning the product
-            })
-          );
-        })
-        .catch(err => console.log(err));
-    })
-    .then(result => {
-      // after the products in cart successfully moved to order table
-      // we removing all the products in cart
-      return fetchedCart.setProducts(null);
-    })
+    .addOrder()
     .then(result => {
       // then after all operations is done
       // we redirect to /orders

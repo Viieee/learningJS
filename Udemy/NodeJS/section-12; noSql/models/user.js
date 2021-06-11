@@ -149,6 +149,48 @@ class User {
 
   }
   
+  // getting all the orders into the page
+  getOrders(){
+    // accessing database
+    // const 
+  }
+
+
+  // adding order to user
+  // or the other way around
+  // you can also store the orders on a new collection if you have huge list of it
+  addOrder(){
+    // getting access to database
+    const db = getDb();
+    return this.getCart()
+    .then(products=>{
+      // we getting the products in cart
+      // the order structure
+      const order = {
+        items: products, // all products in cart + the quantity
+        user:{
+          _id: new mongodb.ObjectId(this._id),
+          name: this.name
+        }
+      }
+      // accessing orders collection
+      return db.collection('orders')
+      .insertOne(order) // we're inserting the cart we made in this class to orders collection
+    })
+    .then(result=>{
+      this.cart = {items: []} // emptying the cart object
+      return db
+      .collection('users')
+      .updateOne(
+        {_id: new mongodb.ObjectId(this._id)},
+        {$set: {
+          // making the value in cart collection into null 
+          cart: {items: []}
+        }}
+      )
+    })
+  }
+
 
   static findById(id){
     // get access to the database
