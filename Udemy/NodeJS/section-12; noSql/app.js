@@ -34,9 +34,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // making middleware to store the current user logged in
 // this middleware will execute once we're done with the server initialization
 app.use((req, res, next) => {
-  User.findById('60c2cd425f79522ca5cf57f7')
+  User.findById('60c2e2de5f79522ca5cf57f8')
   .then(user=>{
-    req.user = user
+    req.user = new User(user.name, user.email, user.cart, user._id)
     next();
   })
   .catch(err=>{

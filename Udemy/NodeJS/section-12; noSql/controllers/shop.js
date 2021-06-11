@@ -95,73 +95,85 @@ exports.getCart = (req, res, next) => {
 exports.postCart = (req, res, next) => {
   // fetching product id from hidden input tag in the ejs file
   const prodId = req.body.productId;
-  // later will store user's cart, so we can use it anywhere else in this method
-  let fetchedCart;
-  // the default quantity, for freshly added product
-  let newQuantity = 1;
-  // getting user's cart
-  req.user
-    .getCart()
-    .then(cart => {
-      // then storing the cart into fetchedCart
-      fetchedCart = cart;
-      // getting the product with the same id as prodId
-      // this process is to see whether the item that we just added
-        // already exist on the cart or not
-        // if yes then it will returned an array with only the product being the value in it
-        // if no then it will return undefined
-      // then returning it so we can deal with it 
-      // on the next then method
-      return cart.getProducts({ where: { id: prodId } });
-    })
-    .then(products => { 
-      // products is the product fetched in previous then method
 
-      // product will store the product later
-      // because even though we will only fetching 1 data from the previous then method
-        // it still returning an array
-      // so this variable will store the value indexed 0
-      let product;
-      if (products.length > 0) {
-        product = products[0];
-      }
+  Product.findById(prodId)
+  .then(product=>{
+    return req.user.addToCart(product);
+  })
+  .then(result=>{
+    console.log(result)
+  })
+  .catch(err=>{
+    console.log(err)
+  })
 
-      // if product already exist in the cart,  the product varible will contain the product object (truthy)
-      // if product isn't in the cart yet, the product variable will contain undefined (falsy)
+  // // later will store user's cart, so we can use it anywhere else in this method
+  // let fetchedCart;
+  // // the default quantity, for freshly added product
+  // let newQuantity = 1;
+  // // getting user's cart
+  // req.user
+  //   .getCart()
+  //   .then(cart => {
+  //     // then storing the cart into fetchedCart
+  //     fetchedCart = cart;
+  //     // getting the product with the same id as prodId
+  //     // this process is to see whether the item that we just added
+  //       // already exist on the cart or not
+  //       // if yes then it will returned an array with only the product being the value in it
+  //       // if no then it will return undefined
+  //     // then returning it so we can deal with it 
+  //     // on the next then method
+  //     return cart.getProducts({ where: { id: prodId } });
+  //   })
+  //   .then(products => { 
+  //     // products is the product fetched in previous then method
 
-      if (product) {
-        // if product contain truthy value
-        // this will execute
+  //     // product will store the product later
+  //     // because even though we will only fetching 1 data from the previous then method
+  //       // it still returning an array
+  //     // so this variable will store the value indexed 0
+  //     let product;
+  //     if (products.length > 0) {
+  //       product = products[0];
+  //     }
 
-        // extracting the old quantity of the product
-        const oldQuantity = product.cartItem.quantity;
-        // adding the old quantity and storing it to newQuantity
-        newQuantity = oldQuantity + 1;
-        // returning the product so we can deal with it later in the next then method
-        return product;
-      }
+  //     // if product already exist in the cart,  the product varible will contain the product object (truthy)
+  //     // if product isn't in the cart yet, the product variable will contain undefined (falsy)
 
-      // if the product variable contain falsy value
-      // then we returning a product from products table with the same id as prodId
-      // so we can deal with it later in the next then method
-      return Product.findByPk(prodId);
-    })
-    .then(product => {
-      // we adding a new product into our cart 
-      // but later it won't be stored in the cart table but in the intermediary table
-        // which is cartItem table
-      // because cartItem table has more attribute than cart (in this case quantity attribute)
-      return fetchedCart.addProduct(product, {
-        through: { quantity: newQuantity } // passing data into the extra attribute of the intermediary table
-                                          // using through key
-      });
-    })
-    .then(() => {
-      // after all previous then methods is done
-      // we redirect to cart page
-      res.redirect('/cart');
-    })
-    .catch(err => console.log(err));
+  //     if (product) {
+  //       // if product contain truthy value
+  //       // this will execute
+
+  //       // extracting the old quantity of the product
+  //       const oldQuantity = product.cartItem.quantity;
+  //       // adding the old quantity and storing it to newQuantity
+  //       newQuantity = oldQuantity + 1;
+  //       // returning the product so we can deal with it later in the next then method
+  //       return product;
+  //     }
+
+  //     // if the product variable contain falsy value
+  //     // then we returning a product from products table with the same id as prodId
+  //     // so we can deal with it later in the next then method
+  //     return Product.findByPk(prodId);
+  //   })
+  //   .then(product => {
+  //     // we adding a new product into our cart 
+  //     // but later it won't be stored in the cart table but in the intermediary table
+  //       // which is cartItem table
+  //     // because cartItem table has more attribute than cart (in this case quantity attribute)
+  //     return fetchedCart.addProduct(product, {
+  //       through: { quantity: newQuantity } // passing data into the extra attribute of the intermediary table
+  //                                         // using through key
+  //     });
+  //   })
+  //   .then(() => {
+  //     // after all previous then methods is done
+  //     // we redirect to cart page
+  //     res.redirect('/cart');
+  //   })
+  //   .catch(err => console.log(err));
 };
 
 // exporting the postCartDeleteProduct
