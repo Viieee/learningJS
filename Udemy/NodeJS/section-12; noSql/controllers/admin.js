@@ -1,7 +1,4 @@
 const Product = require('../models/product');
-// importing mongodb
-const mongodb = require('mongodb')
-
 
 // getting all the products in admin products page
 exports.getProducts = (req, res, next) => {
@@ -83,7 +80,7 @@ exports.postEditProduct = (req, res, next) => {
     updatedPrice,
     updatedImageUrl,
     updatedDesc,
-    new mongodb.ObjectId(prodId)
+    prodId
   )
 
   product.save()

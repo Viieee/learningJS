@@ -11,7 +11,7 @@ class Product {
     this.imageUrl = imageUrl
     this.description = description
     // optional
-    this._id = id
+    this._id = mongodb.ObjectId(id)
   }
 
   // saving the object created with this class to database
@@ -26,10 +26,10 @@ class Product {
     if(this._id){
       // editing product
       // we want to update one document in products collection that has the same id as the id we recieved on this class initialization
-        // 
       dbOp = db.collection('products')
       .updateOne(
-        {_id: new mongodb.ObjectId(this._id)},
+        {_id: this._id},
+        // this $set key is the syntax used to edit in mongo (its called update operator in google)
         {$set: this}
         // or 
         // {$set: {
