@@ -1,3 +1,5 @@
+// importing mongoDB
+const mongodb = require('mongodb')
 // importing access to the database
 const getDb = require('../util/database').getDb;
 
@@ -49,7 +51,6 @@ class Product {
       // what we get in this then method is the documents/record/data from the collection 
       // we defined in the collection method in the beginning 
       // that have been converted into an array
-      console.log(products)
       return products;
     })
     .catch(err=>{
@@ -58,9 +59,28 @@ class Product {
   }
 
   static findById(id){
+    // getting access to the database
     const db = getDb();
-    return db.collection('products')
-    .find({_id: id})
+    // we are gonna return a value fetched from products collection
+    // and we're trying to find one document with the id the same as the one passed onto this
+      // method when called
+    return db
+    .collection('products')
+    .find({_id: new mongodb.ObjectId(id)}) // finding the document with the id the same as the argument of this method
+                                       // this find method will return a cursor
+                                       // the ObjectId method that wrap our id is tasked to convert our id (which in string)
+                                       // into object id
+                                       // why?
+                                       // because mongodb is using bson (a special type of json) and 
+                                       // comparing the id in mongo with just regular string will yield null 
+    .next() // fetching the last (in this case the only one) document from the cursor
+    .then(product=>{
+      console.log('find by id' + product)
+      return product;
+    })
+    .catch(err=>{
+      console.log(err)
+    })
   }
   
 }

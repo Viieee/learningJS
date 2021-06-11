@@ -48,7 +48,7 @@ exports.getProduct = (req, res, next) => {
 
   // searching the product with the id of prodId
   // the returned value will be passed onto the then method
-  Product.findByPk(prodId)
+  Product.findById(prodId)
     .then(product => {
       // after we found the product by id 
       // we passing in the returned value into the ejs file
