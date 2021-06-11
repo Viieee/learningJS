@@ -4,14 +4,19 @@ const mongodb = require('mongodb')
 const getDb = require('../util/database').getDb;
 
 class Product {
-  constructor(title, price, imageUrl, description, id){
+  constructor(title, price, imageUrl, description, id, userId){
     // data we want to recieve when we initialize this class to make an object
     this.title = title
     this.price = price
     this.imageUrl = imageUrl
     this.description = description
     // optional
-    this._id = mongodb.ObjectId(id)
+    // converting it to object id
+    // if id exist we want to convert the id
+    // if not it will be null
+    this._id = id ? mongodb.ObjectId(id) : null
+    // user id
+    this.userId = userId
   }
 
   // saving the object created with this class to database
@@ -90,6 +95,7 @@ class Product {
     })
   }
 
+  // finding a product based on id
   static findById(id){
     // getting access to the database
     const db = getDb();
@@ -115,6 +121,19 @@ class Product {
     })
   }
   
+  // deleting product
+  static deleteById(id){
+    // getting access to the database
+    const db = getDb();
+    return db.collection('products')
+    .deleteOne({_id: mongodb.ObjectId(id)})
+    .then(result=>{
+      console.log('product deleted')
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
 }
 
 module.exports = Product;

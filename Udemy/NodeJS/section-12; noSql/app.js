@@ -11,6 +11,9 @@ const errorController = require('./controllers/error');
 // importing mongoDb connection
 const mongoConnect = require('./util/database').mongoConnect
 
+// importing user model
+const User = require('./models/user')
+
 // initializing express into an object that we can reuse the methods later
 const app = express();
 
@@ -31,7 +34,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // making middleware to store the current user logged in
 // this middleware will execute once we're done with the server initialization
 app.use((req, res, next) => {
-  next()
+  User.findById('60c2cd425f79522ca5cf57f7')
+  .then(user=>{
+    req.user = user
+    next();
+  })
+  .catch(err=>{
+    console.log(err)
+  })
 });
 
 // using imported middleware to manage access into urls in the app

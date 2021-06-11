@@ -29,7 +29,7 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
   // making an object from fetched data
-  const product = new Product(title, price, imageUrl, description)
+  const product = new Product(title, price, imageUrl, description, null, req.user._id)
   // calling save method in product model
   product.save()
   .then(result=>{
@@ -80,7 +80,8 @@ exports.postEditProduct = (req, res, next) => {
     updatedPrice,
     updatedImageUrl,
     updatedDesc,
-    prodId
+    prodId,
+    req.user._id
   )
 
   product.save()
@@ -95,12 +96,8 @@ exports.postEditProduct = (req, res, next) => {
 // deleting product
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findByPk(prodId)
-    .then(product => {
-      return product.destroy();
-    })
+  Product.deleteById(prodId)
     .then(result => {
-      console.log('DESTROYED PRODUCT');
       res.redirect('/admin/products');
     })
     .catch(err => console.log(err));
