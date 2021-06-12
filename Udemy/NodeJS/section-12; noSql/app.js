@@ -5,6 +5,9 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+// importing mongoose
+const mongoose = require('mongoose');
+
 // controller for error/invalid urls
 const errorController = require('./controllers/error');
 
@@ -51,6 +54,17 @@ app.use(shopRoutes);
 // middleware that will execute when user trying to access invalid urls
 app.use(errorController.get404);
 
-mongoConnect(()=>{
+// mongoConnect(()=>{
+//   app.listen(3000);
+// })
+
+// connecting to the database using database
+mongoose
+.connect('mongodb+srv://vie:pass123@cluster0.kbsee.mongodb.net/shop?retryWrites=true&w=majority')
+.then(result=>{
+  // after we successfully connect to the database
   app.listen(3000);
+})
+.catch(err=>{
+  console.log(err)
 })
