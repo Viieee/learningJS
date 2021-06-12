@@ -2,7 +2,7 @@ const Product = require('../models/product');
 
 // getting all the products in admin products page
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
       res.render('admin/products', {
         prods: products,
@@ -79,29 +79,34 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
 
-  // initializing the class 
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedImageUrl,
-    updatedDesc,
-    prodId,
-    req.user._id
-  )
+  // fetching the product we want to edit
+  Product.findById(prodId)
+  .then(product=>{
+    // we getting back the product with the id of prodId
+    // now we can alter the value of the product with the data we fetched from the fields
+    product.title = updatedTitle
+    product.price = updatedPrice
+    product.description = updatedDesc
+    product.imageUrl = updatedImageUrl
 
-  product.save()
-    .then(result => {
-      console.log('UPDATED PRODUCT!');
-      res.redirect('/admin/products');
-    })
-    .catch(err => console.log(err));
+    // then we save the edit
+    product.save()
+  })
+  .then(result => {
+    console.log('UPDATED PRODUCT!');
+    res.redirect('/admin/products');
+  })
+  .catch(err=>{
+    console.log(err)
+  })
 };
 
 
 // deleting product
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId)
+  // findByIdAndRemove is method provided by mongoose
+  Product.findByIdAndRemove(prodId)
     .then(result => {
       res.redirect('/admin/products');
     })

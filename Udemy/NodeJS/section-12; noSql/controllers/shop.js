@@ -6,7 +6,7 @@ const Product = require('../models/product');
 // this method will execute when we accessing the default url /
 // we want to fetch all the data in product database and passing it into the ejs file
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
+  Product.find() // getting all products (it's an array of objects)
     .then(products => {
       res.render('shop/index', {
         prods: products, // its an array
@@ -25,7 +25,7 @@ exports.getIndex = (req, res, next) => {
 // the main purpose of this method is to fetch all data in product table
   // and passing all the data into the ejs file
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find() // getting all products (it's an array of objects)
     .then(products => {
       res.render('shop/product-list', {
         prods: products,
@@ -48,6 +48,7 @@ exports.getProduct = (req, res, next) => {
 
   // searching the product with the id of prodId
   // the returned value will be passed onto the then method
+  // findById is a method defined by mongoose
   Product.findById(prodId)
     .then(product => {
       // after we found the product by id 
