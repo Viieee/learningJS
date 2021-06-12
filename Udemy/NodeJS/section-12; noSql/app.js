@@ -15,7 +15,7 @@ const errorController = require('./controllers/error');
 // const mongoConnect = require('./util/database').mongoConnect
 
 // importing user model
-// const User = require('./models/user')
+const User = require('./models/user')
 
 // initializing express into an object that we can reuse the methods later
 const app = express();
@@ -36,16 +36,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // making middleware to store the current user logged in
 // this middleware will execute once we're done with the server initialization
-// app.use((req, res, next) => {
-//   User.findById('60c2e2de5f79522ca5cf57f8')
-//   .then(user=>{
-//     req.user = new User(user.name, user.email, user.cart, user._id)
-//     next();
-//   })
-//   .catch(err=>{
-//     console.log(err)
-//   })
-// });
+app.use((req, res, next) => {
+  User.findById('60c5395ba98da70520a7b8ee')
+  .then(user=>{
+    // we getting back a mongoose model
+    // so we can use all the mongoose method on the user object and the user stored in req
+    req.user = user
+    next();
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+});
 
 // using imported middleware to manage access into urls in the app
 app.use('/admin', adminRoutes);
@@ -63,6 +65,32 @@ mongoose
 .connect('mongodb+srv://vie:pass123@cluster0.kbsee.mongodb.net/shop?retryWrites=true&w=majority')
 .then(result=>{
   // after we successfully connect to the database
+
+  // finding the user if its already created or not
+    // findOne will returning back the first user document it finds
+  User.findOne().then(user=>{
+    // if the user is not set
+    // meaning the user collection is empty
+    if(!user){
+      // then we want to create new user
+
+      // creating user when we start our server
+      const user = new User({
+        name: 'Vieri',
+        email: 'dummyemail@gmail.com',
+        cart: {
+          items: []
+        }
+      })
+
+      // saving the user
+      user.save()
+    }
+  })
+
+  
+
+  // listening to port 3000
   app.listen(3000);
 })
 .catch(err=>{
