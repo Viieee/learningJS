@@ -71,10 +71,16 @@ exports.getCart = (req, res, next) => {
 
   // getting the cart of user
   req.user
-    .getCart()
+    .populate('cart.items.productId')
+    .execPopulate() // making it a promise
     .then(
-      // then we render all the products in the cart and passing the products data into the ejs file
-      products => {
+      // we are getting back user data with products populated in it
+      user => {
+      console.log(user.cart.items)
+      // items is an array of product objects
+      // the product objects contains the id and the quantity by default
+      // but because we use populate method, now all the details of the product is also exist
+      products = user.cart.items
       res.render('shop/cart', {
         path: '/cart',
         pageTitle: 'Your Cart',
@@ -92,6 +98,7 @@ exports.postCart = (req, res, next) => {
 
   Product.findById(prodId)
   .then(product=>{
+    // addToCart is the method in the user model
     return req.user.addToCart(product);
   })
   .then(result=>{
