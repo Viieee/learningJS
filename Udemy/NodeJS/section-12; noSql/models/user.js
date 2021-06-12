@@ -1,3 +1,40 @@
+// importing mongoose 
+const mongoose = require('mongoose')
+
+// schema object from mongoose
+const Schema = mongoose.Schema;
+
+// making new schema
+const userSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    // cart embeeded document in the user
+    cart: {
+        // array of documents
+        items: [{
+            productId: {
+                // telling mongoose this field will store an object id
+                type: Schema.Types.ObjectId,
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }] 
+    }   
+})
+
+// exporting the mongoose model
+module.exports = mongoose.model('User', userSchema)
+
+
 // // importing mongoDB
 // const mongodb = require('mongodb')
 // // importing access to the database
