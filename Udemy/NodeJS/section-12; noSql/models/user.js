@@ -21,6 +21,7 @@ const userSchema = new Schema({
             productId: {
                 // telling mongoose this field will store an object id
                 type: Schema.Types.ObjectId,
+                ref: 'Product',
                 required: true
             },
             quantity: {

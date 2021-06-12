@@ -3,6 +3,8 @@ const Product = require('../models/product');
 // getting all the products in admin products page
 exports.getProducts = (req, res, next) => {
   Product.find()
+    // .select('title price -_id) // telling mongoose we only want the title and price fields and excluding the id
+    // .populate('userId', 'name') // populating certain field with all the detail information and not just the id, we only want the name
     .then(products => {
       res.render('admin/products', {
         prods: products,
@@ -33,7 +35,8 @@ exports.postAddProduct = (req, res, next) => {
     title: title, 
     price: price,
     description: description,
-    imageUrl: imageUrl
+    imageUrl: imageUrl,
+    userId: req.user._id
   })
   // calling save method provided by mongoose
   product.save()
