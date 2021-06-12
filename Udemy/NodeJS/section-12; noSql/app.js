@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 const errorController = require('./controllers/error');
 
 // importing mongoDb connection
-const mongoConnect = require('./util/database').mongoConnect
+// const mongoConnect = require('./util/database').mongoConnect
 
 // importing user model
 const User = require('./models/user')
