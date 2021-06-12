@@ -32,6 +32,52 @@ const userSchema = new Schema({
     }   
 })
 
+// adding your own mehtod
+userSchema.methods.addToCart = function(product){
+    // finding whether the product is already in the cart or not
+    const cartProductIndex = this.cart.items.findIndex(cp=>{ // items array in the cart
+                                                        // cp is the individual product in the array
+      // executing for every element in the items array
+      // we want to return true if we find the product in the items array
+      return cp.productId.toString() === product._id.toString()
+    })
+
+    // default value
+    let newQuantity = 1;
+    // copying all the data in the items array
+    const updatedCartItems = [...this.cart.items];
+
+    if(cartProductIndex >= 0){
+      // if the item already exist we adding the quantity by 1
+      newQuantity = this.cart.items[cartProductIndex].quantity + 1 ;
+      updatedCartItems[cartProductIndex].quantity = newQuantity;
+    }else{
+      // if the item is new to cart
+      // we adding a new one to the array
+      updatedCartItems.push(
+        {
+          // we only want to store product's id
+          // and the quantity of the product in cart
+          productId: product._id, 
+          quantity: newQuantity
+        }
+      )
+    }
+
+    // the cart object
+    // the cart object will have 1 key called items
+    // items will store an array of object
+    // and in the object it will store all the products and the quantity inside of the cart
+    const updatedCart = {
+      items: updatedCartItems
+    }
+
+    this.cart = updatedCart
+
+    // saving the cart
+    return this.save();
+}
+
 // exporting the mongoose model
 module.exports = mongoose.model('User', userSchema)
 
