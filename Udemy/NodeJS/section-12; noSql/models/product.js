@@ -1,3 +1,36 @@
+// importing mongoose 
+const { Double } = require('bson');
+const mongoose = require('mongoose')
+
+// schema object from mongoose
+const Schema = mongoose.Schema;
+
+// making new schema
+const productSchema = new Schema({
+    // defining how the schema should look like
+    title: { // or you can just do => title: String
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    imageUrl: {
+        type: String,
+        required: true
+    }
+})
+
+// exporting mongoose model
+// model is important for connecting a schema with a name
+// in other word, we are naming our schema with this method
+module.exports = mongoose.model('Product', productSchema);
+
 // // importing mongoDB
 // const mongodb = require('mongodb')
 // // importing access to the database

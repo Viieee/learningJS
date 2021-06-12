@@ -28,9 +28,14 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  // making an object from fetched data
-  const product = new Product(title, price, imageUrl, description, null, req.user._id)
-  // calling save method in product model
+  // making an object from the schema we defined in the product model
+  const product = new Product({
+    title: title, 
+    price: price,
+    description: description,
+    imageUrl: imageUrl
+  })
+  // calling save method provided by mongoose
   product.save()
   .then(result=>{
     // result is the value returned from save method

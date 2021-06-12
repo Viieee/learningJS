@@ -15,7 +15,7 @@ const errorController = require('./controllers/error');
 // const mongoConnect = require('./util/database').mongoConnect
 
 // importing user model
-const User = require('./models/user')
+// const User = require('./models/user')
 
 // initializing express into an object that we can reuse the methods later
 const app = express();
@@ -36,16 +36,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // making middleware to store the current user logged in
 // this middleware will execute once we're done with the server initialization
-app.use((req, res, next) => {
-  User.findById('60c2e2de5f79522ca5cf57f8')
-  .then(user=>{
-    req.user = new User(user.name, user.email, user.cart, user._id)
-    next();
-  })
-  .catch(err=>{
-    console.log(err)
-  })
-});
+// app.use((req, res, next) => {
+//   User.findById('60c2e2de5f79522ca5cf57f8')
+//   .then(user=>{
+//     req.user = new User(user.name, user.email, user.cart, user._id)
+//     next();
+//   })
+//   .catch(err=>{
+//     console.log(err)
+//   })
+// });
 
 // using imported middleware to manage access into urls in the app
 app.use('/admin', adminRoutes);
@@ -58,7 +58,7 @@ app.use(errorController.get404);
 //   app.listen(3000);
 // })
 
-// connecting to the database using database
+// connecting to the database using mongoose
 mongoose
 .connect('mongodb+srv://vie:pass123@cluster0.kbsee.mongodb.net/shop?retryWrites=true&w=majority')
 .then(result=>{
