@@ -4,11 +4,11 @@ exports.getLogin = (req, res, next)=>{
     
     console.log(req.session.isLoggedIn)
 
-    console.log(isLoggedIn)
+    
     res.render('auth/login',{
         path: '/login',
         pageTitle: 'Login',
-        isLoggedIn: isLoggedIn
+        isLoggedIn: req.session.isLoggedIn
     })
 }
 
@@ -18,6 +18,7 @@ exports.postLogin = (req, res, next)=>{
     
     // storing new session called loggedIn
     // the session object is added by the middleware in the app.js
+    // this will store it to memory
     req.session.isLoggedIn = true;
     res.redirect('/');
 }

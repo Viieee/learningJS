@@ -6,11 +6,23 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 // importing session
 const session = require('express-session');
+// importing the express session store
+const MongoDBStore = require('connect-mongodb-session')(session);
+
+// database uri
+const MONGODB_URI = 'mongodb+srv://vie:pass123@cluster0.kbsee.mongodb.net/shop?retryWrites=true&w=majority'
+
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
 const app = express();
+// initialize new store
+const store = new MongoDBStore({
+  uri: MONGODB_URI, // database uri
+  collection: 'sessions' // the name of the collection
+});
+
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -29,9 +41,9 @@ app.use(
     secret: 'my secret', // signing the hash
     resave: false, // this means that the session will not be saved on every request that is done / response that is sent
                    // but only when something changed in the session
-    saveUninitialized: false // ensuring that no session is saved for a request where it doesn't need to be saved
+    saveUninitialized: false, // ensuring that no session is saved for a request where it doesn't need to be saved
                               // because nothing was changed about it
-    // store: store
+    store: store // storing session data
   })
 );
 
@@ -51,9 +63,7 @@ app.use(authRoutes);
 app.use(errorController.get404);
 
 mongoose
-  .connect(
-    'mongodb+srv://vie:pass123@cluster0.kbsee.mongodb.net/shop?retryWrites=true&w=majority'
-  )
+  .connect(MONGODB_URI)
   .then(result => {
     User.findOne().then(user => {
       if (!user) {
