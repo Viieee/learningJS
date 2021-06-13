@@ -127,8 +127,6 @@ exports.postCartDeleteProduct = (req, res, next) => {
 // exporting the postOrder method
 // this method will trigger when we want to move items from cart to order
 exports.postOrder = (req, res, next) => {
-  // fetchedCart will be used to store the cart and will be reusable in the entire method
-  let fetchedCart;
   // fetching the user's cart 
   req.user
     .addOrder()
