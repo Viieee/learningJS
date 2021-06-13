@@ -1,6 +1,6 @@
-// importing the product model
+// importing the models
 const Product = require('../models/product');
-
+const Order = require('../models/order')
 
 // exporting the getIndex method 
 // this method will execute when we accessing the default url /
@@ -80,7 +80,7 @@ exports.getCart = (req, res, next) => {
       // items is an array of product objects
       // the product objects contains the id and the quantity by default
       // but because we use populate method, now all the details of the product is also exist
-      products = user.cart.items
+      const products = user.cart.items
       res.render('shop/cart', {
         path: '/cart',
         pageTitle: 'Your Cart',
@@ -127,15 +127,44 @@ exports.postCartDeleteProduct = (req, res, next) => {
 // exporting the postOrder method
 // this method will trigger when we want to move items from cart to order
 exports.postOrder = (req, res, next) => {
-  // fetching the user's cart 
+  // fetching the products in user's cart
   req.user
-    .addOrder()
-    .then(result => {
-      // then after all operations is done
-      // we redirect to /orders
-      res.redirect('/orders');
+  .populate('cart.items.productId')
+  .execPopulate() // making it a promise
+  .then(
+    // we are getting back user data with products populated in it
+    user => {
+    console.log(user.cart.items)
+    // items is an array of product objects
+    // the product objects contains the id and the quantity by default
+    // but because we use populate method, now all the details of the product is also exist
+    const products = user.cart.items.map(i=>{
+      // we want to execute this for every product inside the cart
+      // we want to fill this products constant with objects 
+      // and the objects has product (the details) and quantity as the key
+      // {...i.productId._doc} will pull all the data about the product and storing it in product key
+      return {quantity: i.quantity, product: {...i.productId._doc}}
     })
-    .catch(err => console.log(err));
+     // making the order object
+    const order = new Order({
+      products: products, // referring to the products constant
+      user:{
+        name: req.user.name,
+        userId: req.user._id
+      }
+    });
+    // saving the order
+    return order.save()
+  })
+  .then(result => {
+    // then after all operations is done
+    // we redirect to /orders
+    return req.user.clearCart()
+  })
+  .then(()=>{
+    res.redirect('/orders');
+  })
+  .catch(err => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {

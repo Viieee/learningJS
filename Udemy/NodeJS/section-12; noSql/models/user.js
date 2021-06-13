@@ -91,6 +91,12 @@ userSchema.methods.deleteItemFromCart = function(productId){
     return this.save()
 }
 
+
+userSchema.methods.clearCart = function(){
+    this.cart = {items:[]}
+    return this.save();
+}
+
 // exporting the mongoose model
 module.exports = mongoose.model('User', userSchema)
 

@@ -19,7 +19,7 @@ const orderSchema = new Schema({
     ],
     user: {
         name: {
-            String,
+            type: String,
             required: true
         },
         userId: {
