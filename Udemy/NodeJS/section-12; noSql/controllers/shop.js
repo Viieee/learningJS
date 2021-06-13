@@ -1,6 +1,7 @@
 // importing the models
 const Product = require('../models/product');
-const Order = require('../models/order')
+const Order = require('../models/order');
+const user = require('../models/user');
 
 // exporting the getIndex method 
 // this method will execute when we accessing the default url /
@@ -169,8 +170,8 @@ exports.postOrder = (req, res, next) => {
 
 exports.getOrders = (req, res, next) => {
   // getting user's order
-  req.user
-    .getOrders()
+  Order
+    .find({'user.userId': req.user._id})
     .then(orders => {
       // because we including the product table in the getOrders method
       // we're getting all the data in orderItems table and product table as extra data with it
