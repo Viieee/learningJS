@@ -115,9 +115,7 @@ exports.postCart = (req, res, next) => {
 exports.postCartDeleteProduct = (req, res, next) => {
   // getting the product's id from the hidden input tag in the ejs file
   const prodId = req.body.productId;
-  // getting user's cart
-  req.user
-    .deleteItemFromCart(prodId)
+  req.user.deleteItemFromCart(prodId)
     .then(result => {
       // after all the operations in the previous then methods is done
       // we redirecting to cart page

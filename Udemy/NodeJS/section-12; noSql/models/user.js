@@ -78,6 +78,19 @@ userSchema.methods.addToCart = function(product){
     return this.save();
 }
 
+userSchema.methods.deleteItemFromCart = function(productId){
+    // filtering the cart items, only getting back all the items that dont have 
+        // the id the same as id(the argument of this method)
+    const updatedCartItems = this.cart.items.filter(item=>{
+        // keeping all the product that dont match the id passed onto this method
+        return item.productId.toString() !== productId.toString();
+    })
+    // altering the value of the items array
+    this.cart.items = updatedCartItems;
+    // saving the change
+    return this.save()
+}
+
 // exporting the mongoose model
 module.exports = mongoose.model('User', userSchema)
 
