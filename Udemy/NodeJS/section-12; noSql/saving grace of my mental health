@@ -1,8 +1,0 @@
-{
-    "_id": {
-        "$oid": "60c2e2de5f79522ca5cf57f8"
-    },
-    "name": "vieri",
-    "email": "dummyemail@gmail.com",
-    "cart": {"items": [{"productId": "60c309740a420925281bb277" ,"quantity": 1}]}    
-}
