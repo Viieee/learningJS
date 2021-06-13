@@ -1,7 +1,9 @@
 exports.getLogin = (req, res, next)=>{
-    const isLoggedIn = req.get('Cookie') // getting the cookie header
-    .split('=')[1]  === 'value' // spliting it and turning it into an array , getting the second index to get the value
+    // const isLoggedIn = req.get('Cookie') // getting the cookie header
+    // .split('=')[1]  === 'value' // spliting it and turning it into an array , getting the second index to get the value
     
+    console.log(req.session.isLoggedIn)
+
     console.log(isLoggedIn)
     res.render('auth/login',{
         path: '/login',
@@ -12,6 +14,10 @@ exports.getLogin = (req, res, next)=>{
 
 exports.postLogin = (req, res, next)=>{
     // req.isLoggedIn = true;
-    res.setHeader('Set-Cookie', 'loggedIn=true') // setting cookie
+    // res.setHeader('Set-Cookie', 'loggedIn=true') // setting cookie
+    
+    // storing new session called loggedIn
+    // the session object is added by the middleware in the app.js
+    req.session.isLoggedIn = true;
     res.redirect('/');
 }
