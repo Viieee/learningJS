@@ -22,3 +22,14 @@ exports.postLogin = (req, res, next)=>{
     req.session.isLoggedIn = true;
     res.redirect('/');
 }
+
+
+exports.postLogout = (req, res, next) => {
+    // clearing the session
+    // destroy method is provided by the session package
+    req.session.destroy(err => {
+      // after the session destroyed
+      console.log(err);
+      res.redirect('/');
+    });
+  };
