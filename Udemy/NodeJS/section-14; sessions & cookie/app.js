@@ -53,6 +53,19 @@ app.use(
   })
 );
 
+app.use((req,res,next)=>{
+  if(!req.session.user){
+    return next();
+  }
+  User.findById(req.session.user._id) // finding user id based on the current session
+    .then(user => {
+      // req.user contain full user object with all the methods based on current session
+      req.user = user
+      next();
+    })
+    .catch(err => console.log(err));
+})
+
 // using the routes
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
