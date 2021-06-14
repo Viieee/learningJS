@@ -1,22 +1,11 @@
-// managing login authentication routes
-
-// importing express
 const express = require('express');
 
-// importing express router
+const authController = require('../controllers/auth');
+
 const router = express.Router();
 
-// importing the controller
-const authController = require('../controllers/auth')
+router.get('/login', authController.getLogin);
 
-// /login => GET
-router.get('/login', authController.getLogin)
+router.post('/login', authController.postLogin);
 
-// /login => POST
-router.post('/login', authController.postLogin)
-
-// /logout => POST
-router.post('/logout', authController.postLogout);
-
-// exporting the router 
 module.exports = router;

@@ -1,12 +1,8 @@
-// importing mongoose
 const mongoose = require('mongoose');
 
-// importing mongoose schema
 const Schema = mongoose.Schema;
 
-// making new schema
 const productSchema = new Schema({
-  // fields and the configuration of each fields
   title: {
     type: String,
     required: true
@@ -24,11 +20,10 @@ const productSchema = new Schema({
     required: true
   },
   userId: {
-    type: Schema.Types.ObjectId, // telling the type is objectId
-    required: true,
-    ref: 'User' 
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   }
 });
 
-// exporting the schema
 module.exports = mongoose.model('Product', productSchema);

@@ -1,35 +1,19 @@
-exports.getLogin = (req, res, next)=>{
-    // const isLoggedIn = req.get('Cookie') // getting the cookie header
-    // .split('=')[1]  === 'value' // spliting it and turning it into an array , getting the second index to get the value
-    
-    console.log(req.session.isLoggedIn)
+const User = require('../models/user');
 
-    
-    res.render('auth/login',{
-        path: '/login',
-        pageTitle: 'Login',
-        isLoggedIn: req.session.isLoggedIn
-    })
-}
+exports.getLogin = (req, res, next) => {
+  res.render('auth/login', {
+    path: '/login',
+    pageTitle: 'Login',
+    isAuthenticated: false
+  });
+};
 
-exports.postLogin = (req, res, next)=>{
-    // req.isLoggedIn = true;
-    // res.setHeader('Set-Cookie', 'loggedIn=true') // setting cookie
-    
-    // storing new session called loggedIn
-    // the session object is added by the middleware in the app.js
-    // this will store it to memory
-    req.session.isLoggedIn = true;
-    res.redirect('/');
-}
-
-
-exports.postLogout = (req, res, next) => {
-    // clearing the session
-    // destroy method is provided by the session package
-    req.session.destroy(err => {
-      // after the session destroyed
-      console.log(err);
+exports.postLogin = (req, res, next) => {
+  User.findById('60c5395ba98da70520a7b8ee')
+    .then(user => {
+      req.session.isLoggedIn = true;
+      req.session.user = user;
       res.redirect('/');
-    });
-  };
+    })
+    .catch(err => console.log(err));
+};
