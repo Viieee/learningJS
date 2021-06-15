@@ -1,5 +1,6 @@
 // importing bcrypt
 const bcrypt = require('bcryptjs');
+const { response } = require('express');
 
 const User = require('../models/user');
 
@@ -20,14 +21,37 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  User.findById('60c5395ba98da70520a7b8ee')
+  const email = req.body.email
+  const password = req.body.password
+
+  // User.findById('60c5395ba98da70520a7b8ee')
+  User.findOne({email: email})
   .then(user => {
-    req.session.isLoggedIn = true;
-    req.session.user = user;
-    req.session.save(err => {
-      console.log(err);
-      res.redirect('/');
-    });
+    if (!user){
+      // if the email is not registered/stored in the database
+      return res.redirect('/login')
+    }
+    
+    // passing the password to bcrypt to then compare it to the hashed password
+    bcrypt
+    .compare(password, user.password)
+    .then(doMatch=>{
+      if(doMatch){
+        // password valid
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        return req.session.save(err => {
+          console.log(err);
+          res.redirect('/')
+        });
+      }
+      // if the password is invalid
+      res.redirect('/login')
+    })
+    .catch(err=>{
+      console.log(err)
+      res.redirect('/login')
+    })
   })
   .catch(err => console.log(err));
 };
