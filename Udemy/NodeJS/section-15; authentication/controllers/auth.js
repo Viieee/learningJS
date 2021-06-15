@@ -1,3 +1,6 @@
+// importing bcrypt
+const bcrypt = require('bcryptjs');
+
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
@@ -43,17 +46,25 @@ exports.postSignup = (req, res, next) => {
       // if a user with the same email already exist in the database
       return res.redirect('/signup')
     }
-    // if theres no user with the email entered
-    const user = new User({
-      // user schema, look at the model
-      email: email,
-      password: password,
-      cart:{
-        items: []
-      }
-    })
-    // saving the user
-    return user.save()
+
+    // hashing password, it's a promise
+    // first argument is the thing we want to hash
+    // second argument is the amount of hashing we want to do
+    // we will return it and passing the data into then block
+    return bcrypt.hash(password, 12) 
+    .then(hashedPassword=>{
+      // if theres no user with the email entered
+      const user = new User({
+        // user schema, look at the model
+        email: email,
+        password: hashedPassword,
+        cart:{
+          items: []
+        }
+      })
+      // saving the user
+      return user.save()
+    });
   })
   .then(result=>{
     res.redirect('/login')
