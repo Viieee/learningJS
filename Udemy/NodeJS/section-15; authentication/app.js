@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+// improting csurf
+const csurf = require('csurf');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -17,6 +19,9 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
 });
+
+// initializing csurf
+const csrfProtection = csurf();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -36,6 +41,9 @@ app.use(
   })
 );
 
+// after we initialize the session we can use the csurf as middleware
+app.use(csrfProtection);
+
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
@@ -47,6 +55,15 @@ app.use((req, res, next) => {
     })
     .catch(err => console.log(err));
 });
+
+// telling express theres some data that we want to include on every rendered view
+app.use((req, res, next)=>{
+  // locals allows us to set local variables that are passed into the views
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  // calling next so we are able to continue
+  next();
+})
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
