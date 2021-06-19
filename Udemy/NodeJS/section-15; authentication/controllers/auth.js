@@ -5,18 +5,36 @@ const { response } = require('express');
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
+  let message = req.flash('error'); // this error will only be stored if theres an error in the login process
+                                    // and later will be removed from the session
+
+  if(message.length > 0){
+    message = message[0]
+  }else{
+    message = null
+  }
+
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
-    isAuthenticated: false
+    errorMessage: message
   });
 };
 
 exports.getSignup = (req, res, next) => {
+  let message = req.flash('error'); // this error will only be stored if theres an error in the login process
+                                    // and later will be removed from the session
+
+  if(message.length > 0){
+    message = message[0]
+  }else{
+    message = null
+  }
+
   res.render('auth/signup', {
     path: '/signup',
     pageTitle: 'Signup',
-    isAuthenticated: false
+    errorMessage: message
   });
 };
 
@@ -28,6 +46,8 @@ exports.postLogin = (req, res, next) => {
   User.findOne({email: email})
   .then(user => {
     if (!user){
+      // error message
+      req.flash('error', 'Invalid Email or password.')
       // if the email is not registered/stored in the database
       return res.redirect('/login')
     }
@@ -46,6 +66,7 @@ exports.postLogin = (req, res, next) => {
         });
       }
       // if the password is invalid
+      req.flash('error', 'Invalid Email or password.')
       res.redirect('/login')
     })
     .catch(err=>{
@@ -68,6 +89,7 @@ exports.postSignup = (req, res, next) => {
     // we getting the user data back with the email entered in form
     if(userDoc){
       // if a user with the same email already exist in the database
+      req.flash('error', 'Email already registered!')
       return res.redirect('/signup')
     }
 

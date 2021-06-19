@@ -7,6 +7,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 // improting csurf
 const csurf = require('csurf');
+// importing connect-flash
+const flash = require('connect-flash')
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -22,6 +24,7 @@ const store = new MongoDBStore({
 
 // initializing csurf
 const csrfProtection = csurf();
+
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -43,6 +46,8 @@ app.use(
 
 // after we initialize the session we can use the csurf as middleware
 app.use(csrfProtection);
+// using flash middleware
+app.use(flash());
 
 app.use((req, res, next) => {
   if (!req.session.user) {
