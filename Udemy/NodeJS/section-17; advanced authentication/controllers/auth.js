@@ -1,25 +1,19 @@
+// importing bcrypt
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
-const sendgridTransport = require('nodemailer-sendgrid-transport');
+const { response } = require('express');
 
 const User = require('../models/user');
 
-const transporter = nodemailer.createTransport(
-  sendgridTransport({
-    auth: {
-      api_key:
-        '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'
-    }
-  })
-);
-
 exports.getLogin = (req, res, next) => {
-  let message = req.flash('error');
-  if (message.length > 0) {
-    message = message[0];
-  } else {
-    message = null;
+  let message = req.flash('error'); // this error will only be stored if theres an error in the login process
+                                    // and later will be removed from the session
+
+  if(message.length > 0){
+    message = message[0]
+  }else{
+    message = null
   }
+
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
@@ -28,12 +22,15 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.getSignup = (req, res, next) => {
-  let message = req.flash('error');
-  if (message.length > 0) {
-    message = message[0];
-  } else {
-    message = null;
+  let message = req.flash('error'); // this error will only be stored if theres an error in the login process
+                                    // and later will be removed from the session
+
+  if(message.length > 0){
+    message = message[0]
+  }else{
+    message = null
   }
+
   res.render('auth/signup', {
     path: '/signup',
     pageTitle: 'Signup',
@@ -42,94 +39,90 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  User.findOne({ email: email })
-    .then(user => {
-      if (!user) {
-        req.flash('error', 'Invalid email or password.');
-        return res.redirect('/login');
-      }
-      bcrypt
-        .compare(password, user.password)
-        .then(doMatch => {
-          if (doMatch) {
-            req.session.isLoggedIn = true;
-            req.session.user = user;
-            return req.session.save(err => {
-              console.log(err);
-              res.redirect('/');
-            });
-          }
-          req.flash('error', 'Invalid email or password.');
-          res.redirect('/login');
-        })
-        .catch(err => {
+  const email = req.body.email
+  const password = req.body.password
+
+  // User.findById('60c5395ba98da70520a7b8ee')
+  User.findOne({email: email})
+  .then(user => {
+    if (!user){
+      // error message
+      req.flash('error', 'Invalid Email or password.')
+      // if the email is not registered/stored in the database
+      return res.redirect('/login')
+    }
+    
+    // passing the password to bcrypt to then compare it to the hashed password
+    bcrypt
+    .compare(password, user.password)
+    .then(doMatch=>{
+      if(doMatch){
+        // password valid
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        return req.session.save(err => {
           console.log(err);
-          res.redirect('/login');
+          res.redirect('/')
         });
+      }
+      // if the password is invalid
+      req.flash('error', 'Invalid Email or password.')
+      res.redirect('/login')
     })
-    .catch(err => console.log(err));
+    .catch(err=>{
+      console.log(err)
+      res.redirect('/login')
+    })
+  })
+  .catch(err => console.log(err));
 };
 
 exports.postSignup = (req, res, next) => {
+  // retrieving data from form
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  User.findOne({ email: email })
-    .then(userDoc => {
-      if (userDoc) {
-        req.flash(
-          'error',
-          'E-Mail exists already, please pick a different one.'
-        );
-        return res.redirect('/signup');
-      }
-      return bcrypt
-        .hash(password, 12)
-        .then(hashedPassword => {
-          const user = new User({
-            email: email,
-            password: hashedPassword,
-            cart: { items: [] }
-          });
-          return user.save();
-        })
-        .then(result => {
-          res.redirect('/login');
-          return transporter.sendMail({
-            to: email,
-            from: 'shop@node-complete.com',
-            subject: 'Signup succeeded!',
-            html: '<h1>You successfully signed up!</h1>'
-          });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    })
-    .catch(err => {
-      console.log(err);
+
+  // finding if a user with the email in the request already exist in our database
+  User.findOne({email: email})
+  .then(userDoc=>{
+    // we getting the user data back with the email entered in form
+    if(userDoc){
+      // if a user with the same email already exist in the database
+      req.flash('error', 'Email already registered!')
+      return res.redirect('/signup')
+    }
+
+    // hashing password, it's a promise
+    // first argument is the thing we want to hash
+    // second argument is the amount of hashing we want to do
+    // we will return it and passing the data into then block
+    return bcrypt.hash(password, 12) 
+    .then(hashedPassword=>{
+      // if theres no user with the email entered
+      const user = new User({
+        // user schema, look at the model
+        email: email,
+        password: hashedPassword,
+        cart:{
+          items: []
+        }
+      })
+      // saving the user
+      return user.save()
     });
+  })
+  .then(result=>{
+    res.redirect('/login')
+  })
+  .catch(err=>{
+    console.log(err)
+  })
 };
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
     res.redirect('/');
-  });
-};
-
-exports.getReset = (req, res, next) => {
-  let message = req.flash('error');
-  if (message.length > 0) {
-    message = message[0];
-  } else {
-    message = null;
-  }
-  res.render('auth/reset', {
-    path: '/reset',
-    pageTitle: 'Reset Password',
-    errorMessage: message
   });
 };

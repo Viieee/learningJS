@@ -3,7 +3,9 @@ const path = require('path');
 const express = require('express');
 
 const adminController = require('../controllers/admin');
-const isAuth = require('../middleware/is-auth');
+// importing isAuth middleware
+// we will use it on each route, place it on second argument after the url route 
+const isAuth = require('../middleware/is-auth')
 
 const router = express.Router();
 
