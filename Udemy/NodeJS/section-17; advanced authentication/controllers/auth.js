@@ -1,8 +1,21 @@
 // importing bcrypt
 const bcrypt = require('bcryptjs');
-const { response } = require('express');
+const { post } = require('superagent');
+// importing nodemailer
+const nodemailer = require('nodemailer')
+//importing the transporter
+const mandrillTransporter = require('nodemailer-mandrill-transport')
 
 const User = require('../models/user');
+
+const transporter = nodemailer.createTransport(
+  mandrillTransporter({
+    auth: {
+      apiKey:
+        'edHUPRKFpGeYzggD0ieC5A'
+    }
+  })
+);
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error'); // this error will only be stored if theres an error in the login process
@@ -111,6 +124,22 @@ exports.postSignup = (req, res, next) => {
       // saving the user
       return user.save()
     });
+  })
+  .then(result=>{
+    let mailOptions={
+      from : 'vieri@mhs.dinus.ac.id',
+      to : email,
+      subject : "This is from Mandrill",
+      html : "Hello,<br>Sending this email using Node and Mandrill"
+   };
+   
+   // Sending email.
+   return transporter.sendMail(mailOptions, function(error, response){
+     if(error) {
+        throw new Error("Error in sending email");
+     }
+     console.log("Message sent: " + JSON.stringify(response));
+   });
   })
   .then(result=>{
     res.redirect('/login')
